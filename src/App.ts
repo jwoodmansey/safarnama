@@ -152,9 +152,9 @@ app.use(cors({
   origin: [environment.baseUrl],
 }))
 
-app.get('/', (_req, res) => {
-  res.json({ name: 'Server is running' })
-})
+// app.get('/', (_req, res) => {
+//   res.json({ name: 'Server is running' })
+// })
 app.use(fileUpload({
   useTempFiles : true,
   tempFileDir : '/tmp/',
@@ -170,12 +170,12 @@ app.use('/api/route', ensureAuthenticated(), new RouteRouter().getRouter())
 app.use('/api/media', ensureAuthenticated(), new MediaRouter().getRouter())
 app.use('/api/storage/media', express.static('media'))
 
-app.use(express.static('public/dist'))
+app.use('/', express.static('public/dist/safarnama'))
 
 app.use('/api/place-types', ensureAuthenticated(), new PlaceTypeRouter().getRouter())
 
-const server: http.Server = app.listen(8080, () => {
-  console.log('Server listening on port %d in %s mode', 8080, app.settings.env)
+const server: http.Server = app.listen(80, () => {
+  console.log('Server listening on port %d in %s mode', 80, app.settings.env)
 })
 
 module.exports = server

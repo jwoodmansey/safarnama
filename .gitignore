@@ -46,3 +46,4 @@ Config/Dev/Public.pem
 
 /src/config/env.ts
 /public/src/environments/environment.ts
+/public/dist

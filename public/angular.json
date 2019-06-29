@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "fictional-disco-authoring-tool": {
+    "safarnama": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/fictional-disco-authoring-tool",
+            "outputPath": "dist/safarnama",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -65,18 +65,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "fictional-disco-authoring-tool:build"
+            "browserTarget": "safarnama:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "fictional-disco-authoring-tool:build:production"
+              "browserTarget": "safarnama:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "fictional-disco-authoring-tool:build"
+            "browserTarget": "safarnama:build"
           }
         },
         "test": {
@@ -110,7 +110,7 @@
         }
       }
     },
-    "fictional-disco-authoring-tool-e2e": {
+    "safarnama-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -119,11 +119,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "fictional-disco-authoring-tool:serve"
+            "devServerTarget": "safarnama:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "fictional-disco-authoring-tool:serve:production"
+              "devServerTarget": "safarnama:serve:production"
             }
           }
         },
@@ -139,5 +139,5 @@
       }
     }
   },
-  "defaultProject": "fictional-disco-authoring-tool"
+  "defaultProject": "safarnama"
 }
