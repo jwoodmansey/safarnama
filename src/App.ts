@@ -169,10 +169,13 @@ app.use('/api/point-of-interest', ensureAuthenticated(), new PointOfInterestRout
 app.use('/api/route', ensureAuthenticated(), new RouteRouter().getRouter())
 app.use('/api/media', ensureAuthenticated(), new MediaRouter().getRouter())
 app.use('/api/storage/media', express.static('media'))
+
+app.use(express.static('public/dist'))
+
 app.use('/api/place-types', ensureAuthenticated(), new PlaceTypeRouter().getRouter())
 
-const server: http.Server = app.listen(3000, () => {
-  console.log('Server listening on port %d in %s mode', 3000, app.settings.env)
+const server: http.Server = app.listen(8080, () => {
+  console.log('Server listening on port %d in %s mode', 8080, app.settings.env)
 })
 
 module.exports = server
