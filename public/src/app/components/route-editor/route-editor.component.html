@@ -1,0 +1,4 @@
+<agm-polyline-editable *ngIf="($route | async) as route" #line [editable]="!route.isCreating()" [strokeColor]="route.colour">
+  <agm-polyline-point *ngFor="let point of route.points" [latitude]="point.lat" [longitude]="point.lng">
+  </agm-polyline-point>
+</agm-polyline-editable>

@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Create Text</h1>
+<!-- <form [formGroup]="form" (ngSubmit)="submit()"> -->
+<div class="content" mat-dialog-content>
+  <p>Type your text below, highlight text for formatting options</p>
+  <medium-editor [(editorModel)]="textVar"
+    [editorOptions]="{'toolbar': {'buttons': ['bold', 'italic', 'underline', 'h1', 'h2', 'h3']}}"></medium-editor>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-button class="mat-primary" (click)="done()" cdkFocusInitial>Create</button>
+</div>
+<!-- </form> -->

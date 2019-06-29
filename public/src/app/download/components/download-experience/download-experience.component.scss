@@ -1,0 +1,14 @@
+main {
+  margin: 32px;
+}
+
+button {
+  display: block;
+  &.open-app {
+    margin-bottom: 16px;
+  }
+}
+
+.play-icon {
+  width: 150px;
+}

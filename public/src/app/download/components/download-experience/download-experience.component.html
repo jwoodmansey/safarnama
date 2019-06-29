@@ -1,0 +1,29 @@
+<main>
+  <h1>Get started</h1>
+  <mat-vertical-stepper linear="true">
+
+    <mat-step label="Download app">
+
+      <p>First, download the app on the Google Play Store</p>
+      <img class="play-icon" src="/assets/imgs/google-play-badge.png" />
+      <button mat-button matStepperNext>Next</button>
+    </mat-step>
+    <mat-step label="Download experience">
+      <p>Now, download the experience into the app. If you're on your Android device just tap the open app button, or if
+        not just open the app and manually scan the QR code below.</p>
+      <button class="open-app" mat-raised-button color="primary">Open App</button>
+      <qrcode [qrdata]="downloadUrl" [size]="256" [level]="'M'"></qrcode>
+    </mat-step>
+
+    <ng-template matStepperIcon="edit">
+      <mat-icon>phone_android</mat-icon>
+    </ng-template>
+
+    <!-- <ng-template matStepperIcon="done">
+    <mat-icon>done_all</mat-icon>
+  </ng-template> -->
+  </mat-vertical-stepper>
+  <footer>
+    <small>Google Play and the Google Play logo are trademarks of Google LLC.</small>
+  </footer>
+</main>

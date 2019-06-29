@@ -1,0 +1,14 @@
+.icon-container {
+  height: 200px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+mat-grid-tile {
+  cursor: pointer;
+  &.selected {
+    background: green;
+    color: white;
+    border-radius: 50%;
+  }
+}

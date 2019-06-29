@@ -1,0 +1,47 @@
+<!-- <mat-toolbar>Authoring Tool
+</mat-toolbar> -->
+<mat-nav-list ngif>
+  <img class="logo" src="/assets/imgs/master-logo.png"/>
+  <a mat-list-item href="javascript:void(0)" [matMenuTriggerFor]="experience">Experience</a>
+  <mat-menu #experience="matMenu">
+    <button mat-menu-item (click)="openExperience()">
+      <mat-icon>folder_open</mat-icon>
+      <span>Open</span>
+    </button>
+    <button mat-menu-item (click)="createNewExperience()">
+      <mat-icon>create_new_folder</mat-icon>
+      <span>Create</span>
+    </button>
+    <button [disabled]="!isExperienceOpen" [routerLink]="['/experience/edit']" mat-menu-item>
+      <mat-icon>edit</mat-icon>
+      <span>Edit</span>
+    </button>
+  </mat-menu>
+  <mat-divider></mat-divider>
+  <a mat-list-item href="javascript:void(0)" [matMenuTriggerFor]="poi">Places</a>
+  <mat-menu #poi="matMenu">
+    <button [disabled]="!isExperienceOpen" [routerLink]="['/poi/create']" mat-menu-item>
+      <mat-icon>add_location</mat-icon>
+      <span>Create</span>
+    </button>
+    <button [disabled]="!isExperienceOpen" (click)="viewAllPointsOfInterest()" mat-menu-item>
+      <mat-icon>view_list</mat-icon>
+      <span>View all</span>
+    </button>
+  </mat-menu>
+  <mat-divider></mat-divider>
+  <a mat-list-item href="javascript:void(0)" (click)="publish()">Publish</a>
+  <!-- <a mat-list-item href="javascript:void(0)" [matMenuTriggerFor]="route">Routes</a>
+  <mat-menu #route="matMenu">
+    <button [disabled]="!isExperienceOpen" [routerLink]="['/route/create']" mat-menu-item>
+      <mat-icon>navigation</mat-icon>
+      <span>Create</span>
+    </button>
+    <button [disabled]="!isExperienceOpen" (click)="viewAllPointsOfInterest()" mat-menu-item>
+      <mat-icon>view_list</mat-icon>
+      <span>View all</span>
+    </button>
+  </mat-menu> -->
+  <mat-divider></mat-divider>
+  <a mat-list-item href="javascript:void(0)" (click)="viewMediaLibrary()">Media Library</a>
+</mat-nav-list>

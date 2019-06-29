@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Open an Experience</h1>
+<div mat-dialog-content>
+  <mat-form-field *ngIf="experiences">
+    <mat-select [(ngModel)]="selected" placeholder="Choose an experience">
+      <mat-option [value]="experience" *ngFor="let experience of experiences">{{experience.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-button (click)="open()" [disabled]="!selected" cdkFocusInitial>Open</button>
+</div>

@@ -1,0 +1,22 @@
+<mat-toolbar>
+    <button [routerLink]="['/']" mat-icon-button>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    {{isEditingId ? 'Edit' : 'Create'}} Route
+  </mat-toolbar>
+  <div class="content">
+    <p>Click the map to start your Route, then keep clicking to create more lines</p>
+    <form [formGroup]="routeForm" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <input matInput formControlName="name" placeholder="Name">
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <mat-form-field>
+        <input matInput formControlName="colour" placeholder="Colour">
+        <mcc-color-picker [selectedColor]="selectedColor" [hideButtons]="true" [hideUsedColors]="true"
+          (change)="colourChanged($event)"></mcc-color-picker>
+      </mat-form-field>
+      <mat-divider></mat-divider>
+      <button class="create-button" type="submit" [disabled]="!valid()" mat-raised-button>{{isEditingId ? 'Edit' : 'Create'}}</button>
+    </form>
+  </div>

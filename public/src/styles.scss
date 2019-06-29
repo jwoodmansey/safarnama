@@ -1,0 +1,57 @@
+/* You can add global styles to this file, and also import other style files */
+// @import "@angular/material/prebuilt-themes/indigo-pink.css";
+
+body, html {
+  margin: 0;
+  height: 100%;
+}
+
+.agm-map-container-inner {
+  position: static !important;
+}
+
+@import '~@angular/material/theming';
+@include mat-core();
+
+// Create a config with the default typography levels.
+$config: mat-typography-config();
+$mat-red: (
+  50 : #f0f4f6,
+  100 : #d9e4e9,
+  200 : #c0d2da,
+  300 : #a6c0cb,
+  400 : #93b3c0,
+  500 : #80a5b5,
+  600 : #789dae,
+  700 : #6d93a5,
+  800 : #638a9d,
+  900 : #50798d,
+  A100 : #f0faff,
+  A200 : #bde8ff,
+  A400 : #8ad7ff,
+  A700 : #70ceff,
+  contrast: (
+      50 : #000000,
+      100 : #000000,
+      200 : #000000,
+      300 : #000000,
+      400 : #000000,
+      500 : #000000,
+      600 : #000000,
+      700 : #000000,
+      800 : #000000,
+      900 : #ffffff,
+      A100 : #000000,
+      A200 : #000000,
+      A400 : #000000,
+      A700 : #000000,
+  )
+);
+$saf-app-primary: mat-palette($mat-red);
+
+$saf-app-primary: mat-palette($mat-red);
+$saf-app-accent:  mat-palette($mat-red, A200, A100, A400);
+$saf-app-theme:   mat-light-theme($saf-app-primary, $saf-app-accent);
+
+// Include the default theme styles.
+@include angular-material-theme($saf-app-theme);

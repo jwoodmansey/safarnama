@@ -1,0 +1,26 @@
+.content {
+  padding: 16px;
+}
+
+.create-button {
+  display: block;
+}
+
+mcc-color-picker {
+  display: block;
+}
+
+mat-divider {
+  margin-bottom: 16px;
+}
+
+mat-select-trigger {
+  display: flex;
+  flex-direction: row;
+  p {
+    display: inline;
+    display: table-cell;
+    vertical-align: middle;
+    margin: auto 0;
+  }
+}

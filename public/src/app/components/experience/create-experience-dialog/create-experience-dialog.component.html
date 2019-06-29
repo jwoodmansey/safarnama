@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Create an Experience</h1>
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div mat-dialog-content>
+    <mat-form-field>
+      <input formControlName="name" matInput placeholder="Name your experience">
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button enabled [disabled]="!form.valid" type="submit">Create</button>
+  </div>
+</form>

@@ -1,0 +1,10 @@
+<ng-container [ngSwitch]="mediaItem.type">
+  <iframe *ngSwitchCase="'Text'" [src]="mediaItem.url | safe" frameborder="0"></iframe>
+  <ng-container *ngSwitchCase="'Video'">
+    <video *ngIf="!thumb; else videoThumb" [src]="mediaItem.url" controls></video>
+    <ng-template #videoThumb>
+      <img [src]="mediaItem.thumbUrl" />
+    </ng-template>
+  </ng-container>
+  <img *ngSwitchDefault [src]="mediaItem.thumbUrl" />
+</ng-container>

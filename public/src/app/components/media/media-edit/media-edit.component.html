@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>Edit Media</h1>
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div class="content" mat-dialog-content *ngIf="mediaItem">
+    <app-media-item [mediaItem]="mediaItem"></app-media-item>
+    <div class="fields">
+      <p>This information will be publicly visible if this experience is published.</p>
+      <mat-form-field>
+        <input matInput placeholder="Name" formControlName="name">
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput cdkTextareaAutosize placeholder="Description" formControlName="description"></textarea>
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput cdkTextareaAutosize placeholder="Acknowledgements"
+          formControlName="acknowledgements"></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="close()">Cancel</button>
+    <button mat-button class="mat-primary" type="submit" cdkFocusInitial>Edit</button>
+  </div>
+</form>

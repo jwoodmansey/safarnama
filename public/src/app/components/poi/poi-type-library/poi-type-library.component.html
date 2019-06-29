@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>Add new place type</h1>
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div class="content" mat-dialog-content>
+    <div class="fields">
+      <p>Here can create a new place type to assign your places to. </p>
+      <mat-form-field>
+        <input matInput placeholder="Name" formControlName="name">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput formControlName="search" (ngModelChange)="searchChange($event)"
+          placeholder="Search for an icon">
+      </mat-form-field>
+      <div class="icon-container">
+        <mat-grid-list *ngIf="loaded; else loading" cols="5" rowHeight="1:1">
+          <mat-grid-tile class="item" [class.selected]="icon === selectedIcon" (click)="iconClicked(icon)" *ngFor="let icon of filteredIcons">
+            <mat-icon>{{icon}}</mat-icon>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="close()">Cancel</button>
+    <button mat-button class="mat-primary" type="submit" [disabled]="!isValid" cdkFocusInitial>Create</button>
+  </div>
+</form>

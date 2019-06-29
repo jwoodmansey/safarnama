@@ -1,0 +1,60 @@
+<mat-sidenav-container class="sidenav-container mat-typography">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="!(isHandset$ | async)">
+    <router-outlet></router-outlet>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span *ngIf="selectedExperience | async as exp; else noExp">{{exp.name}}</span>
+      <ng-template>
+      </ng-template>
+    </mat-toolbar>
+    <agm-map (mapClick)="mapClicked($event)" style="height:100%;" [latitude]="$lat | async" [longitude]="$lng |async"
+      [fitBounds]="pointsOfInterest !== undefined && pointsOfInterest.length > 0 && ($creatingPointOfInterest | async) === undefined"
+      [zoom]="$zoom | async">
+      <ng-container *ngIf="($creatingPointOfInterest | async) as creatingPointOfInterest">
+        <ng-container *ngIf="creatingPointOfInterest !== undefined">
+          <agm-marker [markerDraggable]="true" [title]="creatingPointOfInterest.name"
+            [latitude]="creatingPointOfInterest.lat" [longitude]="creatingPointOfInterest.lng" [agmFitBounds]="true"
+            (dragEnd)="dragEnd($event)" [zIndex]="5"></agm-marker>
+          <!-- [fillColor]="creatingPointOfInterest.triggerZone.colour" -->
+          <agm-circle [editable]="true" [radius]="creatingPointOfInterest.triggerZone.radius"
+            [latitude]="creatingPointOfInterest.triggerZone.lat" (radiusChange)="radiusChanged($event)"
+            [longitude]="creatingPointOfInterest.triggerZone.lng" [zIndex]="4" [strokeColor]="'#000'" [strokeWeight]="1"
+            [strokePosition]="0" (centerChange)="centerChanged($event)">
+          </agm-circle>
+        </ng-container>
+      </ng-container>
+      <!-- <ng-container> -->
+      <app-route-editor *ngIf="($isEditingRoute | async)"></app-route-editor>
+      <!-- <agm-polyline [editable]="true">
+          <agm-polyline-point [latitude]="54" [longitude]="-2">
+          </agm-polyline-point>
+          <agm-polyline-point [latitude]="54" [longitude]="-2">
+          </agm-polyline-point>
+        </agm-polyline> -->
+      <!-- </ng-container> -->
+      <ng-container *ngFor="let poi of pointsOfInterest; let i=index">
+        <ng-container *ngIf="!editingPoiId || editingPoiId !== poi.id">
+          <agm-marker [latitude]="poi.lat" [longitude]="poi.lng" (markerClick)="markerClicked(poi.id)"
+            [agmFitBounds]="($creatingPointOfInterest | async) === undefined" [label]="{
+              color: 'white', text: poi.placeType.matIcon, fontFamily: 'Material Icons'
+            }"></agm-marker>
+          <!-- [fillColor]="poi.triggerZone.colour"  -->
+          <agm-circle [radius]="poi.triggerZone.radius" [strokeColor]="'#000'" [strokeWeight]="1" [strokePosition]="0"
+            [latitude]="poi.triggerZone.lat" [longitude]="poi.triggerZone.lng" [zIndex]="2">
+          </agm-circle>
+        </ng-container>
+      </ng-container>
+      <agm-polyline *ngFor="let route of routes" [strokeColor]="route.colour" (lineClick)="lineClicked(route.id)">
+        <agm-polyline-point *ngFor="let point of route.points" [latitude]="point.lat" [longitude]="point.lng">
+        </agm-polyline-point>
+      </agm-polyline>
+    </agm-map>
+    <!-- Add Content Here -->
+  </mat-sidenav-content>
+</mat-sidenav-container>

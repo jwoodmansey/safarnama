@@ -1,0 +1,25 @@
+import { async, ComponentFixture, TestBed } from '@angular/core/testing'
+
+import { CreateExperienceDialogComponent } from './create-experience-dialog.component'
+
+describe('CreateExperienceDialogComponent', () => {
+  let component: CreateExperienceDialogComponent
+  let fixture: ComponentFixture<CreateExperienceDialogComponent>
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [CreateExperienceDialogComponent],
+    })
+    .compileComponents()
+  }))
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(CreateExperienceDialogComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
+
+  it('should create', () => {
+    expect(component).toBeTruthy()
+  })
+})

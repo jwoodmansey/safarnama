@@ -1,0 +1,75 @@
+<h1 mat-dialog-title>Media Library</h1>
+<div mat-dialog-content>
+  <form [formGroup]="filterForm">
+    <mat-form-field>
+      <mat-label>Media type</mat-label>
+      <mat-select formControlName="type">
+        <mat-option value="All">All</mat-option>
+        <mat-option value="Image">Images</mat-option>
+        <mat-option value="Video">Videos</mat-option>
+        <mat-option value="Text">Text</mat-option>
+        <mat-option value="Audio">Audio</mat-option>
+        <mat-option value="PDF">PDFs</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Media type</mat-label>
+      <mat-select formControlName="sortBy">
+        <mat-option value="Added">Date Added</mat-option>
+        <mat-option value="Edited">Date Edited</mat-option>
+        <mat-option value="Name">Name</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </form>
+  <mat-grid-list *ngIf="loaded; else loading" cols="4" rowHeight="1.5:1">
+    <mat-grid-tile class="item" *ngFor="let mediaItem of filteredMedia">
+      <app-media-item [mediaItem]="mediaItem" [thumb]="true"></app-media-item>
+      <div *ngIf="selecting" (click)="select(mediaItem)" class="overlay"></div>
+      <div *ngIf="isSelected(mediaItem)" class="selected">
+        <mat-icon>check</mat-icon>
+      </div>
+      <div *ngIf="!selecting" class="hover">
+        <div class="text">
+          <b *ngIf="mediaItem.name">{{mediaItem.name}}</b>
+          <p *ngIf="mediaItem.description">{{mediaItem.description}}</p>
+        </div>
+        <button class="delete" matTooltip="Delete" mat-icon-button aria-label="Delete media item"
+          (click)="deleteMedia(mediaItem.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <p class="date">Created {{mediaItem.createdAt | date: 'dd/MM/yy HH:mm'}}<br />
+          Edited {{mediaItem.updatedAt | date: 'dd/MM/yy HH:mm'}}
+        </p>
+
+        <button class="edit" matTooltip="Edit" mat-icon-button aria-label="Edit media item"
+          (click)="editMedia(mediaItem.id)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button class="type" mat-icon-button aria-label="Media type" [ngSwitch]="mediaItem.type">
+          <mat-icon *ngSwitchCase="'Image'" matTooltip="Image">image</mat-icon>
+          <mat-icon *ngSwitchCase="'Video'" matTooltip="Video">movie</mat-icon>
+          <mat-icon *ngSwitchCase="'Audio'" matTooltip="Audio">audiotrack</mat-icon>
+          <mat-icon *ngSwitchCase="'PDF'" matTooltip="PDF">file_copy</mat-icon>
+          <mat-icon *ngSwitchCase="'Text'" matTooltip="Text">short_text</mat-icon>
+          <mat-icon *ngSwitchDefault>error</mat-icon>
+        </button>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <ng-template #loading>
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  </ng-template>
+</div>
+<div mat-dialog-actions>
+  <ng-container *ngIf="!selecting; else doneTemp">
+    <button mat-button (click)="close()">Cancel</button>
+    <button mat-button (click)="createTextMedia()">Create Text</button>
+    <button mat-button (click)="add()" cdkFocusInitial>Upload Media</button>
+  </ng-container>
+  <ng-template #doneTemp>
+    <button mat-button (click)="createTextMedia()">Create Text</button>
+    <button mat-button (click)="add()" cdkFocusInitial>Upload Media</button>
+    <button mat-button (click)="close()">Done</button>
+  </ng-template>
+</div>

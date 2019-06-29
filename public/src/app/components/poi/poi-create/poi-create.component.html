@@ -1,0 +1,49 @@
+<mat-toolbar>
+  <button [routerLink]="['/']" mat-icon-button>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  {{isEditing ? 'Edit' : 'Create'}} Place
+</mat-toolbar>
+<div class="content">
+  <p *ngIf="!isEditing; else editing">Click the map to position your new Place</p>
+  <ng-template #editing>
+    <p>You can move this Place by dragging it on the map.</p>
+  </ng-template>
+  <form [formGroup]="poiForm" (ngSubmit)="onSubmit()">
+    <h4>Trigger Zone</h4>
+    <p>When a user enters this area they will be notified about this Place</p>
+    <mat-divider></mat-divider>
+    <mat-form-field>
+      <input matInput formControlName="name" placeholder="Name">
+    </mat-form-field>
+    <mat-form-field *ngIf="types">
+      <mat-label>Type</mat-label>
+      <mat-select formControlName="type" [compareWith]="compareFn">
+        <mat-select-trigger *ngIf="selectedType">
+          <mat-icon>{{selectedType.matIcon}}</mat-icon>
+          <p>&nbsp;{{selectedType.name}}</p>
+        </mat-select-trigger>
+        <mat-option selected [disabled]="true">Choose a place type</mat-option>
+        <mat-option *ngFor="let type of types" [value]="type">
+          <mat-icon>{{type.matIcon}}</mat-icon>
+          {{type.name}}
+        </mat-option>
+        <button mat-button (click)="openPlaceTypeLibrary()">
+          Add new
+        </button>
+      </mat-select>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <h4>Media</h4>
+    <app-media-attacher [media]="media"></app-media-attacher>
+    <!-- <a class="edit-media-button" mat-raised-button (click)="openMediaAttacher()">Edit media</a> -->
+    <!-- <mat-form-field>
+      <input matInput formControlName="colour" placeholder="Colour">
+      <mcc-color-picker [selectedColor]="selectedColor" [hideButtons]="true" [hideUsedColors]="true"
+        (change)="colourChanged($event)"></mcc-color-picker>
+    </mat-form-field> -->
+    <mat-divider></mat-divider>
+    <button class="create-button" type="submit" [disabled]="!valid()"
+      mat-raised-button>{{isEditing ? 'Edit' : 'Create'}}</button>
+  </form>
+</div>
