@@ -174,8 +174,8 @@ app.use('/', express.static('public/dist/safarnama'))
 
 app.use('/api/place-types', ensureAuthenticated(), new PlaceTypeRouter().getRouter())
 
-const server: http.Server = app.listen(80, () => {
-  console.log('Server listening on port %d in %s mode', 80, app.settings.env)
+const server: http.Server = app.listen(3000, () => {
+  console.log('Server listening on port %d in %s mode', 3000, app.settings.env)
 })
 
 module.exports = server
