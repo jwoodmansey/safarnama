@@ -129,8 +129,9 @@ const app: express.Application = express()
 // logging, parsing, and session handling.
 app.use(require('morgan')('combined'))
 app.use(require('cookie-parser')())
+const date = new Date()
 app.use(require('express-session')({
-  cookie: { expires: new Date(Date.now() + 3600000) },
+  cookie: { expires: new Date(date.setMonth(date.getMonth() + 1)) },
   secret: environment.auth.passport.sessionSecret,
   resave: true,
   saveUninitialized: true,
