@@ -15,6 +15,10 @@ export const environment = {
   db: {
     mongoUri: 'mongodb+srv://REDACTED',
   },
+  ssl: {
+    key: '',
+    cert: '',
+  },
   api: {
     mediaDir: 'media',
     publicUrl: 'http://localhost:4200/api',

@@ -1,6 +1,5 @@
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
-import * as http from 'http'
 import * as mongoose from 'mongoose'
 import * as passport from 'passport'
 import cors = require('cors')
@@ -17,16 +16,19 @@ import { MediaRouter } from './Routes/MediaRouter'
 import { PlaceTypeRouter } from './Routes/PlaceTypeRouter'
 import { environment } from './config/env'
 
+import * as https from 'https'
+import * as fs from 'fs'
+
 mongoose.connect(
   // tslint:disable-next-line:max-line-length
   environment.db.mongoUri,
-  { useNewUrlParser: true, dbName: 'test' }) .then(() => {
+  { useNewUrlParser: true, dbName: 'test' }).then(() => {
     console.log('Connection to the Atlas Cluster is successful!')
   })
-.catch((err) => {
-  console.error(err)
-  console.error('Make sure your IP has been whitelisted!')
-})
+  .catch((err) => {
+    console.error(err)
+    console.error('Make sure your IP has been whitelisted!')
+  })
 // tslint:disable-next-line:variable-name
 const FacebookStrategy = require('passport-facebook').Strategy
 // tslint:disable-next-line:variable-name
@@ -127,7 +129,7 @@ const app: express.Application = express()
 app.use(require('morgan')('combined'))
 app.use(require('cookie-parser')())
 app.use(require('express-session')({
-  cookie: { expires : new Date(Date.now() + 3600000) },
+  cookie: { expires: new Date(Date.now() + 3600000) },
   secret: environment.auth.passport.sessionSecret,
   resave: true,
   saveUninitialized: true,
@@ -156,8 +158,8 @@ app.use(cors({
 //   res.json({ name: 'Server is running' })
 // })
 app.use(fileUpload({
-  useTempFiles : true,
-  tempFileDir : '/tmp/',
+  useTempFiles: true,
+  tempFileDir: '/tmp/',
   safeFileNames: true,
   preserveExtension: true,
 }))
@@ -174,8 +176,19 @@ app.use('/', express.static('public/dist/safarnama'))
 
 app.use('/api/place-types', ensureAuthenticated(), new PlaceTypeRouter().getRouter())
 
-const server: http.Server = app.listen(3000, () => {
+const server = app.listen(3000, () => {
   console.log('Server listening on port %d in %s mode', 3000, app.settings.env)
 })
+
+const sslConfig: any = (environment as any).ssl
+if (sslConfig) {
+  const options = {
+    key: fs.readFileSync(sslConfig.key),
+    cert: fs.readFileSync(sslConfig.cert),
+  }
+  https.createServer(options, app).listen(8080)
+  console.log('SSL listening on port %d', 8080, app.settings.env)
+
+}
 
 module.exports = server
