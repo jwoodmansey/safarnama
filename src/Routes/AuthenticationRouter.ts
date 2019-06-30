@@ -1,6 +1,5 @@
 ﻿import { Router } from 'express'
 import * as passport from 'passport'
-import { environment } from '../config/env'
 
 export class AuthenticationRouter {
 
