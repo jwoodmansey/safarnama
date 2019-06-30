@@ -16,6 +16,7 @@ import { MediaRouter } from './Routes/MediaRouter'
 import { PlaceTypeRouter } from './Routes/PlaceTypeRouter'
 import { environment } from './config/env'
 
+import * as http from 'http'
 import * as https from 'https'
 import * as fs from 'fs'
 
@@ -176,6 +177,10 @@ app.use('/', express.static('public/dist/safarnama'))
 
 app.use('/api/place-types', ensureAuthenticated(), new PlaceTypeRouter().getRouter())
 
+app.use('*', (req, res) => {
+  res.redirect(`https://${req.headers.host}`)
+})
+
 const server = app.listen(3000, () => {
   console.log('Server listening on port %d in %s mode', 3000, app.settings.env)
 })
@@ -190,5 +195,10 @@ if (sslConfig) {
   console.log('SSL listening on port %d', 8080, app.settings.env)
 
 }
+// Redirect from http port 80 to https
+http.createServer((req: http.IncomingMessage, res: http.ServerResponse) => {
+  res.writeHead(301, { Location: `https://${req.headers['host']}${req.url}` })
+  res.end()
+}).listen(80)
 
 module.exports = server
