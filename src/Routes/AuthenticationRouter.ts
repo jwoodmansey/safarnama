@@ -27,8 +27,8 @@ export class AuthenticationRouter {
     this.router.get(
       '/google/callback',
       passport.authenticate('google', { failureRedirect: '/login' }),
-      (_req, res) => {
-        res.redirect(environment.baseUrl)
+      (req, res) => {
+        res.redirect(`https://${req.headers['host']}`)
       })
 
     this.router.get(
@@ -38,9 +38,9 @@ export class AuthenticationRouter {
     this.router.get(
       '/facebook/callback',
       passport.authenticate('facebook', { failureRedirect: '/login' }),
-      (_req, res) => {
+      (req, res) => {
           // redirect back to angular app, which will now let the user in
-        res.redirect(environment.baseUrl)
+        res.redirect(`https://${req.headers['host']}`)
       })
 
     return this.router
