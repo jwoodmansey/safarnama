@@ -181,9 +181,9 @@ app.use('*', (req, res) => {
   res.redirect(`https://${req.headers.host}`)
 })
 
-const server = app.listen(3000, () => {
-  console.log('Server listening on port %d in %s mode', 3000, app.settings.env)
-})
+// const server = app.listen(3000, () => {
+//   console.log('Server listening on port %d in %s mode', 3000, app.settings.env)
+// })
 
 const sslConfig: any = (environment as any).ssl
 if (sslConfig) {
@@ -196,9 +196,9 @@ if (sslConfig) {
 
 }
 // Redirect from http port 80 to https
-http.createServer((req: http.IncomingMessage, res: http.ServerResponse) => {
+const server = http.createServer((req: http.IncomingMessage, res: http.ServerResponse) => {
   res.writeHead(301, { Location: `https://${req.headers['host']}${req.url}` })
   res.end()
-}).listen(80)
+}).listen(3000)
 
 module.exports = server
