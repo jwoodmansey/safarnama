@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/App.ts",
+    "forever": "forever start --minUptime 1000 --spinSleepTime 1000 -v -c ts-node src/App.ts",
     "pretest": "tsc test/*.ts --module commonjs --sourcemap --target es6",
     "test": "nyc mocha",
     "posttest": "nyc report --reporter=json && codecov -f coverage/*.json"
