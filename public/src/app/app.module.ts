@@ -60,6 +60,7 @@ import {
 } from './components/media/media-edit-text/media-edit-text.component'
 import { PublishModule } from './publish/publish.module'
 import { MatSortModule } from '@angular/material/sort'
+import { environment } from 'environments/environment'
 
 registerPlugin(FilePondPluginFileValidateType)
 registerPlugin(FilePondPluginImagePreview)
@@ -132,7 +133,7 @@ registerPlugin(FilePondPluginImagePreview)
     FormsModule,
     ReactiveFormsModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyC6ezApsld85tBilYDpsmBD-EakrGjl0fs',
+      apiKey: environment.google.maps.publicKey,
     }),
     HttpClientModule,
     FilePondModule,
