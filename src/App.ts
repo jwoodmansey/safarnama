@@ -180,8 +180,8 @@ const sslConfig: any = (environment as any).ssl
 if (sslConfig) {
   app.use('/', express.static('public/dist/safarnama'))
 
-  app.use('*', (req, res) => {
-    res.redirect(200, `https://${req.headers.host}/index.html`)
+  app.use('/*', (_req, res) => {
+    res.sendFile('index.html', { root: 'public/dist/safarnama' })
   })
 
   const options = {
