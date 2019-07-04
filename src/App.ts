@@ -181,7 +181,7 @@ if (sslConfig) {
   app.use('/', express.static('public/dist/safarnama'))
 
   app.use('*', (req, res) => {
-    res.redirect(200, `https://${req.headers.host}`)
+    res.redirect(200, `https://${req.headers.host}/index.html`)
   })
 
   const options = {
