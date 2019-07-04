@@ -117,11 +117,19 @@ export class MediaLibraryComponent implements OnInit {
 
   editMedia(id: string): void {
     const media = this.media.find(media => media.id === id)
-    this.dialog.open(MediaEditComponent, {
-      width: '600px;',
-      disableClose: false,
-      data: media,
-    })
+    if (media.type === 'Text') {
+      this.dialog.open(MediaEditTextComponent, {
+        width: '600px;',
+        disableClose: false,
+        data: media,
+      })
+    } else {
+      this.dialog.open(MediaEditComponent, {
+        width: '600px;',
+        disableClose: false,
+        data: media,
+      })
+    }
   }
 
   createTextMedia(): void {

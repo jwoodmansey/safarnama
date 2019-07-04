@@ -6,7 +6,7 @@ export const environment = {
   },
   google: {
     maps: {
-      publicKey: 'AIzaSyC6ezApsld85tBilYDpsmBD-EakrGjl0fs',
+      publicKey: 'AIzaSyBUrW8zF4R0ITpfKPMur5VbNLpQRjgK_sY',
     },
   },
 }

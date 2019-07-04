@@ -7,6 +7,9 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="close()">Cancel</button>
-  <button mat-button class="mat-primary" (click)="done()" cdkFocusInitial>Create</button>
+  <button *ngIf="!mediaItem; else editing" mat-button class="mat-primary" (click)="done()" cdkFocusInitial>Create</button>
+  <ng-template #editing>
+    <button mat-button class="mat-primary" (click)="edit()" cdkFocusInitial>Save</button>
+  </ng-template>
 </div>
 <!-- </form> -->
