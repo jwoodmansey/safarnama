@@ -174,32 +174,30 @@ app.use('/api/route', ensureAuthenticated(), new RouteRouter().getRouter())
 app.use('/api/media', ensureAuthenticated(), new MediaRouter().getRouter())
 app.use('/api/storage/media', express.static('media'))
 
-app.use('/', express.static('public/dist/safarnama'))
-
 app.use('/api/place-types', ensureAuthenticated(), new PlaceTypeRouter().getRouter())
-
-app.use('*', (req, res) => {
-  res.redirect(`https://${req.headers.host}`)
-})
-
-// const server = app.listen(3000, () => {
-//   console.log('Server listening on port %d in %s mode', 3000, app.settings.env)
-// })
 
 const sslConfig: any = (environment as any).ssl
 if (sslConfig) {
+  app.use('/', express.static('public/dist/safarnama'))
+
+  app.use('*', (req, res) => {
+    res.redirect(`https://${req.headers.host}`)
+  })
+
   const options = {
     key: fs.readFileSync(sslConfig.key),
     cert: fs.readFileSync(sslConfig.cert),
   }
   https.createServer(options, app).listen(8080)
   console.log('SSL listening on port %d', 8080, app.settings.env)
-
+  // Redirect from http port 80 to https
+  const server = http.createServer((req: http.IncomingMessage, res: http.ServerResponse) => {
+    res.writeHead(301, { Location: `https://${req.headers['host']}${req.url}` })
+    res.end()
+  }).listen(3000)
+  module.exports = server
+} else {
+  module.exports = app.listen(3000, () => {
+    console.log('Server listening on port %d in %s mode', 3000, app.settings.env)
+  })
 }
-// Redirect from http port 80 to https
-const server = http.createServer((req: http.IncomingMessage, res: http.ServerResponse) => {
-  res.writeHead(301, { Location: `https://${req.headers['host']}${req.url}` })
-  res.end()
-}).listen(3000)
-
-module.exports = server

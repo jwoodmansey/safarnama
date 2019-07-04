@@ -58,4 +58,8 @@ export class MainMenuComponent implements OnInit {
   get isExperienceOpen(): boolean {
     return this.experienceService.getSelectedExperienceId() !== undefined
   }
+
+  // public logout() {
+
+  // }
 }

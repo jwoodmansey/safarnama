@@ -1,11 +1,17 @@
 ﻿import { Router } from 'express'
 import * as passport from 'passport'
+import { environment } from '../config/env'
 
 export class AuthenticationRouter {
 
   private router: Router = Router()
 
   getRouter(): Router {
+
+    this.router.get('/logout', (req, res) => {
+      req.logout()
+      res.redirect('/')
+    })
 
     // GET /auth/google
     //   Use passport.authenticate() as route middleware to authenticate the
@@ -23,11 +29,14 @@ export class AuthenticationRouter {
     //   request.  If authentication fails, the user will be redirected back to the
     //   login page.  Otherwise, the primary route function function will be called,
     //   which, in this example, will redirect the user to the home page.
+
+    // const sslConfig: any = (environment as any).ssl
+
     this.router.get(
       '/google/callback',
       passport.authenticate('google', { failureRedirect: '/login' }),
-      (req, res) => {
-        res.redirect(`https://${req.headers['host']}`)
+      (_req, res) => {
+        res.redirect(environment.baseUrl)
       })
 
     this.router.get(
@@ -37,9 +46,9 @@ export class AuthenticationRouter {
     this.router.get(
       '/facebook/callback',
       passport.authenticate('facebook', { failureRedirect: '/login' }),
-      (req, res) => {
+      (_req, res) => {
           // redirect back to angular app, which will now let the user in
-        res.redirect(`https://${req.headers['host']}`)
+        res.redirect(environment.baseUrl)
       })
 
     return this.router
