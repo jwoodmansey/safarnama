@@ -11,7 +11,7 @@
           placeholder="Search for an icon">
       </mat-form-field>
       <div class="icon-container">
-        <mat-grid-list *ngIf="loaded; else loading" cols="5" rowHeight="1:1">
+        <mat-grid-list *ngIf="loaded" cols="5" rowHeight="1:1">
           <mat-grid-tile class="item" [class.selected]="icon === selectedIcon" (click)="iconClicked(icon)" *ngFor="let icon of filteredIcons">
             <mat-icon>{{icon}}</mat-icon>
           </mat-grid-tile>

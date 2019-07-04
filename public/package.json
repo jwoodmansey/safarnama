@@ -6,9 +6,11 @@
     "start": "yarn server",
     "serve": "ng serve --proxy-config proxy.config.json --host 0.0.0.0",
     "build": "ng build",
+    "buildProd": "ng build --prod  --build-optimizer",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "bundle-report": "yarn buildProd --stats-json && webpack-bundle-analyzer dist/safarnama/stats.json"
   },
   "private": true,
   "dependencies": {
@@ -63,6 +65,7 @@
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
     "tslint-config-airbnb": "5.11.0",
-    "typescript": "~3.1.6"
+    "typescript": "~3.1.6",
+    "webpack-bundle-analyzer": "^3.3.2"
   }
 }

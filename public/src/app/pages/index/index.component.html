@@ -9,9 +9,7 @@
       <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span *ngIf="selectedExperience | async as exp; else noExp">{{exp.name}}</span>
-      <ng-template>
-      </ng-template>
+      <span *ngIf="selectedExperience | async as exp">{{exp.name}}</span>
     </mat-toolbar>
     <agm-map (mapClick)="mapClicked($event)" style="height:100%;" [latitude]="$lat | async" [longitude]="$lng |async"
       [fitBounds]="pointsOfInterest !== undefined && pointsOfInterest.length > 0 && ($creatingPointOfInterest | async) === undefined"
