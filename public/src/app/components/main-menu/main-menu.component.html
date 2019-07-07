@@ -47,12 +47,8 @@
   <mat-divider></mat-divider>
   <a mat-list-item href="javascript:void(0)" [matMenuTriggerFor]="user">User</a>
   <mat-menu #user="matMenu">
-    <button [disabled]="!isExperienceOpen" [routerLink]="['/poi/create']" mat-menu-item>
-      <mat-icon>add_location</mat-icon>
-      <span>Create</span>
-    </button>
     <a mat-list-item href="/api/auth/google">
-      <button [disabled]="!isExperienceOpen" (click)="viewAllPointsOfInterest()" mat-menu-item>
+      <button mat-menu-item>
         <mat-icon>exit_to_app</mat-icon>
         <span>Logout</span>
       </button>

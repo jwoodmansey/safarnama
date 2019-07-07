@@ -1,4 +1,4 @@
-import { LatLngLiteral, MouseEvent } from '@agm/core'
+import { LatLngLiteral, MouseEvent, GoogleMapsAPIWrapper } from '@agm/core'
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 import { Component, OnInit, AfterContentInit } from '@angular/core'
 import { MatDialog } from '@angular/material'
@@ -17,6 +17,7 @@ import { RouteEditorService } from '@services/editors/route-editor.service'
 import { PointOfInterest, CreatingPointOfInterest } from '@models/place'
 import { RouteService } from '@services/route.service'
 import { Route } from '@models/route'
+
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -37,6 +38,8 @@ export class IndexComponent implements OnInit, AfterContentInit {
   public $lat: Observable<number> = this.mapService.getLat()
   public $lng: Observable<number> = this.mapService.getLng()
   public $zoom: Observable<number> = this.mapService.getZoom()
+
+  public initialLocSet = false
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -67,6 +70,7 @@ export class IndexComponent implements OnInit, AfterContentInit {
       tap(poi => console.log('editing poi', poi)),
     )
     this.$isEditingRoute = this.routeEditorService.isEditingRoute()
+    this.goToUsersLocation()
   }
 
   ngAfterContentInit(): void {
@@ -109,6 +113,21 @@ export class IndexComponent implements OnInit, AfterContentInit {
         // this.animal = result
       })
     })
+  }
+
+  goToUsersLocation(): void {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(loc => {
+        this.mapService.setLatLngZoom(
+          0,
+          0,
+          15)
+        this.mapService.setLatLngZoom(
+              loc.coords.latitude,
+              loc.coords.longitude,
+              15)
+      })
+    }
   }
 
   showExperienceDialog(): void {
@@ -158,5 +177,76 @@ export class IndexComponent implements OnInit, AfterContentInit {
     return {
       color: 'white', text: '\e8be;', fontFamily: '\'Material Icons\'',
     }
+  }
+
+  mapReady($event): void {
+    // this.addYourLocationButton($event, undefined)
+  }
+
+  // This isnt yet working
+  addYourLocationButton(map, marker): void {
+    console.log(map)
+    const controlDiv = document.createElement('div')
+
+    const firstChild = document.createElement('button')
+    firstChild.style.backgroundColor = '#fff'
+    firstChild.style.border = 'none'
+    firstChild.style.outline = 'none'
+    firstChild.style.width = '28px'
+    firstChild.style.height = '28px'
+    firstChild.style.borderRadius = '2px'
+    firstChild.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)'
+    firstChild.style.cursor = 'pointer'
+    firstChild.style.marginRight = '10px'
+    firstChild.style.padding = '0'
+    firstChild.title = 'Your Location'
+    controlDiv.appendChild(firstChild)
+
+    const secondChild = document.createElement('div')
+    secondChild.style.margin = '5px'
+    secondChild.style.width = '18px'
+    secondChild.style.height = '18px'
+    // tslint:disable-next-line:max-line-length
+    secondChild.style.backgroundImage = 'url(https://maps.gstatic.com/tactile/mylocation/mylocation-sprite-2x.png)'
+    secondChild.style.backgroundSize = '180px 18px'
+    secondChild.style.backgroundPosition = '0 0'
+    secondChild.style.backgroundRepeat = 'no-repeat'
+    firstChild.appendChild(secondChild)
+
+    // new GoogleMapsAPIWrapper().getNativeMap()
+    // google.maps.event.addListener(map, 'center_changed', () => {
+    //   secondChild.style['background-position'] = '0 0'
+    // })
+
+    firstChild.addEventListener('click', () => {
+      let imgX = 0
+      const animationInterval = setInterval(() => {
+        imgX = -imgX - 18
+        secondChild.style['background-position'] = imgX + 'px 0'
+      },                                    500)
+
+      console.log('CLICK')
+      if (navigator.geolocation) {
+        this.goToUsersLocation()
+        clearInterval(animationInterval)
+        secondChild.style['background-position'] = '-144px 0'
+
+        // navigator.geolocation.getCurrentPosition(function (position) {
+        // tslint:disable-next-line:max-line-length
+        //   const latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+        //   map.setCenter(latlng)
+        //   clearInterval(animationInterval)
+        //   secondChild.style['background-position'] = '-144px 0'
+        // })
+      } else {
+        clearInterval(animationInterval)
+        secondChild.style['background-position'] = '0 0'
+      }
+    })
+
+    // controlDiv = 1
+    console.log(map.controls)
+    map.controls[9].push(controlDiv)
+
   }
 }

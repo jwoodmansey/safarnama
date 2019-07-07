@@ -1,11 +1,15 @@
 mat-progress-spinner {
-  margin: 160px;
+  // margin: 160px;
   text-align: center;
 }
 
 app-media-item {
   width: 100%;
   height: 100%;
+}
+
+.type {
+  margin-left: 8px;
 }
 
 .hover {
@@ -87,4 +91,12 @@ p.date {
   width: 100%;
   height: 100%;
   z-index: 99;
+}
+
+.spinner-container {
+  display: flex;
+  width: 100%;
+  min-height: 300px;
+  justify-content: center;
+  align-items: center;
 }

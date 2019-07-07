@@ -28,6 +28,7 @@ export class MapService {
   }
 
   setLatLngZoom(lat: number, lng: number, zoom: number): void {
+    console.log('setLatLngZoom', lat, lng, zoom)
     this.setLat(lat)
     this.setLng(lng)
     this.setZoom(zoom)

@@ -12,7 +12,7 @@
         <mat-option value="PDF">PDFs</mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field class="type">
       <mat-label>Media type</mat-label>
       <mat-select formControlName="sortBy">
         <mat-option value="Added">Date Added</mat-option>
@@ -58,7 +58,9 @@
     </mat-grid-tile>
   </mat-grid-list>
   <ng-template #loading>
-    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    <div class="spinner-container">
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
   </ng-template>
 </div>
 <div mat-dialog-actions>

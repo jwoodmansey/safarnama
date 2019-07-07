@@ -55,3 +55,11 @@ $saf-app-theme:   mat-light-theme($saf-app-primary, $saf-app-accent);
 
 // Include the default theme styles.
 @include angular-material-theme($saf-app-theme);
+
+.medium-editor-element {
+  border: black;
+  border-width: 1px;
+  box-sizing: border-box;
+  border-style: solid;
+  padding: 8px;
+}
