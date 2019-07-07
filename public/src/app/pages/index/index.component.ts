@@ -1,4 +1,4 @@
-import { LatLngLiteral, MouseEvent, GoogleMapsAPIWrapper } from '@agm/core'
+import { LatLngLiteral, MouseEvent } from '@agm/core'
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 import { Component, OnInit, AfterContentInit } from '@angular/core'
 import { MatDialog } from '@angular/material'

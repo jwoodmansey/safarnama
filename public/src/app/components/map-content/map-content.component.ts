@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { GoogleMapsAPIWrapper } from '@agm/core'
 
-declare var google: any
+// declare var google: any
 
 @Component({
   selector: 'app-map-content',
