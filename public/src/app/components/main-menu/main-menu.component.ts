@@ -2,10 +2,16 @@ import { Component, OnInit } from '@angular/core'
 import { MatDialog } from '@angular/material'
 import { PoiViewAllComponent } from '@components/poi/poi-view-all/poi-view-all.component'
 import { MediaLibraryComponent } from '@components/media/media-library/media-library.component'
-import { OpenExperienceDialogComponent } from '@components/experience/open-experience-dialog/open-experience-dialog.component'
-import { CreateExperienceDialogComponent } from '@components/experience/create-experience-dialog/create-experience-dialog.component'
+import {
+  OpenExperienceDialogComponent,
+} from '@components/experience/open-experience-dialog/open-experience-dialog.component'
+import {
+  CreateExperienceDialogComponent,
+} from '@components/experience/create-experience-dialog/create-experience-dialog.component'
 import { ExperienceService } from '@services/experience.service'
-import { PublishExperienceComponent } from 'app/publish/components/publish-experience/publish-experience.component'
+import {
+  PublishExperienceComponent,
+ } from 'app/publish/components/publish-experience/publish-experience.component'
 
 @Component({
   selector: 'app-main-menu',

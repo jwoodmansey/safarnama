@@ -13,6 +13,7 @@
     </mat-toolbar>
     <agm-map (mapClick)="mapClicked($event)" style="height:100%;" [latitude]="$lat | async" [longitude]="$lng |async"
       [fitBounds]="pointsOfInterest !== undefined && pointsOfInterest.length > 0 && ($creatingPointOfInterest | async) === undefined"
+      (mapReady)="mapReady($event)"
       [zoom]="$zoom | async">
       <ng-container *ngIf="($creatingPointOfInterest | async) as creatingPointOfInterest">
         <ng-container *ngIf="creatingPointOfInterest !== undefined">

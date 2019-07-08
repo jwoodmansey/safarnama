@@ -133,8 +133,8 @@ const date = new Date()
 app.use(require('express-session')({
   cookie: { expires: new Date(date.setMonth(date.getMonth() + 1)) },
   secret: environment.auth.passport.sessionSecret,
-  resave: true,
-  saveUninitialized: true,
+  saveUninitialized: false,
+  resave: false,
 }))
 
 // Initialize Passport and restore authentication state, if any, from the

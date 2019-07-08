@@ -10,7 +10,13 @@ export class AuthenticationRouter {
 
     this.router.get('/logout', (req, res) => {
       req.logout()
-      res.redirect('/')
+      const a = req as any
+      a.session.destroy((_err: any) => {
+        console.error(_err)
+        req.user = null
+        res.clearCookie('connect.sid')
+        res.redirect('/')
+      })
     })
 
     // GET /auth/google

@@ -1,6 +1,6 @@
 import { LatLngLiteral, MouseEvent } from '@agm/core'
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
-import { Component, OnInit, AfterContentInit } from '@angular/core'
+import { Component, OnInit, AfterContentInit, NgZone } from '@angular/core'
 import { MatDialog } from '@angular/material'
 import { ExperienceData } from '@common/experience'
 import { PromptExperienceDialogComponent } from
@@ -53,6 +53,7 @@ export class IndexComponent implements OnInit, AfterContentInit {
               private routeService: RouteService,
               private routeEditorService: RouteEditorService,
               private mapService: MapService,
+              private _zone: NgZone,
               private router: Router,
               public dialog: MatDialog) { }
 
@@ -60,11 +61,16 @@ export class IndexComponent implements OnInit, AfterContentInit {
     this.$creatingPointOfInterest = this.poiService.getCreatingPoi().pipe(
       tap(poi => {
         console.log('tap', this.editingPoiId)
-        // if (this.editingPoiId === undefined && poi !== undefined) {
-        //   this.lat = poi.lat
-        //   this.lng = poi.lng
-        //   this.zoom = 14
-        // }
+        if (this.editingPoiId === undefined && poi !== undefined) {
+          // AGM doesnt detect the update unless this is ran through a settimeout?
+          // Likely a zone.js issue, revisit
+          setTimeout(() => {
+            this.mapService.setLatLngZoom(
+                poi.lat,
+                poi.lng,
+                16)
+          })
+        }
         this.editingPoiId = poi ? poi.id : undefined
       }),
       tap(poi => console.log('editing poi', poi)),
@@ -117,15 +123,19 @@ export class IndexComponent implements OnInit, AfterContentInit {
 
   goToUsersLocation(): void {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(loc => {
-        this.mapService.setLatLngZoom(
-          0,
-          0,
-          15)
-        this.mapService.setLatLngZoom(
-              loc.coords.latitude,
-              loc.coords.longitude,
-              15)
+      this._zone.run(() => {
+        navigator.geolocation.getCurrentPosition(loc => {
+          this.mapService.setLatLngZoom(
+            0,
+            0,
+            15)
+          setTimeout(() => {
+            this.mapService.setLatLngZoom(
+                loc.coords.latitude,
+                loc.coords.longitude,
+                15)
+          })
+        })
       })
     }
   }
@@ -134,12 +144,10 @@ export class IndexComponent implements OnInit, AfterContentInit {
     const dialogRef = this.dialog.open(PromptExperienceDialogComponent, {
       width: '250px',
       disableClose: true,
-      // data: { name: this.name, animal: this.animal },
     })
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed')
-      // this.animal = result
     })
   }
   mapClicked($event: MouseEvent): void {
@@ -180,12 +188,11 @@ export class IndexComponent implements OnInit, AfterContentInit {
   }
 
   mapReady($event): void {
-    // this.addYourLocationButton($event, undefined)
+    this.addYourLocationButton($event)
   }
 
   // This isnt yet working
-  addYourLocationButton(map, marker): void {
-    console.log(map)
+  addYourLocationButton(map): void {
     const controlDiv = document.createElement('div')
 
     const firstChild = document.createElement('button')
@@ -219,17 +226,16 @@ export class IndexComponent implements OnInit, AfterContentInit {
     // })
 
     firstChild.addEventListener('click', () => {
-      let imgX = 0
-      const animationInterval = setInterval(() => {
-        imgX = -imgX - 18
-        secondChild.style['background-position'] = imgX + 'px 0'
-      },                                    500)
+      // const imgX = 0
+      // const animationInterval = setInterval(() => {
+      //   imgX = -imgX - 18
+      //   secondChild.style['background-position'] = imgX + 'px 0'
+      // },                                    500)
 
-      console.log('CLICK')
       if (navigator.geolocation) {
         this.goToUsersLocation()
-        clearInterval(animationInterval)
-        secondChild.style['background-position'] = '-144px 0'
+        // clearInterval(animationInterval)
+        // secondChild.style['background-position'] = '-144px 0'
 
         // navigator.geolocation.getCurrentPosition(function (position) {
         // tslint:disable-next-line:max-line-length
@@ -238,10 +244,11 @@ export class IndexComponent implements OnInit, AfterContentInit {
         //   clearInterval(animationInterval)
         //   secondChild.style['background-position'] = '-144px 0'
         // })
-      } else {
-        clearInterval(animationInterval)
-        secondChild.style['background-position'] = '0 0'
       }
+      // else {
+        // clearInterval(animationInterval)
+        // secondChild.style['background-position'] = '0 0'
+      // }
     })
 
     // controlDiv = 1
