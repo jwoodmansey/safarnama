@@ -55,7 +55,7 @@ export class MediaEditTextComponent implements OnInit {
 
   async edit(): Promise<void> {
     try {
-      await this.mediaService.editText(this.mediaItem.id, this.getFile())
+      await this.mediaService.editText(this.mediaItem, this.getFile())
       this.mediaService.triggerRefresh()
       this.dialogRef.close()
     } catch (e) {

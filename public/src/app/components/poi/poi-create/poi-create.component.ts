@@ -53,6 +53,7 @@ export class PoiCreateComponent implements OnInit, OnDestroy {
     this.placeTypeService.getList().subscribe(types => {
       this.types = types
     })
+
     this.paramsSubscription = this.activatedRoute.params.pipe(
       flatMap(params => params.id ? of(this.poiService.getById(params.id)) : of(undefined)),
     ).subscribe((poi: PointOfInterest) => {

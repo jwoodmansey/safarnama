@@ -15,7 +15,8 @@ export class MediaService {
   private MINE_URL = `${this.MEDIA_URL}/mine`
   private FILES_URL = `${this.MEDIA_URL}/files`
 
-  private refreshMedia: Subject<boolean> = new Subject()
+  private $refreshMedia: Subject<boolean> = new Subject()
+  private $onMediaChanged: Subject<Media> = new Subject()
 
   constructor(
     private http: HttpClient,
@@ -24,7 +25,7 @@ export class MediaService {
   getAll(): Observable<Media[]> {
     return merge(
       this.getAllFromAPI(),
-      this.refreshMedia.pipe(flatMap(() => this.getAllFromAPI())),
+      this.$refreshMedia.pipe(flatMap(() => this.getAllFromAPI())),
     ).pipe(
       tap(media => console.log(media)),
     )
@@ -67,7 +68,7 @@ export class MediaService {
   }
 
   public async editText(
-    id: string,
+    media: Media,
     file: File): Promise<MediaDocument> {
     const formData = new FormData()
     formData.append('filepond', file)
@@ -77,10 +78,13 @@ export class MediaService {
       reportProgress: true,
     }
     return this.http.put<MediaDocument>(
-      `${this.FILES_URL}/${id}`,
+      `${this.FILES_URL}/${media.id}`,
       formData,
       options,
-    ).pipe(take(1)).toPromise()
+    ).pipe(
+      take(1),
+      tap(() => this.mediaChanged(media)),
+    ).toPromise()
   }
 
   public async delete(id: string): Promise<Object> {
@@ -90,6 +94,17 @@ export class MediaService {
   }
 
   public triggerRefresh(): void {
-    this.refreshMedia.next()
+    this.$refreshMedia.next()
+  }
+
+  private mediaChanged(item: Media): void {
+    this.$onMediaChanged.next(item)
+  }
+
+  /**
+   * Outputs whenever a media item changes
+   */
+  public onMediaChanged(): Observable<Media> {
+    return this.$onMediaChanged.asObservable()
   }
 }

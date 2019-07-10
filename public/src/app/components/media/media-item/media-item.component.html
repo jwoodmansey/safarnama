@@ -1,5 +1,5 @@
 <ng-container [ngSwitch]="mediaItem.type">
-  <div *ngSwitchCase="'Text'" [innerHTML]="mediaItem.url | htmlFromUrl | async">
+  <div *ngSwitchCase="'Text'" [innerHTML]="mediaItem | htmlFromUrl | async">
   </div>
   <!-- <iframe *ngSwitchCase="'Text'" [src]="mediaItem.url | safe" frameborder="0"></iframe> -->
   <ng-container *ngSwitchCase="'Video'">
