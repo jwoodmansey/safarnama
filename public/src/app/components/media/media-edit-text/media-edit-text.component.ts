@@ -39,14 +39,12 @@ export class MediaEditTextComponent implements OnInit {
   }
 
   async done(): Promise<void> {
-    const file = new File([this.textVar], 'text.html', {
-      type: 'text/html',
-    })
     try {
-      await this.mediaService.create(file)
+      await this.mediaService.create(this.getFile())
       this.mediaService.triggerRefresh()
       this.dialogRef.close()
     } catch (e) {
+      console.error(e)
       alert('Text could not be created ' + JSON.stringify(e))
     }
   }
@@ -55,7 +53,20 @@ export class MediaEditTextComponent implements OnInit {
     this.dialogRef.close()
   }
 
-  edit(): void {
-    alert('Editing of text media currently unavailable')
+  async edit(): Promise<void> {
+    try {
+      await this.mediaService.editText(this.mediaItem.id, this.getFile())
+      this.mediaService.triggerRefresh()
+      this.dialogRef.close()
+    } catch (e) {
+      console.error(e)
+      alert('Text could not be edited ' + JSON.stringify(e))
+    }
+  }
+
+  private getFile(): File {
+    return new File([this.textVar], 'text.html', {
+      type: 'text/html',
+    })
   }
 }

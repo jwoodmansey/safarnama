@@ -66,6 +66,23 @@ export class MediaService {
     ).pipe(take(1)).toPromise()
   }
 
+  public async editText(
+    id: string,
+    file: File): Promise<MediaDocument> {
+    const formData = new FormData()
+    formData.append('filepond', file)
+    const params = new HttpParams()
+    const options = {
+      params,
+      reportProgress: true,
+    }
+    return this.http.put<MediaDocument>(
+      `${this.FILES_URL}/${id}`,
+      formData,
+      options,
+    ).pipe(take(1)).toPromise()
+  }
+
   public async delete(id: string): Promise<Object> {
     return this.http.delete(
       `${this.FILES_URL}/${id}`,

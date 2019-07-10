@@ -41,18 +41,7 @@ export class MediaRouter {
             const file: UploadedFileExtended = filesOrFile as UploadedFileExtended
             console.log('FILE', file)
 
-            // There seems to be a bug with filepond which is making .html/jpeg
-            // files come out as .tml/.peg, 4 letter extensions arent parsed right?
-            let ext = file.name.split('.').pop()
-            if (ext === 'tml') {
-              ext = 'html'
-            } else if (ext === 'peg') {
-              ext = 'jpeg'
-            }
-
-            if (!ext) {
-              throw new Error('File has no extension')
-            }
+            const ext = getExtension(file)
             const ownerId = request.user._id
             const id = await this.repo.add({
               ownerId,
@@ -112,6 +101,7 @@ export class MediaRouter {
             return response.status(401).json(
               { error: 'You do not have permission to edit this Media Item' })
           }
+          // Todo delete the file
           await this.repo.delete(id)
           return response.json({ success: true })
         } catch (e) {
@@ -134,8 +124,25 @@ export class MediaRouter {
             return response.status(401).json(
               { error: 'You do not have permission to edit this Media Item' })
           }
-          const resp = await this.repo.edit(id, { ...request.body })
-          return response.json({ ...resp })
+          if (request.files && Object.keys(request.files).length > 0 &&
+            request.files.filepond && Object.keys(request.files.filepond).length > 0) {
+
+            const file: UploadedFileExtended = request.files.filepond as UploadedFileExtended
+            const ext = getExtension(file)
+            const ownerId = request.user._id
+            const filePath = getPathForMedia(ownerId, id, ext)
+            console.log('Going to move to path', filePath)
+            file.mv(filePath, async (e) => {
+              if (e) {
+                return response.status(500).send('File not found')
+              }
+              return response.json({})
+            })
+          } else {
+            const resp = await this.repo.edit(id, { ...request.body })
+            return response.json({ ...resp })
+          }
+          return
         } catch (e) {
           response.statusCode = 500
           return response.json({ code: 500, error: e })
@@ -192,4 +199,20 @@ function getPathForMedia(ownerId: string, mediaId: string, ext: string): string 
 
 function getPathForMediaThumb(ownerId: string, mediaId: string): string {
   return `${MEDIA_DIRECTORY}/${ownerId}/${mediaId}_thumb.png`
+}
+
+function getExtension(file: UploadedFileExtended): string {
+  // There seems to be a bug with filepond which is making .html/jpeg
+  // files come out as .tml/.peg, 4 letter extensions arent parsed right?
+  let ext = file.name.split('.').pop()
+  if (ext === 'tml') {
+    ext = 'html'
+  } else if (ext === 'peg') {
+    ext = 'jpeg'
+  }
+
+  if (!ext) {
+    throw new Error('File has no extension')
+  }
+  return ext
 }
