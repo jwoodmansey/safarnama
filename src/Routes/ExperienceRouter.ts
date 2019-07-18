@@ -7,7 +7,8 @@ import { PointOfInterestRepo } from '../model/repo/PointOfInterestRepo'
 import { loadRealPaths } from '../controllers/MediaController'
 import { MediaDocument } from '@common/media'
 import { PointOfInterestDocument } from '@common/point-of-interest'
-const { ensureAuthenticated } = require('connect-ensure-authenticated')
+// @ts-ignore
+import { ensureAuthenticated } from 'connect-ensure-authenticated'
 
 export class ExperienceRouter {
 

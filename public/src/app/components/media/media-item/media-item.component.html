@@ -8,5 +8,15 @@
       <img [src]="mediaItem.thumbUrl" />
     </ng-template>
   </ng-container>
+  <ng-container *ngSwitchCase="'Audio'">
+    <audio *ngIf="!thumb; else audioThumb" [src]="mediaItem.url" controls></audio>
+    <ng-template #audioThumb>
+      <div class="audio">
+        <p>{{mediaItem.name}}
+        </p>
+        <mat-icon>audiotrack</mat-icon>
+      </div>
+    </ng-template>
+  </ng-container>
   <img *ngSwitchDefault [src]="mediaItem.thumbUrl" />
 </ng-container>

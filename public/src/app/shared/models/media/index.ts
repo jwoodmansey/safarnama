@@ -28,6 +28,7 @@ export class Media {
       case 'application/pdf':
         return 'PDF'
       case 'audio/mpeg':
+      case 'audio/mp4':
         return 'Audio'
       case 'text/plain':
       case 'text/html':
