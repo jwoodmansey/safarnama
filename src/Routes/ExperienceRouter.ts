@@ -4,7 +4,7 @@ import { ExperienceRepo } from '../model/repo/ExperienceRepo'
 import { checkOwner } from '../utils/auth'
 import { RouteRepo } from '../model/repo/RouteRepo'
 import { PointOfInterestRepo } from '../model/repo/PointOfInterestRepo'
-import { loadRealPaths } from './MediaRouter'
+import { loadRealPaths } from '../controllers/MediaController'
 import { MediaDocument } from '@common/media'
 import { PointOfInterestDocument } from '@common/point-of-interest'
 const { ensureAuthenticated } = require('connect-ensure-authenticated')

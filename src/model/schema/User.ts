@@ -15,7 +15,7 @@ export type Token = {
   refreshToken: string,
 }
 
-interface UserModel extends UserData, mongoose.Document {}
+type UserModel = UserData & mongoose.Document
 
 // tslint:disable-next-line:variable-name
 export const User = mongoose.model<UserModel>('User', new mongoose.Schema({

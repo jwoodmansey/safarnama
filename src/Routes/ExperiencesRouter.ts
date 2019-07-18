@@ -3,7 +3,7 @@ import { Response, Router } from 'express'
 import { ExperienceRepo } from '../model/repo/ExperienceRepo'
 import { PointOfInterestRepo } from '../model/repo/PointOfInterestRepo'
 import { RouteRepo } from '../model/repo/RouteRepo'
-import { loadRealPaths } from './MediaRouter'
+import { loadRealPaths } from '../controllers/MediaController'
 export class ExperiencesRouter {
 
   private router: Router = Router()

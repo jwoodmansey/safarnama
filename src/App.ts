@@ -56,7 +56,7 @@ passport.use(new FacebookStrategy(
     // providers.
     User.findOne(
       { facebookId: profile.id },
-      (err: any, user: any) => {
+      (err: any, user) => {
         if (err) {
           console.log('findOne error', err)
           done(err, undefined)
