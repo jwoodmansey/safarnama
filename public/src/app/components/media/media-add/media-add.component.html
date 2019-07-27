@@ -1,10 +1,13 @@
 <h1 mat-dialog-title>Add Media</h1>
 <div mat-dialog-content>
   <p>You can upload, text (.txt), image (.png, .jpeg), video (.mp4), audio (.mp3), or pdf (.pdf) files</p> 
-  <file-pond #myPond [options]="pondOptions" [files]="pondFiles" (oninit)="pondHandleInit()"
-    (onaddfile)="pondHandleAddFile($event)">
+  <file-pond #myPond [options]="pondOptions" [files]="pondFiles" (onprocessfileprogress)="pondHandleProgress($event)" (oninit)="pondHandleInit()"
+    (onaddfile)="pondHandleAddFile($event)" (onprocessfileabort)="pondHandleAbort($event)">
   </file-pond>
 </div>
-<!-- <div mat-dialog-actions>
-  <button mat-button (click)="close()">Cancel</button>
-</div> -->
+<div mat-dialog-actions>
+  <button *ngIf="!uploadsInProgress; else uploadingTemplate" mat-button (click)="close()">Done</button>
+  <ng-template #uploadingTemplate>
+    <button mat-button disabled="true">Uploading&hellip;</button>
+  </ng-template>
+</div>
