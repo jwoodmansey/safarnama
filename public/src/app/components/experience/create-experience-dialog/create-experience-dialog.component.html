@@ -4,6 +4,11 @@
     <mat-form-field>
       <input formControlName="name" matInput placeholder="Name your experience">
     </mat-form-field>
+    <mat-form-field class="desc">
+      <mat-placeholder style="white-space: normal;">Description
+      </mat-placeholder>
+      <textarea matInput formControlName="description" rows="4"></textarea>
+    </mat-form-field>
   </div>
   <div mat-dialog-actions>
     <button mat-button enabled [disabled]="!form.valid" type="submit">Create</button>

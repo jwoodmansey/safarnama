@@ -61,8 +61,9 @@ import {
 import { PublishModule } from './publish/publish.module'
 import { MatSortModule } from '@angular/material/sort'
 import { environment } from 'environments/environment'
-import { HtmlFromUrlPipe } from './shared/pipes/html-from-url.pipe';
+import { HtmlFromUrlPipe } from './shared/pipes/html-from-url.pipe'
 import { MapContentComponent } from './components/map-content/map-content.component'
+import { TermsComponent } from './pages/terms/terms.component'
 
 registerPlugin(FilePondPluginFileValidateType)
 registerPlugin(FilePondPluginImagePreview)
@@ -92,6 +93,7 @@ registerPlugin(FilePondPluginImagePreview)
     MediaEditTextComponent,
     HtmlFromUrlPipe,
     MapContentComponent,
+    TermsComponent,
   ],
   entryComponents: [
     PromptExperienceDialogComponent,
@@ -102,6 +104,7 @@ registerPlugin(FilePondPluginImagePreview)
     MediaLibraryComponent,
     MediaAddComponent,
     MediaEditTextComponent,
+    TermsComponent,
     MediaAttacherComponent,
     MediaEditComponent,
     PoiTypeLibraryComponent,

@@ -1,16 +1,21 @@
 <mat-toolbar>
-    <button [routerLink]="['/']" mat-icon-button>
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-    Edit Experience
-  </mat-toolbar>
-  <div class="content">
-    <p>Here you can change the details of your experience.</p>
-    <form [formGroup]="experienceForm" (ngSubmit)="onSubmit()">
-      <mat-form-field>
-        <input matInput formControlName="name" placeholder="Name">
-      </mat-form-field>
-      <mat-divider></mat-divider>
-      <button class="edit-button" type="submit" [disabled]="!valid()" mat-raised-button>Save</button>
-    </form>
-  </div>
+  <button [routerLink]="['/']" mat-icon-button>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  Edit Experience
+</mat-toolbar>
+<div class="content">
+  <p>Here you can change the details of your experience.</p>
+  <form [formGroup]="experienceForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput formControlName="name" placeholder="Name">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-placeholder style="white-space: normal;">Description
+      </mat-placeholder>
+      <textarea matInput formControlName="description" rows="4"></textarea>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <button class="edit-button" type="submit" [disabled]="!valid()" mat-raised-button>Save</button>
+  </form>
+</div>

@@ -17,22 +17,23 @@ export class CreateExperienceDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<CreateExperienceDialogComponent>,
     public experienceService: ExperienceService,
     private fb: FormBuilder) {
-    this.form = this.fb.group({ name: ['', Validators.required] })
+    this.form = this.fb.group({
+      name: ['', Validators.required],
+      description: [''],
+    })
   }
 
   ngOnInit(): void {
-    // this.experienceService.createExperience().subscribe(experiences => {
-    //   console.log('experiences', experiences)
-    //   this.experiences = experiences
-    // },                                                  () => {
-
-    // })
   }
 
   public submit(): void {
     if (this.form.valid) {
       this.experienceService.createExperience(
-        { _id: undefined, name: this.form.get('name')!.value }).subscribe((resp: any) => {
+        {
+          _id: undefined,
+          name: this.form.get('name')!.value,
+          description: this.form.get('description')!.value,
+        }).subscribe((resp: any) => {
           this.experienceService.setSelectedExperience(resp)
           this.dialogService.closeAll()
         })

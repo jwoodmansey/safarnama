@@ -56,10 +56,10 @@ export class ExperienceService {
       })
   }
 
-  editExperience(id: string, name: string): Observable<ExperienceData> {
+  editExperience(id: string, name: string, description?: string): Observable<ExperienceData> {
     return this.http.put<ExperienceData>(
       `${this.EXPERIENCE_URL}/${id}`,
-      { name }, {
+      { name, description }, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
         }),

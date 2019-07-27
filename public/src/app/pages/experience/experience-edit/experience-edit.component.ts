@@ -13,6 +13,7 @@ export class ExperienceEditComponent implements OnInit {
   public editingId: string
   public experienceForm: FormGroup = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
+    description: [''],
   })
 
   constructor(private fb: FormBuilder,
@@ -22,6 +23,7 @@ export class ExperienceEditComponent implements OnInit {
   ngOnInit(): void {
     this.experienceService.getSelectedExperience().subscribe(exp => {
       this.experienceForm.get('name').patchValue(exp.name)
+      this.experienceForm.get('description').patchValue(exp.description)
       this.editingId = exp._id
     })
   }
@@ -33,7 +35,8 @@ export class ExperienceEditComponent implements OnInit {
   onSubmit(): void {
     if (this.valid()) {
       const name = this.experienceForm.get('name').value
-      this.experienceService.editExperience(this.editingId, name).subscribe(exp => {
+      const description = this.experienceForm.get('description').value
+      this.experienceService.editExperience(this.editingId, name, description).subscribe(exp => {
         this.router.navigate(['/'])
       })
     }

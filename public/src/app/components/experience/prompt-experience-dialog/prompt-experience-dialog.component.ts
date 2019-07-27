@@ -39,6 +39,7 @@ export class PromptExperienceDialogComponent {
   createNew(): void {
     const dialogRef = this.dialog.open(CreateExperienceDialogComponent, {
       width: '400px',
+      minHeight: '500px',
       disableClose: false,
       // data: { name: this.name, animal: this.animal },
     })

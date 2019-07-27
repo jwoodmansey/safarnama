@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { MatDialogRef, MatDialog } from '@angular/material'
+import { TermsComponent } from '../../../pages/terms/terms.component'
 
 @Component({
   selector: 'app-login',
@@ -11,14 +12,18 @@ export class LoginComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<LoginComponent>,
     public dialog: MatDialog,
-  )
-  // @Inject(MAT_DIALOG_DATA) public data: DialogData)
-  { }
+  ) {
 
-  onNoClick(): void {
-    // this.dialogRef.close()
   }
+
   ngOnInit(): void {
   }
 
+  openTerms(): void {
+    this.dialog.open(TermsComponent, {
+      width: '400px',
+      minHeight: '500px',
+      disableClose: false,
+    })
+  }
 }
