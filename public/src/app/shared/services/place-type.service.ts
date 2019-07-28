@@ -10,7 +10,7 @@ import { PlaceType } from '@common/point-of-interest'
 })
 export class PlaceTypeService {
 
-  private readonly PLACE_URL = environment.api.url + 'place-types'
+  private readonly PLACE_URL = environment.api.url + 'place-types/mine'
 
   // These will only be used as values, so dont need ids
   // User created ones are given ids in case we ever want to edit/delete them in the future
