@@ -10,7 +10,7 @@ export class ExperiencesRouter {
      * Returns all the experience data for the currently authenticated user
      * This will also include their Places, Media, and Routes
      */
-    this.router.get('mine', getAllMyExperienceData)
+    this.router.get('/mine', getAllMyExperienceData)
 
     return this.router
   }

@@ -18,7 +18,7 @@ export class PlaceTypeRouter {
     /**
      * Returns all the PlaceTypes for the currently authenticated user
      */
-    this.router.get('mine', getAllMyPlaceTypes)
+    this.router.get('/mine', getAllMyPlaceTypes)
 
     return this.router
   }
