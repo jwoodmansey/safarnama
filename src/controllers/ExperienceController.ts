@@ -7,6 +7,7 @@ import { RouteRepo } from '../model/repo/RouteRepo'
 import { PointOfInterestDocument } from '@common/point-of-interest'
 import { MediaDocument } from '@common/media'
 import { loadRealPaths } from './MediaController'
+import { createFirebaseDynamicLink } from './FirebaseDynamicLinkController'
 
 // TODO as with other controllers, probably want to pass the repo as a param, so it's mockable
 export async function createExperience(request: Request, response: Response) {
@@ -71,7 +72,7 @@ export async function publishExperienceSnapshot(request: Request, response: Resp
     }
     // TODO this NEEDS to happen atomically
     const prevSnapshot =
-      await repo.getLatestSnapshotByExperienceId(request.params.experienceId)
+      await repo.getLatestSnapshotByExperienceId(experience._id)
     let version = 1
     if (prevSnapshot) {
       version = prevSnapshot.metaData.version + 1
@@ -100,6 +101,12 @@ export async function publishExperienceSnapshot(request: Request, response: Resp
 
     // todo work out if we already have a snapshot and get published at date from there?
     // why do we even need to store published at time? can just query for it if ever need
+
+    // Ask firebase
+    const shortLink = await createFirebaseDynamicLink(
+      `https://safarnama.lancs.ac.uk/download/${experience._id}`,
+    )
+
     const snapshot: ExperienceSnapshotData = {
       _id: undefined,
       ownerId: request.user._id,
@@ -108,11 +115,13 @@ export async function publishExperienceSnapshot(request: Request, response: Resp
       },
       metaData: {
         version,
+        shortLink,
         created_at: new Date(),
         size: getTotalSizeForPlaces(experienceData.pointOfInterests),
       },
     }
     const dbResp = await repo.saveSnapshot(snapshot)
+
     return response.json(dbResp)
   } catch (e) {
     return response.status(500).json({ code: 500, error: e })

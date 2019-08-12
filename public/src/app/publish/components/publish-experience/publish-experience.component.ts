@@ -25,8 +25,8 @@ export class PublishExperienceComponent implements OnInit {
   ngOnInit(): void {
     this.experienceId = this.experienceService.getSelectedExperienceId()
     if (this.experienceId) {
-      this.publishedUrl =
-        `${window.location.origin}/download/${this.experienceService.getSelectedExperienceId()}`
+      // this.publishedUrl =
+      //   `${window.location.origin}/download/${this.experienceService.getSelectedExperienceId()}`
       const id = this.experienceService.getSelectedExperienceId()
       this.latestSnapshotSubscription =
         combineLatest(
@@ -34,6 +34,8 @@ export class PublishExperienceComponent implements OnInit {
           this.experienceService.getLatestPublishedSnapshot(id),
         ).subscribe(([exp, snapshot]) => {
           this.latestSnapshot = snapshot
+
+          this.publishedUrl = snapshot.metaData.shortLink
 
           // Todo there's a bit more work to do to calculate if there are changes,
           // the experiences in the service do not hold onto poi or other entity changes

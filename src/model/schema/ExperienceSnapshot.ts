@@ -3,7 +3,7 @@ import { ExperienceSnapshotModel } from '../repo/ExperienceModel'
 const AUTO_INCREMENT = require('mongoose-sequence')(mongoose)
 
 // tslint:disable-next-line:variable-name
-const ExperienceSnapshotSchema: any = new mongoose.Schema({
+const ExperienceSnapshotSchema = new mongoose.Schema({
   ownerId: {
     type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User',
   },
@@ -11,6 +11,7 @@ const ExperienceSnapshotSchema: any = new mongoose.Schema({
     created_at: { type: Date, default: Date.now },
     version: { type: Number },
     size: { type: Number, default: 0 },
+    shortLink: { type: String, required: false },
   },
   data: {}, // This should probably use the experience schema for querying
 })

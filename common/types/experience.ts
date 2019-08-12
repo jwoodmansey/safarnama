@@ -23,6 +23,7 @@ export type MetaData = {
   size: number,
   version: number,
   created_at: Date,
+  shortLink?: string,
 }
 
 export type ExperienceSnapshotData = {
