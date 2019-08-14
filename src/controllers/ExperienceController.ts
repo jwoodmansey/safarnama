@@ -118,6 +118,7 @@ export async function publishExperienceSnapshot(request: Request, response: Resp
       displayName: user.displayName,
       photoURL: user.photoURL,
       id: ownerId,
+      bio: user.bio,
     }
 
     const snapshot: ExperienceSnapshotData = {

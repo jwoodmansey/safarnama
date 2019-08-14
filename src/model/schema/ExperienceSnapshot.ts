@@ -29,6 +29,10 @@ const ExperienceSnapshotSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
+      bio: {
+        type: String,
+        required: false,
+      },
     },
   },
   data: {}, // This should probably use the experience schema for querying
