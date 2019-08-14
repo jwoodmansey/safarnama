@@ -24,6 +24,13 @@ export type MetaData = {
   version: number,
   created_at: Date,
   shortLink?: string,
+  ownerPublicProfile: PublicProfile,
+}
+
+export type PublicProfile = {
+  id: string,
+  photoURL?: string,
+  displayName: string,
 }
 
 export type ExperienceSnapshotData = {

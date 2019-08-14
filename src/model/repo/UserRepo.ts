@@ -1,4 +1,4 @@
-import { UserData } from '../schema/User'
+import { UserData, User } from '../schema/User'
 
 export class UserRepo {
 
@@ -14,5 +14,10 @@ export class UserRepo {
         refreshToken,
       },
     }
+  }
+
+  public async get(id: string): Promise<UserData | null> {
+    const model = await User.findById(id).lean()
+    return model !== null ? model : null
   }
 }

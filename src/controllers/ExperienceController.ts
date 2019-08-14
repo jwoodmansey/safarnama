@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { ExperienceData, ExperienceSnapshotData } from '@common/experience'
+import { ExperienceData, ExperienceSnapshotData, PublicProfile } from '@common/experience'
 import { ExperienceRepo } from '../model/repo/ExperienceRepo'
 import { checkOwner } from '../utils/auth'
 import { PointOfInterestRepo } from '../model/repo/PointOfInterestRepo'
@@ -8,6 +8,7 @@ import { PointOfInterestDocument } from '@common/point-of-interest'
 import { MediaDocument } from '@common/media'
 import { loadRealPaths } from './MediaController'
 import { createFirebaseDynamicLink } from './FirebaseDynamicLinkController'
+import { UserRepo } from '../model/repo/UserRepo'
 
 // TODO as with other controllers, probably want to pass the repo as a param, so it's mockable
 export async function createExperience(request: Request, response: Response) {
@@ -102,20 +103,33 @@ export async function publishExperienceSnapshot(request: Request, response: Resp
     // todo work out if we already have a snapshot and get published at date from there?
     // why do we even need to store published at time? can just query for it if ever need
 
-    // Ask firebase
+    // Ask firebase for a short url which will become a deeplink
     const shortLink = await createFirebaseDynamicLink(
       `https://safarnama.lancs.ac.uk/download/${experience._id}`,
     )
 
+    const userRepo = new UserRepo()
+    const ownerId = request.user._id
+    const user = await userRepo.get(ownerId)
+    if (!user) {
+      throw new Error('User not found')
+    }
+    const ownerPublicProfile: PublicProfile = {
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      id: ownerId,
+    }
+
     const snapshot: ExperienceSnapshotData = {
+      ownerId,
       _id: undefined,
-      ownerId: request.user._id,
       data: {
         ...experienceData,
       },
       metaData: {
         version,
         shortLink,
+        ownerPublicProfile,
         created_at: new Date(),
         size: getTotalSizeForPlaces(experienceData.pointOfInterests),
       },
