@@ -23,4 +23,13 @@ export const environment = {
     mediaDir: 'media',
     publicUrl: 'http://localhost:4200/api',
   },
+  firebase: {
+    webAPIKey: '123',
+    dynamicLinkInfo: {
+      domainUriPrefix: 'https://example.page.link',
+      androidInfo: {
+        androidPackageName: 'com.example.example',
+      },
+    },
+  },
 }
