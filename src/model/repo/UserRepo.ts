@@ -20,4 +20,20 @@ export class UserRepo {
     const model = await User.findById(id).lean()
     return model !== null ? model : null
   }
+
+  public async edit(
+    id: string,
+    edit: {
+      bio: string,
+    }): Promise<UserData> {
+    console.log('USER REPO: Edit', id)
+    const model = await User.findById(id)
+    if (model) {
+      console.log('User found, going to edit...', model.toJSON())
+      model.set({ ...edit, updatedAt: new Date() })
+      const dbResp = await model.save()
+      return dbResp.toJSON()
+    }
+    throw new Error('Could not find user to edit it' + id)
+  }
 }

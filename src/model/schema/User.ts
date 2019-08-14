@@ -8,6 +8,7 @@ export type UserData = {
   googleId?: string,
   facebookId?: string,
   token: Token,
+  bio?: string,
 }
 
 export type Token = {
@@ -23,6 +24,7 @@ export const User = mongoose.model<UserModel>('User', new mongoose.Schema({
   photoURL: String,
   createdAt: Date,
   updatedAt: Date,
+  bio: String,
   googleId: String,
   facebookId: String,
   token: {

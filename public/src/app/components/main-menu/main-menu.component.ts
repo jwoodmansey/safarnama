@@ -12,6 +12,7 @@ import { ExperienceService } from '@services/experience.service'
 import {
   PublishExperienceComponent,
  } from 'app/publish/components/publish-experience/publish-experience.component'
+import { UserEditComponent } from 'app/user/user-edit/user-edit.component'
 
 @Component({
   selector: 'app-main-menu',

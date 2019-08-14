@@ -64,6 +64,7 @@ import { environment } from 'environments/environment'
 import { HtmlFromUrlPipe } from './shared/pipes/html-from-url.pipe'
 import { MapContentComponent } from './components/map-content/map-content.component'
 import { TermsComponent } from './pages/terms/terms.component'
+import { UserEditComponent } from './user/user-edit/user-edit.component'
 
 registerPlugin(FilePondPluginFileValidateType)
 registerPlugin(FilePondPluginImagePreview)
@@ -94,6 +95,7 @@ registerPlugin(FilePondPluginImagePreview)
     HtmlFromUrlPipe,
     MapContentComponent,
     TermsComponent,
+    UserEditComponent,
   ],
   entryComponents: [
     PromptExperienceDialogComponent,
@@ -107,6 +109,7 @@ registerPlugin(FilePondPluginImagePreview)
     TermsComponent,
     MediaAttacherComponent,
     MediaEditComponent,
+    UserEditComponent,
     PoiTypeLibraryComponent,
   ],
   imports: [

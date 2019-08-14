@@ -6,6 +6,7 @@ import { MainMenuComponent } from '@components/main-menu/main-menu.component'
 import { ExperienceEditComponent } from
   '@pages/experience/experience-edit/experience-edit.component'
 import { RouteCreateComponent } from '@pages/routes/route-create/route-create.component'
+import { UserEditComponent } from './user/user-edit/user-edit.component'
 
 const routes: Routes = [
   {
@@ -24,6 +25,10 @@ const routes: Routes = [
       {
         path: 'experience/edit',
         component: ExperienceEditComponent,
+      },
+      {
+        path: 'user/edit',
+        component: UserEditComponent,
       },
       {
         path: 'poi/edit/:id',

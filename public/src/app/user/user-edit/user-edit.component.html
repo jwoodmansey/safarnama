@@ -1,0 +1,22 @@
+<mat-toolbar>
+  <button [routerLink]="['/']" mat-icon-button>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  Edit Profile
+</mat-toolbar>
+<div class="content">
+  <header>
+    <img *ngIf="profile?.photoURL" mat-card-avatar [src]="profile.photoURL" [attr.alt]="profile.displayName">
+    <h2>{{profile?.displayName}}</h2>
+  </header>
+  <p>Here you can change your public profile. This will be visible when you publish an experience.</p>
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-placeholder style="white-space: normal;">Bio
+      </mat-placeholder>
+      <textarea matInput formControlName="bio" rows="4"></textarea>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <button class="edit-button" type="submit" [disabled]="!valid()" mat-raised-button>Save</button>
+  </form>
+</div>

@@ -1,7 +1,7 @@
 <!-- <mat-toolbar>Authoring Tool
 </mat-toolbar> -->
 <mat-nav-list ngif>
-  <img class="logo" src="/assets/imgs/master-logo.png"/>
+  <img class="logo" src="/assets/imgs/master-logo.png" />
   <a mat-list-item href="javascript:void(0)" [matMenuTriggerFor]="experience">Experience</a>
   <mat-menu #experience="matMenu">
     <button mat-menu-item (click)="openExperience()">
@@ -53,6 +53,10 @@
         <span>Logout</span>
       </button>
     </a>
+    <button [routerLink]="['/user/edit']" mat-menu-item>
+      <mat-icon>person</mat-icon>
+      <span>Edit profile</span>
+    </button>
   </mat-menu>
   <mat-divider></mat-divider>
 </mat-nav-list>

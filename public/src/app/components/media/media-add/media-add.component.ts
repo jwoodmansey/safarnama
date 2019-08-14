@@ -13,7 +13,8 @@ export class MediaAddComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<MediaAddComponent>,
-    private mediaService: MediaService) { }
+    private mediaService: MediaService,
+  ) { }
 
   ngOnInit(): void {
     // Todo it may be possible to use FilePond as an actual media library,

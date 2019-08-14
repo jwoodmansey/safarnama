@@ -19,6 +19,7 @@ import { environment } from './config/env'
 import * as http from 'http'
 import * as https from 'https'
 import * as fs from 'fs'
+import { UserRouter } from './Routes/UserRouter'
 
 mongoose.connect(
   // tslint:disable-next-line:max-line-length
@@ -171,6 +172,7 @@ app.use('/api/experience', new ExperienceRouter().getRouter())
 app.use('/api/experiences', ensureAuthenticated(), new ExperiencesRouter().getRouter())
 app.use('/api/point-of-interest', ensureAuthenticated(), new PointOfInterestRouter().getRouter())
 app.use('/api/route', ensureAuthenticated(), new RouteRouter().getRouter())
+app.use('/api/user', ensureAuthenticated(), new UserRouter().getRouter())
 app.use('/api/media', ensureAuthenticated(), new MediaRouter().getRouter())
 app.use('/api/storage/media', express.static('media'))
 
