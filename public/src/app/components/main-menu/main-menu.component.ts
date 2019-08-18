@@ -16,6 +16,7 @@ import { Observable } from 'rxjs'
 import { UserService } from '@services/user.service'
 import { map } from 'rxjs/operators'
 import { AdminViewUsersComponent } from 'app/admin/components/admin-view-users/admin-view-users.component'
+import { AdminViewPublishedExperiencesComponent } from 'app/admin/components/admin-view-published-experiences/admin-view-published-experiences.component'
 
 @Component({
   selector: 'app-main-menu',
@@ -79,6 +80,12 @@ export class MainMenuComponent implements OnInit {
 
   openAdminUserDialog(): void {
     this.dialog.open(AdminViewUsersComponent, {
+      width: '800px',
+    })
+  }
+
+  openAdminExperiencesDialog(): void {
+    this.dialog.open(AdminViewPublishedExperiencesComponent, {
       width: '800px',
     })
   }

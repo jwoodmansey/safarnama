@@ -1,0 +1,18 @@
+table {
+  width: 100%;
+}
+
+.mat-dialog-content {
+  padding: 0px;
+}
+
+td {
+  &.description {
+    max-width: 100px;
+    max-lines: 1;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}

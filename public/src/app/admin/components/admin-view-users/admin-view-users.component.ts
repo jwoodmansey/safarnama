@@ -25,6 +25,9 @@ export class AdminViewUsersComponent implements OnInit, OnDestroy {
       this.users = users
       this.data = new MatTableDataSource<UserData>(users)
     })
+    this.adminService.getPublishedExperiences().subscribe(experiences => {
+      console.log(experiences)
+    })
   }
 
   ngOnDestroy(): void {

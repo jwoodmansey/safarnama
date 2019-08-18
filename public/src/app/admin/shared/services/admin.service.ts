@@ -18,4 +18,8 @@ export class AdminService {
   getUsers(): Observable<UserData[]> {
     return this.http.get<UserData[]>(`${this.url}/users`)
   }
+
+  getPublishedExperiences(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/published-experiences`)
+  }
 }

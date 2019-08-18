@@ -35,6 +35,33 @@ export class ExperienceRepo {
     return res
   }
 
+  public async getAllSnapshots() {
+    const res = await ExperienceSnapshot.aggregate([
+      {
+        $sort: {
+          'metaData.version': -1,
+        },
+      },
+      {
+        $group: {
+          _id: '$data._id',
+          snapshotId: {
+            $first: '$_id',
+          },
+          name: {
+            $first: '$data.name',
+          },
+          description: {
+            $first: '$data.description',
+          },
+          metaData: {
+            $first: '$metaData',
+          },
+        },
+      }]).exec()
+    return res
+  }
+
   // todo, dont expose the models to the controllers
   public async getModelById(id: string): Promise<ExperienceModel | null> {
     return Experience.findById(id)

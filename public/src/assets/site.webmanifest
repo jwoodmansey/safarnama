@@ -1,6 +1,6 @@
 {
-    "name": "Safarnama Authoring Tool",
-    "short_name": "Safarnama Authoring Tool",
+    "name": "Safarnama",
+    "short_name": "Safarnama",
     "icons": [
         {
             "src": "/assets/android-chrome-192x192.png",
