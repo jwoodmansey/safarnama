@@ -1,28 +1,40 @@
 <h1 mat-dialog-title>Publish Experience</h1>
 <div mat-dialog-content>
 
-  <ng-container *ngIf="!latestSnapshot; else publishTemplate">
-    <div mat-dialog-content>
-      <p>Publishing your experience will make it publicly visible. Users will be able to download a playable experience
-        to
-        their Android devices using a QR code or link.</p>
-    </div>
-  </ng-container>
-  <ng-template #publishTemplate>
-    <div mat-dialog-content>
-      <p>Users can download this experience by visting <a [attr.href]="publishedUrl">{{publishedUrl}}</a> or scanning
-        this
-        QR code on their device: </p>
-      <qrcode [qrdata]="publishedUrl" [size]="256" [level]="'M'"></qrcode>
+  <ng-container *ngIf="!loading; else loadingTemplate">
+    <ng-container *ngIf="!latestSnapshot; else publishTemplate">
+      <div mat-dialog-content>
+        <p>Publishing your experience will make it publicly visible. Users will be able to download a playable
+          experience
+          to
+          their Android devices using a QR code or link.</p>
+      </div>
+    </ng-container>
+    <ng-template #publishTemplate>
+      <div mat-dialog-content>
+        <p>Visit <a [attr.href]="latestSnapshot.metaData.shortLink">{{latestSnapshot.metaData.shortLink}}</a></p>
+        <p>OR scan this QR code on an Android device: </p>
+        <qrcode [qrdata]="latestSnapshot.metaData.shortLink" [size]="192" [level]="'M'"></qrcode>
 
-      <p>Version <b>{{latestSnapshot.metaData.version}}</b> published
-        <b>{{latestSnapshot.metaData.created_at | date: 'short'}}</b></p>
-      <small>Changes are not automatically published. When you are happy with your changes click to publish.</small>
+        <p>Version <b>{{latestSnapshot.metaData.version}}</b> published
+          <b>{{latestSnapshot.metaData.created_at | date: 'short'}}</b></p>
+        <button mat-raised-button mat-button (click)="publish()">Publish changes</button>
+        <small>Changes are not automatically published. When you are happy with your changes click to publish.</small>
+      </div>
+    </ng-template>
+  </ng-container>
+  <ng-template #loadingTemplate>
+    <div class="spinner-container">
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
     </div>
   </ng-template>
 </div>
 <div mat-dialog-actions class="mat-dialog-actions">
-  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button mat-dialog-close>Close</button>
   <!-- [disabled]="!outstandingChanges" -->
-  <button mat-button (click)="publish()" cdkFocusInitial>{{!latestSnapshot ? 'Publish' : 'Publish Changes'}}</button>
+  <button mat-button *ngIf="!latestSnapshot; else unpublishButton" (click)="publish()" cdkFocusInitial>Publish</button>
+  <ng-template #unpublishButton>
+    <button (click)="unpublish()" mat-button cdkFocusInitial>Unpublish</button>
+  </ng-template>
+
 </div>

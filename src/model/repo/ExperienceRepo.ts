@@ -53,6 +53,11 @@ export class ExperienceRepo {
     return null
   }
 
+  public async deleteAllSanpshotsByExperienceId(id: string): Promise<void> {
+    const res = await ExperienceSnapshot.deleteMany({ 'data._id': new ObjectID(id) }).exec()
+    console.log(res)
+  }
+
   public async saveSnapshot(experienceSnapshot: ExperienceSnapshotData):
     Promise<ExperienceSnapshotData> {
 

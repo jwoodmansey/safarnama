@@ -143,6 +143,24 @@ export async function publishExperienceSnapshot(request: Request, response: Resp
   }
 }
 
+export async function unpublishExperience(request: Request, response: Response) {
+  try {
+    const repo = new ExperienceRepo()
+    const experience = await repo.getModelById(request.params.experienceId)
+    if (experience === null) {
+      return response.status(404).json({ error: 'Experience not found' })
+    }
+    if (!checkOwner(request, experience)) {
+      return response.status(401).json(
+        { error: 'You do not have permission to publish this experience' })
+    }
+    repo.deleteAllSanpshotsByExperienceId(experience.id)
+    return response.json({ success: true })
+  } catch (e) {
+    return response.status(500).json({ code: 500, error: e })
+  }
+}
+
 function getTotalSizeForPlaces(places: PointOfInterestDocument[] | undefined): number {
   if (!places) {
     return 0

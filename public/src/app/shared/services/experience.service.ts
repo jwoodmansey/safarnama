@@ -86,6 +86,15 @@ export class ExperienceService {
       )
   }
 
+  unPublishExperience(id: string): Observable<any> {
+    return this.http.post(
+      `${this.EXPERIENCE_URL}/${id}/unpublish`, {}).pipe(
+        tap(resp => {
+          console.log('Unpublished experience, snapshot:', resp)
+        }),
+      )
+  }
+
   getLatestPublishedSnapshot(id: string): Observable<ExperienceSnapshotData | undefined> {
     return this.http.get<ExperienceSnapshotData>(
       `${this.EXPERIENCE_URL}/${id}/snapshot`).pipe(

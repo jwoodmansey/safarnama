@@ -37,6 +37,8 @@ export class MediaAddComponent implements OnInit, OnDestroy {
   pondOptions = {
     class: 'my-filepond',
     multiple: true,
+    dropOnPage: true,
+    dropOnElement: false,
     labelIdle: 'Drop files here, or click to upload',
     acceptedFileTypes: 'image/jpeg, image/png, application/pdf, text/plain, audio/mpeg, video/mp4',
     server: {

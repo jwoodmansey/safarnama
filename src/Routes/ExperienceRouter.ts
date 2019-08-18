@@ -3,7 +3,7 @@ import { Router } from 'express'
 import { ensureAuthenticated } from 'connect-ensure-authenticated'
 import {
   createExperience,
-  editExperience, getExperienceSnapshot, publishExperienceSnapshot,
+  editExperience, getExperienceSnapshot, publishExperienceSnapshot, unpublishExperience,
 } from '../controllers/ExperienceController'
 
 export class ExperienceRouter {
@@ -27,6 +27,11 @@ export class ExperienceRouter {
      * of the experience
      */
     this.router.post('/:experienceId/publish', ensureAuthenticated(), publishExperienceSnapshot)
+
+    /**
+     * Unpublished an experience, this will delete all public snapshots of this experience
+     */
+    this.router.post('/:experienceId/unpublish', ensureAuthenticated(), unpublishExperience)
 
     /**
      * Gets the last published experience snapshot

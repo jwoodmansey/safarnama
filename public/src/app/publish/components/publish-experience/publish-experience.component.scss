@@ -9,3 +9,10 @@ small {
 a {
   word-break: break-all;
 }
+
+.mat-dialog-content {
+  button {
+    display: block;
+    margin-bottom: 8px;
+  }
+}
