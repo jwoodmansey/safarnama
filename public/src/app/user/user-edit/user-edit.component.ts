@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { UserService } from '@services/user.service'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { FormBuilder, FormGroup } from '@angular/forms'
 import { Router } from '@angular/router'
 import { PublicProfile } from '@common/experience'
 import { MatSnackBar } from '@angular/material'
