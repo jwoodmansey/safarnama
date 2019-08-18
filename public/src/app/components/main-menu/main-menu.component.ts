@@ -12,6 +12,10 @@ import { ExperienceService } from '@services/experience.service'
 import {
   PublishExperienceComponent,
  } from 'app/publish/components/publish-experience/publish-experience.component'
+import { Observable } from 'rxjs'
+import { UserService } from '@services/user.service'
+import { map } from 'rxjs/operators'
+import { AdminViewUsersComponent } from 'app/admin/components/admin-view-users/admin-view-users.component'
 
 @Component({
   selector: 'app-main-menu',
@@ -20,10 +24,18 @@ import {
 })
 export class MainMenuComponent implements OnInit {
 
-  constructor(private dialog: MatDialog,
-              private experienceService: ExperienceService) { }
+  public isUserAdmin: Observable<boolean>
+
+  constructor(
+    private dialog: MatDialog,
+    private experienceService: ExperienceService,
+    private userService: UserService,
+              ) { }
 
   ngOnInit(): void {
+    this.isUserAdmin = this.userService.getMyProfile().pipe(
+      map(user => user !== undefined && user.roles !== undefined && user.roles.includes('admin')),
+    )
   }
 
   viewAllPointsOfInterest(): void {
@@ -65,7 +77,9 @@ export class MainMenuComponent implements OnInit {
     return this.experienceService.getSelectedExperienceId() !== undefined
   }
 
-  // public logout() {
-
-  // }
+  openAdminUserDialog(): void {
+    this.dialog.open(AdminViewUsersComponent, {
+      width: '800px',
+    })
+  }
 }

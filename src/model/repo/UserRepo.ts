@@ -1,4 +1,5 @@
-import { UserData, User } from '../schema/User'
+import { User } from '../schema/User'
+import { UserData } from '@common/user'
 
 export class UserRepo {
 
@@ -19,6 +20,10 @@ export class UserRepo {
   public async get(id: string): Promise<UserData | null> {
     const model = await User.findById(id).lean()
     return model !== null ? model : null
+  }
+
+  public async getAll(): Promise<UserData[]> {
+    return User.find({}).lean()
   }
 
   public async edit(

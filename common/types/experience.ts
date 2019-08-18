@@ -31,6 +31,7 @@ export type PublicProfile = {
   id: string,
   photoURL?: string,
   displayName: string,
+  roles?: string[],
   bio?: string,
 }
 

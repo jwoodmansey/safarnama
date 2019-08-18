@@ -20,6 +20,7 @@ import * as http from 'http'
 import * as https from 'https'
 import * as fs from 'fs'
 import { UserRouter } from './Routes/UserRouter'
+import { AdminRouter } from './Routes/AdminRouter'
 
 mongoose.connect(
   // tslint:disable-next-line:max-line-length
@@ -174,6 +175,7 @@ app.use('/api/point-of-interest', ensureAuthenticated(), new PointOfInterestRout
 app.use('/api/route', ensureAuthenticated(), new RouteRouter().getRouter())
 app.use('/api/user', ensureAuthenticated(), new UserRouter().getRouter())
 app.use('/api/media', ensureAuthenticated(), new MediaRouter().getRouter())
+app.use('/api/admin', ensureAuthenticated(), new AdminRouter().getRouter())
 app.use('/api/storage/media', express.static('media'))
 
 app.use('/api/place-types', ensureAuthenticated(), new PlaceTypeRouter().getRouter())

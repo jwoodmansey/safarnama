@@ -23,6 +23,7 @@ async function getProfileById(id: string): Promise<PublicProfile | undefined> {
     displayName: user.displayName,
     photoURL: user.photoURL,
     bio: user.bio,
+    roles: user.roles,
   }
 }
 

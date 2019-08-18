@@ -1,20 +1,5 @@
 import * as mongoose from 'mongoose'
-
-export type UserData = {
-  displayName: string,
-  photoURL?: string,
-  createdAt: Date,
-  updatedAt?: Date,
-  googleId?: string,
-  facebookId?: string,
-  token: Token,
-  bio?: string,
-}
-
-export type Token = {
-  accessToken: string,
-  refreshToken: string,
-}
+import { UserData } from '@common/user'
 
 type UserModel = UserData & mongoose.Document
 
@@ -27,6 +12,10 @@ export const User = mongoose.model<UserModel>('User', new mongoose.Schema({
   bio: String,
   googleId: String,
   facebookId: String,
+  roles: {
+    type: [{ type: String }],
+    required: false,
+  },
   token: {
     accessToken: { type: String },
     refreshToken: { type: String },

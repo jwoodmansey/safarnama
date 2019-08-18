@@ -59,4 +59,12 @@
     </button>
   </mat-menu>
   <mat-divider></mat-divider>
+
+  <a mat-list-item href="javascript:void(0)" *ngIf="isUserAdmin | async" [matMenuTriggerFor]="admin">Admin</a>
+  <mat-menu #admin="matMenu">
+    <button mat-menu-item (click)="openAdminUserDialog()">
+      <mat-icon>person</mat-icon>
+      <span>View users</span>
+    </button>
+  </mat-menu>
 </mat-nav-list>

@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser'
-import { NgModule } from '@angular/core'
+import { NgModule, LOCALE_ID } from '@angular/core'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
@@ -65,6 +65,11 @@ import { HtmlFromUrlPipe } from './shared/pipes/html-from-url.pipe'
 import { MapContentComponent } from './components/map-content/map-content.component'
 import { TermsComponent } from './pages/terms/terms.component'
 import { UserEditComponent } from './user/user-edit/user-edit.component'
+import { AdminModule } from './admin/admin.module'
+import enGB from '@angular/common/locales/en-GB'
+import { registerLocaleData } from '@angular/common'
+
+registerLocaleData(enGB)
 
 registerPlugin(FilePondPluginFileValidateType)
 registerPlugin(FilePondPluginImagePreview)
@@ -129,6 +134,7 @@ registerPlugin(FilePondPluginImagePreview)
     MatSnackBarModule,
     MatSortModule,
     PublishModule,
+    AdminModule,
     MediumEditorModule,
     MatListModule,
     MatGridListModule,
@@ -152,6 +158,7 @@ registerPlugin(FilePondPluginImagePreview)
   providers: [
     ExperienceService,
     RouteEditorService,
+    { provide: LOCALE_ID, useValue: 'en-GB' },
   ],
   bootstrap: [AppComponent],
 })
