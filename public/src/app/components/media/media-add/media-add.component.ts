@@ -66,8 +66,10 @@ export class MediaAddComponent implements OnInit, OnDestroy {
 
   pondHandleAddFile(event: any): void {
     console.log('A file was added', event)
-    this.uploading.push(event.file.id)
-    this.dialogRef.disableClose = true
+    if (!event.error) {
+      this.uploading.push(event.file.id)
+      this.dialogRef.disableClose = true
+    }
   }
 
   pondHandleProgress(event: any): void {
@@ -80,6 +82,12 @@ export class MediaAddComponent implements OnInit, OnDestroy {
   pondHandleAbort(event: any): void {
     console.log('A file upload was aborted', event)
     this.removeFromUploadingArr(event.file.id)
+  }
+
+  pondHandleError(event: any): void {
+    console.log('A file upload has error', event)
+    this.removeFromUploadingArr(event.file.id)
+
   }
 
   private removeFromUploadingArr(fileId: string): void {

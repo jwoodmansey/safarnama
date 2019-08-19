@@ -5,9 +5,21 @@ export class PlaceTypeRepo {
 
   public async add(type: PlaceTypeDocument): Promise<string> {
     console.log('PLACE TYPE REPO: Adding new type', type)
-    const e = new PlaceType({ ...type })
-    const dbResp = await e.save()
+    const data = new PlaceType({ ...type })
+    const dbResp = await data.save()
     return dbResp.toJSON()
+  }
+
+  public async getById(id: string): Promise<PlaceTypeDocument | null> {
+    const model = await PlaceType.findById(id).exec()
+    if (model) {
+      return model.toJSON()
+    }
+    return null
+  }
+
+  public async delete(id: string): Promise<void> {
+    await PlaceType.deleteOne({ _id: id }).exec()
   }
 
   public async getAllByUser(userId: string): Promise<PlaceTypeDocument[]> {

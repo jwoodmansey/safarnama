@@ -20,6 +20,8 @@ export class PlaceTypeRouter {
      */
     this.router.get('/mine', getAllMyPlaceTypes)
 
+    this.router.delete('/:id')
+
     return this.router
   }
 }

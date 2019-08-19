@@ -2,7 +2,7 @@
 <div mat-dialog-content>
   <p>You can upload, text (.txt), image (.png, .jpeg), video (.mp4), audio (.mp3), or pdf (.pdf) files</p> 
   <file-pond #myPond [options]="pondOptions" [files]="pondFiles" (onprocessfileprogress)="pondHandleProgress($event)" (oninit)="pondHandleInit()"
-    (onaddfile)="pondHandleAddFile($event)" (onprocessfileabort)="pondHandleAbort($event)">
+    (onaddfile)="pondHandleAddFile($event)" (onerror)="pondHandleError($event)" (onprocessfileabort)="pondHandleAbort($event)">
   </file-pond>
 </div>
 <div mat-dialog-actions>

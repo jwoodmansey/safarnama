@@ -18,7 +18,7 @@
 
         <p>Version <b>{{latestSnapshot.metaData.version}}</b> published
           <b>{{latestSnapshot.metaData.created_at | date: 'short'}}</b></p>
-        <button mat-raised-button mat-button (click)="publish()">Publish changes</button>
+        <button mat-raised-button mat-button class="mat-accent" (click)="publish()">Publish changes</button>
         <small>Changes are not automatically published. When you are happy with your changes click to publish.</small>
       </div>
     </ng-template>
@@ -32,7 +32,8 @@
 <div mat-dialog-actions class="mat-dialog-actions">
   <button mat-button mat-dialog-close>Close</button>
   <!-- [disabled]="!outstandingChanges" -->
-  <button mat-button *ngIf="!latestSnapshot; else unpublishButton" (click)="publish()" cdkFocusInitial>Publish</button>
+  <button mat-button class="mat-primary" *ngIf="!latestSnapshot; else unpublishButton" (click)="publish()"
+    cdkFocusInitial>Publish</button>
   <ng-template #unpublishButton>
     <button (click)="unpublish()" mat-button cdkFocusInitial>Unpublish</button>
   </ng-template>

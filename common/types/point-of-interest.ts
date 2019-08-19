@@ -27,4 +27,5 @@ export type PlaceType = {
   name: string,
   matIcon: string,
   _id: any,
+  ownerId: string,
 }

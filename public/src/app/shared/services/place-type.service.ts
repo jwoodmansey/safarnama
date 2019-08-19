@@ -57,7 +57,7 @@ export class PlaceTypeService {
   }
 
   private getListFromApi(): Observable<PlaceType[]>  {
-    return this.http.get<PlaceType[]>(`${this.PLACE_URL}`).pipe(
+    return this.http.get<PlaceType[]>(`${this.PLACE_URL}/mine`).pipe(
       catchError(() => of([])),
       map(types => [...this.DEFAULT_TYPES, ...types]),
       tap(types => console.log('Types got:', types)),

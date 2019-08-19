@@ -39,14 +39,16 @@ export class PoiCreateComponent implements OnInit, OnDestroy {
   })
   public editingPoi: PointOfInterest
 
-  constructor(private fb: FormBuilder,
-              private router: Router,
-              private experienceService: ExperienceService,
-              private activatedRoute: ActivatedRoute,
-              private snackBar: MatSnackBar,
-              private dialog: MatDialog,
-              private placeTypeService: PlaceTypeService,
-              private poiService: PoiService) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private experienceService: ExperienceService,
+    private activatedRoute: ActivatedRoute,
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog,
+    private placeTypeService: PlaceTypeService,
+    private poiService: PoiService,
+  ) {
   }
 
   ngOnInit(): void {
@@ -102,8 +104,11 @@ export class PoiCreateComponent implements OnInit, OnDestroy {
   }
 
   valid(): boolean {
-    return this.creatingPointOfInterest && this.creatingPointOfInterest.isPopulated()
-      && this.poiForm.valid
+    return this.hasSetLocation() && this.poiForm.valid
+  }
+
+  hasSetLocation(): boolean {
+    return this.creatingPointOfInterest !== undefined && this.creatingPointOfInterest.isPopulated()
   }
 
   onSubmit(): void {
@@ -158,7 +163,8 @@ export class PoiCreateComponent implements OnInit, OnDestroy {
   }
 
   compareFn(t1: PlaceType, t2: PlaceType): boolean {
-    return t1 && t2 ? t1._id === t2._id || t1.name === t2.name : t1 === t2
+    return t1 !== undefined && t2 !== undefined
+      ? t1._id === t2._id || t1.name === t2.name : t1 === t2
   }
 
   // openMediaAttacher(): void {
