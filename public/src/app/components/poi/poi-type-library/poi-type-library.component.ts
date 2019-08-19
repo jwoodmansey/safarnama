@@ -66,9 +66,10 @@ export class PoiTypeLibraryComponent implements OnInit {
   submit(): void {
     if (this.isValid) {
       this.placeTypeService.create({
-        name : this.form.get('name').value,
+        name: this.form.get('name').value,
         matIcon: this.selectedIcon,
         _id: undefined,
+        ownerId: undefined,
       }).subscribe(() => {
         this.dialogRef.close()
 

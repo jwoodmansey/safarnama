@@ -19,26 +19,31 @@ export class PlaceTypeService {
       name: 'Monument',
       matIcon: 'place',
       _id: undefined,
+      ownerId: undefined,
     },
     {
       name: 'Lake',
       matIcon: 'bubble_chart',
       _id: undefined,
+      ownerId: undefined,
     },
     {
       name: 'Private building',
       matIcon: 'account_balance',
       _id: undefined,
+      ownerId: undefined,
     },
     {
       name: 'Vanished place',
       matIcon: 'border_bottom',
       _id: undefined,
+      ownerId: undefined,
     },
     {
       name: 'Person',
       matIcon: 'person_pin_circle',
       _id: undefined,
+      ownerId: undefined,
     },
   ]
 
