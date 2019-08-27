@@ -39,6 +39,7 @@ export async function processUpload(request: Request, response: Response) {
         mimetype: file.mimetype,
         md5: file.md5 as string,
         _id: undefined,
+        associatedExperiences: [request.query.expId],
       })
       console.log('New media added to database', id)
       const filePath = getPathForMedia(ownerId, id, ext)

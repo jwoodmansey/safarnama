@@ -4,6 +4,7 @@ import { checkOwner } from '../utils/auth'
 import { MediaDocument } from '@common/media'
 import { PointOfInterestDocument } from '@common/point-of-interest'
 import { loadRealPaths } from '../controllers/MediaController'
+import { MediaRepo } from '../model/repo/MediaRepo'
 
 export async function createPlace(request: Request, response: Response) {
   const repo = new PointOfInterestRepo()
@@ -23,8 +24,10 @@ export async function createPlace(request: Request, response: Response) {
 
 export async function editPlace(request: Request, response: Response) {
   const repo = new PointOfInterestRepo()
+  const mediaRepo = new MediaRepo()
   try {
     const poi = await repo.getModel(request.params.poiId)
+
     if (poi === null) {
       return response.status(404).json({ error: 'Place not found' })
     }
@@ -37,6 +40,22 @@ export async function editPlace(request: Request, response: Response) {
       mediaIds = request.body.media.map((media: MediaDocument) => media._id)
       delete request.body.media
     }
+
+    // Mark each media as now associated with this experience
+    mediaIds.forEach(async (id) => {
+      const media = await mediaRepo.get(id)
+      if (media) {
+        if (!media.associatedExperiences) {
+          media.associatedExperiences = []
+        }
+        if (!media.associatedExperiences.find(thisId => thisId === id)) {
+          media.associatedExperiences.push(poi.experienceId)
+          console.log('Associating experiences with media', media.associatedExperiences)
+          await mediaRepo.edit(id, { associatedExperiences: media.associatedExperiences })
+        }
+      }
+    })
+
     poi.set({
       ...request.body,
       media: mediaIds,

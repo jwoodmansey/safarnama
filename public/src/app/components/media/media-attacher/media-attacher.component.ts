@@ -5,6 +5,7 @@ import { MediaLibraryComponent } from '../media-library/media-library.component'
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop'
 import { MediaEditTextComponent } from '../media-edit-text/media-edit-text.component'
 import { MediaEditComponent } from '../media-edit/media-edit.component'
+import { ExperienceService } from '@services/experience.service'
 
 @Component({
   selector: 'app-media-attacher',
@@ -18,6 +19,7 @@ export class MediaAttacherComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
+    private experienceService: ExperienceService,
   ) { }
 
   ngOnInit(): void {
@@ -32,6 +34,11 @@ export class MediaAttacherComponent implements OnInit {
       },
     }).afterClosed().subscribe(o => {
       this.media = o.selectingMedia
+      if (o.selectingMedia) {
+        o.selectingMedia.forEach((media: Media) => {
+          media.associateWith(this.experienceService.getSelectedExperienceId())
+        })
+      }
     })
   }
 

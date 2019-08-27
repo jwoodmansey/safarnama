@@ -6,6 +6,9 @@ import { MediaService } from '@services/media.service'
 import { MediaAddComponent } from '../media-add/media-add.component'
 import { MediaEditComponent } from '../media-edit/media-edit.component'
 import { MediaEditTextComponent } from '../media-edit-text/media-edit-text.component'
+import { ExperienceService } from '@services/experience.service'
+import { map } from 'rxjs/operators'
+import { Observable, merge } from 'rxjs'
 
 @Component({
   selector: 'app-media-library',
@@ -21,12 +24,16 @@ export class MediaLibraryComponent implements OnInit {
   public filterForm: FormGroup
   public selectingMedia: Media[] | undefined
 
+  public $expName: Observable<string>
+
   constructor(
     private dialog: MatDialog,
     private mediaService: MediaService,
     public dialogRef: MatDialogRef<MediaLibraryComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder,
+    private experienceService: ExperienceService,
+  ) { }
 
   ngOnInit(): void {
     if (this.data !== undefined && this.data !== null && this.data.selectingMedia !== undefined) {
@@ -34,17 +41,24 @@ export class MediaLibraryComponent implements OnInit {
     }
     this.filterForm = this.fb.group(
       {
+        experience: ['All', Validators.required],
         type: ['All', Validators.required],
         sortBy: ['Added', Validators.required],
       },
     )
-    this.filterForm.get('type').valueChanges.subscribe(o => this.filterMedia())
+    merge(
+      this.filterForm.get('type').valueChanges,
+      this.filterForm.get('experience').valueChanges,
+    ).subscribe(o => this.filterMedia())
     this.filterForm.get('sortBy').valueChanges.subscribe(o => this.sortMedia())
     this.mediaService.getAll().subscribe(media => {
       this.media = media
       this.filterMedia()
       this.loaded = true
     })
+    this.$expName = this.experienceService.getSelectedExperience().pipe(
+      map(exp => exp ? exp.name : undefined),
+    )
   }
 
   get selecting(): boolean {
@@ -72,10 +86,16 @@ export class MediaLibraryComponent implements OnInit {
 
   filterMedia(): void {
     const type = this.filterForm.get('type').value
-    if (type === 'All') {
+    const experience = this.filterForm.get('experience').value
+    const expId = this.experienceService.getSelectedExperienceId()
+
+    if (type === 'All' && experience === 'All') {
       this.filteredMedia = this.media
     } else {
-      this.filteredMedia = this.media.filter(media => type === media.type)
+      this.filteredMedia = this.media.filter(media =>
+        (type === 'All' || type === media.type) &&
+        (experience === 'All' || media.isAssociatedWith(expId)),
+      )
     }
     this.sortMedia()
   }

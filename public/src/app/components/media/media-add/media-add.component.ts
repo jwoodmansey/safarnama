@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core'
 import { MatDialogRef } from '@angular/material'
 import { MediaService } from '@services/media.service'
+import { ExperienceService } from '@services/experience.service'
 
 @Component({
   selector: 'app-media-add',
@@ -14,6 +15,7 @@ export class MediaAddComponent implements OnInit, OnDestroy {
   constructor(
     public dialogRef: MatDialogRef<MediaAddComponent>,
     private mediaService: MediaService,
+    private experienceService: ExperienceService,
   ) { }
 
   ngOnInit(): void {
@@ -44,7 +46,7 @@ export class MediaAddComponent implements OnInit, OnDestroy {
     server: {
       url: './api/media',
       process: {
-        url: '/process',
+        url: '/process?expId=' + this.experienceService.getSelectedExperienceId(),
         withCredentials: true,
       },
       revert: async (uniqueFileId: string, load: any, error: any) => {

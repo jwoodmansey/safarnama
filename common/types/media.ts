@@ -11,4 +11,5 @@ export type MediaDocument = {
   name?: string,
   description?: string,
   acknowledgements?: string,
+  associatedExperiences?: string[],
 }

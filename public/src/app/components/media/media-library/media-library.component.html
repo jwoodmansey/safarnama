@@ -1,7 +1,16 @@
 <h1 mat-dialog-title>Media Library</h1>
 <div mat-dialog-content>
   <form [formGroup]="filterForm">
-    <mat-form-field>
+    <mat-form-field class="type">
+      <mat-label>Experience</mat-label>
+      <mat-select formControlName="experience">
+        <mat-option value="All">All</mat-option>
+        <ng-container *ngIf="($expName | async) as expName">
+          <mat-option value="expName">{{expName}}</mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="type">
       <mat-label>Media type</mat-label>
       <mat-select formControlName="type">
         <mat-option value="All">All</mat-option>
@@ -13,7 +22,7 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field class="type">
-      <mat-label>Media type</mat-label>
+      <mat-label>Sort</mat-label>
       <mat-select formControlName="sortBy">
         <mat-option value="Added">Date Added</mat-option>
         <mat-option value="Edited">Date Edited</mat-option>

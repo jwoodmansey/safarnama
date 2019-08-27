@@ -29,9 +29,10 @@ export class MediaRepo {
   public async edit(
     id:string,
     edit: {
-      name: string,
-      acknowledgements: string,
-      description: string,
+      name?: string,
+      acknowledgements?: string,
+      description?: string,
+      associatedExperiences?: string[],
     }): Promise<MediaDocument> {
     console.log('MEDIA REPO: Delete', id)
     const model = await Media.findById(id)

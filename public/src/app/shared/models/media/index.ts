@@ -77,4 +77,16 @@ export class Media {
   getDocument(): MediaDocument {
     return { ...this.doc }
   }
+
+  isAssociatedWith(expId: string): boolean {
+    return this.doc.associatedExperiences !== undefined
+      && this.doc.associatedExperiences.find(id => expId === id) !== undefined
+  }
+
+  associateWith(expId: string): void {
+    if (this.doc.associatedExperiences === undefined) {
+      this.doc.associatedExperiences = []
+    }
+    this.doc.associatedExperiences.push(expId)
+  }
 }
