@@ -68,6 +68,7 @@ import { UserEditComponent } from './user/user-edit/user-edit.component'
 import { AdminModule } from './admin/admin.module'
 import enGB from '@angular/common/locales/en-GB'
 import { registerLocaleData } from '@angular/common'
+import { CollaboratorsComponent } from './components/collaborators/collaborators.component'
 
 registerLocaleData(enGB)
 
@@ -101,6 +102,7 @@ registerPlugin(FilePondPluginImagePreview)
     MapContentComponent,
     TermsComponent,
     UserEditComponent,
+    CollaboratorsComponent,
   ],
   entryComponents: [
     PromptExperienceDialogComponent,
@@ -116,6 +118,7 @@ registerPlugin(FilePondPluginImagePreview)
     MediaEditComponent,
     UserEditComponent,
     PoiTypeLibraryComponent,
+    CollaboratorsComponent,
   ],
   imports: [
     BrowserModule,

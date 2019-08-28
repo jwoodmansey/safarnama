@@ -1,0 +1,19 @@
+.user {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  img {
+    border-radius: 50%;
+  }
+
+  p {
+    margin-left: 8px;
+    margin-bottom: 0px;
+  }
+}
+
+h3 {
+  margin-bottom: 0px;
+  margin-top: 32px;
+}

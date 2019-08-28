@@ -12,6 +12,10 @@
       <mat-icon>create_new_folder</mat-icon>
       <span>Create</span>
     </button>
+    <button mat-menu-item (click)="openCollaborators()">
+      <mat-icon>folder_shared</mat-icon>
+      <span>Collaborators</span>
+    </button>
     <button [disabled]="!isExperienceOpen" [routerLink]="['/experience/edit']" mat-menu-item>
       <mat-icon>edit</mat-icon>
       <span>Edit</span>
@@ -67,8 +71,8 @@
       <span>View users</span>
     </button>
     <button mat-menu-item (click)="openAdminExperiencesDialog()">
-        <mat-icon>view_list</mat-icon>
-        <span>View published experiences</span>
-      </button>
+      <mat-icon>view_list</mat-icon>
+      <span>View published experiences</span>
+    </button>
   </mat-menu>
 </mat-nav-list>

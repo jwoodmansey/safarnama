@@ -7,4 +7,5 @@ export = mongoose.model<ExperienceModel>('Experience', new mongoose.Schema({
   createdAt: Date,
   updatedAt: Date,
   ownerId: { type: mongoose.Schema.Types.ObjectId, required: true },
+  collaborators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 }))

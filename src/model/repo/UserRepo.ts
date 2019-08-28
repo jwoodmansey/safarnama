@@ -14,12 +14,18 @@ export class UserRepo {
         accessToken,
         refreshToken,
       },
+      _id: profile._id,
     }
   }
 
   public async get(id: string): Promise<UserData | null> {
     const model = await User.findById(id).lean()
     return model !== null ? model : null
+  }
+
+  public async getByEmail(email: string): Promise<UserData | null> {
+    const model = await User.findOne({ email }).exec()
+    return model
   }
 
   public async getAll(): Promise<UserData[]> {

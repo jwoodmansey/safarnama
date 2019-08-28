@@ -8,6 +8,7 @@ export type UserData = {
   token: Token,
   roles?: string[],
   bio?: string,
+  _id: any,
 }
 
 export type Token = {

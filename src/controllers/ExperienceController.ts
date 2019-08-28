@@ -161,6 +161,72 @@ export async function unpublishExperience(request: Request, response: Response) 
   }
 }
 
+export async function addCollaboratorsToExperience(request: Request, response: Response) {
+  try {
+    const repo = new ExperienceRepo()
+    const experience = await repo.getModelById(request.params.experienceId)
+    if (experience === null) {
+      return response.status(404).json({ error: 'Experience not found' })
+    }
+    if (!checkOwner(request, experience)) {
+      return response.status(401).json(
+        { error: 'You do not have permission to publish this experience' })
+    }
+
+    const userRepo = new UserRepo()
+    const collaborators: string[] = []
+    const profiles: {
+      id: string,
+      displayName: string,
+      photoURL?: string,
+    }[] = []
+    await asyncForEach(request.body.userIds, async (userId: string) => {
+      const user = await userRepo.get(userId)
+      if (user === null) {
+        return response.status(403).json({ code: 403, error: `UserId '${userId}' not found` })
+      }
+      collaborators.push(userId)
+      profiles.push({
+        id: user._id,
+        photoURL: user.photoURL,
+        displayName: user.displayName,
+      })
+      return
+    })
+    experience.collaborators = collaborators
+    await experience.save()
+    return response.json({ success: true, users: profiles })
+  } catch (e) {
+    return response.status(500).json({ code: 500, error: e })
+  }
+}
+
+export async function getCollaboratorsForExperience(request: Request, response: Response) {
+  const repo = new ExperienceRepo()
+  const experience = await repo.getModelById(request.params.experienceId)
+  if (experience === null) {
+    return response.status(404).json({ error: 'Experience not found' })
+  }
+  if (!checkOwner(request, experience)) {
+    return response.status(401).json(
+      { error: 'You do not have permission to view collaborators for this experience' })
+  }
+  const populated = await experience.populate('collaborators').execPopulate()
+  const collabs: any[] = (populated.collaborators as any)
+  const profiles: PublicProfile[] = collabs.map(profile => ({
+    displayName: profile.displayName,
+    photoURL: profile.photoURL,
+    id: profile._id,
+  }))
+  return response.json(profiles)
+}
+
+async function asyncForEach(array: any[], callback: any) {
+  for (let index = 0; index < array.length; index = index + 1) {
+    await callback(array[index], index, array)
+  }
+}
+
 function getTotalSizeForPlaces(places: PointOfInterestDocument[] | undefined): number {
   if (!places) {
     return 0

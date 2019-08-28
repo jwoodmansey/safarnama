@@ -17,6 +17,7 @@ import { UserService } from '@services/user.service'
 import { map } from 'rxjs/operators'
 import { AdminViewUsersComponent } from 'app/admin/components/admin-view-users/admin-view-users.component'
 import { AdminViewPublishedExperiencesComponent } from 'app/admin/components/admin-view-published-experiences/admin-view-published-experiences.component'
+import { CollaboratorsComponent } from '@components/collaborators/collaborators.component'
 
 @Component({
   selector: 'app-main-menu',
@@ -89,4 +90,11 @@ export class MainMenuComponent implements OnInit {
       width: '800px',
     })
   }
+
+  openCollaborators(): void {
+    this.dialog.open(CollaboratorsComponent, {
+      width: '400px',
+    })
+  }
+
 }

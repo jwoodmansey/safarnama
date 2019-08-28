@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Collaborators</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <p>Add users IDs below to allow other users to make changes to this experience.</p>
+    <mat-form-field>
+      <input formControlName="userId" matInput placeholder="Enter a user's ID to share">
+      <button mat-icon-button matSuffix [disabled]="!form.valid" color="primary" aria-label="Add user id">
+        <mat-icon>add_circle</mat-icon>
+      </button>
+    </mat-form-field>
+  </form>
+  <ng-container *ngIf="($collaborators | async) as collaborators">
+    <div class="user" *ngFor="let user of collaborators">
+      <img mat-card-avatar [src]="user.photoURL">
+      <p>{{user.displayName}}</p>
+    </div>
+  </ng-container>
+
+  <h3>My User ID</h3>
+  <p>Share <b>{{$myUserId | async}}</b> with other users to collaborate on their experiences.</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+</div>

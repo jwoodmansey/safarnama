@@ -12,6 +12,7 @@ export type ExperienceData = {
   // geoJSON?: GeoJSON.FeatureCollection,
   pointOfInterests?: PointOfInterestDocument[],
   routes?: RouteDocument[],
+  collaborators?: string[],
 }
 
 export type GeoData = GeoJSON.FeatureCollection & {
