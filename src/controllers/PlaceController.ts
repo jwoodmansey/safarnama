@@ -5,13 +5,27 @@ import { MediaDocument } from '@common/media'
 import { PointOfInterestDocument } from '@common/point-of-interest'
 import { loadRealPaths } from '../controllers/MediaController'
 import { MediaRepo } from '../model/repo/MediaRepo'
+import { ExperienceRepo } from '../model/repo/ExperienceRepo'
+import { PointOfInterestModel } from '../model/repo/PointOfInterestModel'
 
 export async function createPlace(request: Request, response: Response) {
   const repo = new PointOfInterestRepo()
+  const expRepo = new ExperienceRepo()
+  const exp = await expRepo.getModelById(request.body.experienceId)
+  if (exp === null) {
+    return response.status(404).json({ error: 'Place not found' })
+  }
+  if (!checkOwner(request, exp) &&
+    !(exp.collaborators && exp.collaborators.includes(request.user._id))
+  ) {
+    return response.status(401).json(
+      { error: 'You do not have permission to add a place to this experience' })
+  }
+
   const poiData: PointOfInterestDocument = {
     ...request.body,
     createdAt: new Date(),
-    ownerId: request.user._id,
+    ownerId: exp.ownerId, // The owner is always the experience creator
   }
   try {
     const res = await repo.addNewPointOfInterest(poiData)
@@ -31,7 +45,7 @@ export async function editPlace(request: Request, response: Response) {
     if (poi === null) {
       return response.status(404).json({ error: 'Place not found' })
     }
-    if (!checkOwner(request, poi)) {
+    if (!checkOwner(request, poi) && !(await isAnExperienceCollaborator(request, poi))) {
       return response.status(401).json(
         { error: 'You do not have permission to edit this Place' })
     }
@@ -60,7 +74,8 @@ export async function editPlace(request: Request, response: Response) {
       ...request.body,
       media: mediaIds,
       updatedAt: new Date(),
-      ownerId: request.user._id, // User cannot change this field
+      ownerId: poi.ownerId, // User cannot change this field!!!
+      createdAt: poi.createdAt,
     })
     const pop = (await poi.save()).populate('media')
     const resp = await pop.execPopulate()
@@ -79,7 +94,7 @@ export async function deletePlace(request: Request, response: Response) {
     if (poi === null) {
       return response.status(404).json({ error: 'Place not found' })
     }
-    if (!checkOwner(request, poi)) {
+    if (!checkOwner(request, poi) && !(await isAnExperienceCollaborator(request, poi))) {
       return response.status(401).json(
         { error: 'You do not have permission to delete this place' })
     }
@@ -94,4 +109,21 @@ function loadRealMediaPaths(poi: PointOfInterestDocument): void {
   if (poi.media) {
     poi.media = loadRealPaths(poi.media)
   }
+}
+
+export async function isAnExperienceCollaborator(
+  request: Request,
+  poi: PointOfInterestModel,
+): Promise<boolean> {
+  console.log('Checking collaborator')
+  const experienceRepo = new ExperienceRepo()
+  const exp = await experienceRepo.getModelById(poi.experienceId)
+  if (!exp) {
+    throw new Error('Experience not found')
+  }
+  if (!exp.collaborators) {
+    return false
+  }
+  console.log(exp.collaborators, request.user._id)
+  return exp.collaborators.includes(request.user._id)
 }

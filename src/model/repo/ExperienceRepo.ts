@@ -15,7 +15,12 @@ export class ExperienceRepo {
 
   public async getAllByUser(userId: string): Promise<ExperienceData[]> {
     console.log('EXPERIENCE REPO: Get all by user', userId)
-    const res = await Experience.find({ ownerId: userId }).lean()
+    const res = await Experience.find({
+      $or: [
+        { ownerId: userId },
+        { collaborators: userId },
+      ],
+    }).lean()
 
     // TODO I think we might want to decouple POIs and routes from experiences,
     // and instead have experiences include the place/route ID

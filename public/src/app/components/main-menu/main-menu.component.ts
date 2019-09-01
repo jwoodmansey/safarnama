@@ -11,12 +11,16 @@ import {
 import { ExperienceService } from '@services/experience.service'
 import {
   PublishExperienceComponent,
- } from 'app/publish/components/publish-experience/publish-experience.component'
-import { Observable } from 'rxjs'
+} from 'app/publish/components/publish-experience/publish-experience.component'
+import { Observable, combineLatest } from 'rxjs'
 import { UserService } from '@services/user.service'
 import { map } from 'rxjs/operators'
-import { AdminViewUsersComponent } from 'app/admin/components/admin-view-users/admin-view-users.component'
-import { AdminViewPublishedExperiencesComponent } from 'app/admin/components/admin-view-published-experiences/admin-view-published-experiences.component'
+import {
+  AdminViewUsersComponent,
+} from 'app/admin/components/admin-view-users/admin-view-users.component'
+import {
+  AdminViewPublishedExperiencesComponent,
+} from 'app/admin/components/admin-view-published-experiences/admin-view-published-experiences.component'
 import { CollaboratorsComponent } from '@components/collaborators/collaborators.component'
 
 @Component({
@@ -27,16 +31,25 @@ import { CollaboratorsComponent } from '@components/collaborators/collaborators.
 export class MainMenuComponent implements OnInit {
 
   public isUserAdmin: Observable<boolean>
+  public isExperienceMine: Observable<boolean>
 
   constructor(
     private dialog: MatDialog,
     private experienceService: ExperienceService,
     private userService: UserService,
-              ) { }
+  ) { }
 
   ngOnInit(): void {
     this.isUserAdmin = this.userService.getMyProfile().pipe(
       map(user => user !== undefined && user.roles !== undefined && user.roles.includes('admin')),
+    )
+    this.isExperienceMine = combineLatest(
+      this.userService.getUserId(),
+      this.experienceService.getSelectedExperience(),
+    ).pipe(
+      map(([userId, experience]) => {
+        return experience !== undefined && experience.ownerId === userId
+      }),
     )
   }
 

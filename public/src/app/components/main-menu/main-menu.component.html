@@ -12,14 +12,16 @@
       <mat-icon>create_new_folder</mat-icon>
       <span>Create</span>
     </button>
-    <button mat-menu-item (click)="openCollaborators()">
-      <mat-icon>folder_shared</mat-icon>
-      <span>Collaborators</span>
-    </button>
-    <button [disabled]="!isExperienceOpen" [routerLink]="['/experience/edit']" mat-menu-item>
-      <mat-icon>edit</mat-icon>
-      <span>Edit</span>
-    </button>
+    <ng-container *ngIf="{ isOwner: isExperienceMine | async } as data">
+      <button [disabled]="!data.isOwner" mat-menu-item (click)="openCollaborators()">
+        <mat-icon>folder_shared</mat-icon>
+        <span>Collaborators</span>
+      </button>
+      <button [disabled]="!data.isOwner" [routerLink]="['/experience/edit']" mat-menu-item>
+        <mat-icon>edit</mat-icon>
+        <span>Edit</span>
+      </button>
+    </ng-container>
   </mat-menu>
   <mat-divider></mat-divider>
   <a mat-list-item href="javascript:void(0)" [matMenuTriggerFor]="poi">Places</a>
@@ -33,8 +35,10 @@
       <span>View all</span>
     </button>
   </mat-menu>
-  <mat-divider></mat-divider>
-  <a mat-list-item href="javascript:void(0)" (click)="publish()">Publish</a>
+  <ng-container *ngIf="isExperienceMine | async">
+    <mat-divider></mat-divider>
+    <a mat-list-item href="javascript:void(0)" (click)="publish()">Publish</a>
+  </ng-container>
   <!-- <a mat-list-item href="javascript:void(0)" [matMenuTriggerFor]="route">Routes</a>
   <mat-menu #route="matMenu">
     <button [disabled]="!isExperienceOpen" [routerLink]="['/route/create']" mat-menu-item>

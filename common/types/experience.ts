@@ -2,6 +2,11 @@ import * as GeoJSON from 'geojson'
 import { PointOfInterestDocument } from './point-of-interest'
 import { RouteDocument } from './route'
 
+export type ExperienceResponseData = {
+  forUserId: string,
+  data: ExperienceData[],
+}
+
 export type ExperienceData = {
   _id: any,
   name: string,

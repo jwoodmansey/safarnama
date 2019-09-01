@@ -4,7 +4,7 @@ import { ensureAuthenticated } from 'connect-ensure-authenticated'
 import {
   createExperience,
   editExperience, getExperienceSnapshot,
-  publishExperienceSnapshot, unpublishExperience, addCollaboratorsToExperience, getCollaboratorsForExperience,
+  publishExperienceSnapshot, unpublishExperience, addCollaboratorsToExperience, getCollaboratorsForExperience, removeCollaboratorFromExperience,
 } from '../controllers/ExperienceController'
 
 export class ExperienceRouter {
@@ -36,6 +36,11 @@ export class ExperienceRouter {
       '/:experienceId/collaborator',
       ensureAuthenticated(),
       addCollaboratorsToExperience,
+    )
+    this.router.delete(
+      '/:experienceId/collaborator/:userId',
+      ensureAuthenticated(),
+      removeCollaboratorFromExperience,
     )
     this.router.get(
       '/:experienceId/collaborator',

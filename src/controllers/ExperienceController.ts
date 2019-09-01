@@ -9,6 +9,7 @@ import { MediaDocument } from '@common/media'
 import { loadRealPaths } from './MediaController'
 import { createFirebaseDynamicLink } from './FirebaseDynamicLinkController'
 import { UserRepo } from '../model/repo/UserRepo'
+import { UserData } from '@common/user'
 
 // TODO as with other controllers, probably want to pass the repo as a param, so it's mockable
 export async function createExperience(request: Request, response: Response) {
@@ -174,7 +175,7 @@ export async function addCollaboratorsToExperience(request: Request, response: R
     }
 
     const userRepo = new UserRepo()
-    const collaborators: string[] = []
+    const collaborators: string[] = experience.collaborators ? experience.collaborators : []
     const profiles: {
       id: string,
       displayName: string,
@@ -185,7 +186,9 @@ export async function addCollaboratorsToExperience(request: Request, response: R
       if (user === null) {
         return response.status(403).json({ code: 403, error: `UserId '${userId}' not found` })
       }
-      collaborators.push(userId)
+      if (!collaborators.includes(userId)) {
+        collaborators.push(userId)
+      }
       profiles.push({
         id: user._id,
         photoURL: user.photoURL,
@@ -201,6 +204,30 @@ export async function addCollaboratorsToExperience(request: Request, response: R
   }
 }
 
+export async function removeCollaboratorFromExperience(request: Request, response: Response) {
+  const repo = new ExperienceRepo()
+  const experience = await repo.getModelById(request.params.experienceId)
+  if (experience === null) {
+    return response.status(404).json({ error: 'Experience not found' })
+  }
+  if (!checkOwner(request, experience)) {
+    return response.status(401).json(
+      { error: 'You do not have permission to view collaborators for this experience' })
+  }
+  const collabIds = experience.collaborators ? [...experience.collaborators] : []
+  console.log('collabIds', JSON.stringify(collabIds), request.params.userId)
+  const newArray = collabIds.filter((id) => {
+    // Ensure these absolutely are strings, might be an ObjectID
+    return JSON.stringify(request.params.userId) !== JSON.stringify(id)
+  })
+  console.log('newArray', JSON.stringify(newArray))
+  experience.collaborators = newArray
+  await experience.save()
+  const populated = await experience.populate('collaborators').execPopulate()
+  const collabs: UserData[] = (populated.collaborators as any)
+  return response.json(userDataToPublicProfile(collabs))
+}
+
 export async function getCollaboratorsForExperience(request: Request, response: Response) {
   const repo = new ExperienceRepo()
   const experience = await repo.getModelById(request.params.experienceId)
@@ -212,13 +239,16 @@ export async function getCollaboratorsForExperience(request: Request, response: 
       { error: 'You do not have permission to view collaborators for this experience' })
   }
   const populated = await experience.populate('collaborators').execPopulate()
-  const collabs: any[] = (populated.collaborators as any)
-  const profiles: PublicProfile[] = collabs.map(profile => ({
+  const collabs: UserData[] = (populated.collaborators as any)
+  return response.json(userDataToPublicProfile(collabs))
+}
+
+function userDataToPublicProfile(userData: UserData[]): PublicProfile[] {
+  return userData.map(profile => ({
     displayName: profile.displayName,
     photoURL: profile.photoURL,
     id: profile._id,
   }))
-  return response.json(profiles)
 }
 
 async function asyncForEach(array: any[], callback: any) {

@@ -7,6 +7,8 @@ import * as filepreview from 'filepreview'
 import { MediaRepo } from '../model/repo/MediaRepo'
 import { MediaDocument } from '@common/media'
 import { environment } from '../config/env'
+import { MediaModel } from '../model/repo/MediaModel'
+import { ExperienceData } from '@common/experience'
 
 interface UploadedFileExtended extends UploadedFile {
   md5: string,
@@ -16,15 +18,15 @@ interface UploadedFileExtended extends UploadedFile {
 export async function processUpload(request: Request, response: Response) {
   const repo = new MediaRepo()
   if (!request.files || Object.keys(request.files).length === 0 ||
-  !request.files.filepond || Object.keys(request.files.filepond).length === 0) {
+    !request.files.filepond || Object.keys(request.files.filepond).length === 0) {
     return response.status(400).send({ code: 400, error: 'No files were uploaded.' })
   }
 
   try {
     const filesOrFile = request.files.filepond
     if (Array.isArray(filesOrFile)) {
-    // const arr = filesOrFile
-    // todo multi upload support
+      // const arr = filesOrFile
+      // todo multi upload support
     } else {
       const file: UploadedFileExtended = filesOrFile as UploadedFileExtended
       console.log('FILE', file)
@@ -54,13 +56,13 @@ export async function processUpload(request: Request, response: Response) {
           await repo.delete(id)
         }
         filepreview.generate(
-        filePath,
-        thumbPath, (error: any) => {
-          if (error) {
-            return console.log(error)
-          }
-          console.log('File preview is' + thumbPath)
-        })
+          filePath,
+          thumbPath, (error: any) => {
+            if (error) {
+              return console.log(error)
+            }
+            console.log('File preview is' + thumbPath)
+          })
         return response.send(id)
       })
     }
@@ -75,11 +77,11 @@ export async function editMedia(request: Request, response: Response) {
     const repo = new MediaRepo()
     console.log('Media edit request', request.body)
     const id = request.params.mediaId
-    const media = await repo.get(id)
+    const media = await repo.getModelWithExperiences(id)
     if (media === null) {
       return response.status(404).json({ error: 'Media item not found' })
     }
-    if (!checkOwner(request, media)) {
+    if (!checkOwner(request, media) && !isCollaboratingOnAnExperience(request, media)) {
       return response.status(401).json(
         { error: 'You do not have permission to edit this Media Item' })
     }
@@ -105,6 +107,20 @@ export async function editMedia(request: Request, response: Response) {
   } catch (e) {
     return response.status(500).json({ code: 500, error: e })
   }
+}
+
+export async function isCollaboratingOnAnExperience(
+  request: Request,
+  media: MediaModel,
+): Promise<boolean> {
+  console.log('Checking collaborator')
+  const exps = (media.associatedExperiences as any) as ExperienceData[]
+  // Allow the experience owner or any collaborator to edit this media item
+  return exps.find(
+    exp => request.user._id === exp.ownerId || (
+      exp.collaborators !== undefined && exp.collaborators.includes(request.user._id)
+    ) !== undefined,
+  ) !== undefined
 }
 
 export async function deleteMedia(request: Request, response: Response) {

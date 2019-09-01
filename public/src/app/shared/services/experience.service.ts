@@ -39,6 +39,12 @@ export class ExperienceService {
     return this.selectedExperienceObservable.asObservable()
   }
 
+  getSelectedExperienceObj(): ExperienceData {
+    return {
+      ...this.selectedExperience,
+    }
+  }
+
   getSelectedExperienceId(): string | undefined {
     if (this.selectedExperience) {
       return this.selectedExperience._id

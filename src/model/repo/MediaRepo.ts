@@ -1,5 +1,6 @@
 import { MediaDocument } from '@common/media'
 import Media = require('../schema/Media')
+import { MediaModel } from '../repo/MediaModel'
 
 export class MediaRepo {
 
@@ -17,6 +18,11 @@ export class MediaRepo {
       return res.toJSON()
     }
     return null
+  }
+
+  public async getModelWithExperiences(mediaId: string): Promise<MediaModel | null> {
+    const res = await Media.findById(mediaId).populate('associatedExperienes')
+    return res
   }
 
   public async getAllByUser(userId: string): Promise<MediaDocument[]> {

@@ -6,7 +6,7 @@
       <mat-select formControlName="experience">
         <mat-option value="All">All</mat-option>
         <ng-container *ngIf="($expName | async) as expName">
-          <mat-option value="expName">{{expName}}</mat-option>
+          <mat-option selected value="expName">{{expName}}</mat-option>
         </ng-container>
       </mat-select>
     </mat-form-field>

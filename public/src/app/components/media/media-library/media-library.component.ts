@@ -7,7 +7,7 @@ import { MediaAddComponent } from '../media-add/media-add.component'
 import { MediaEditComponent } from '../media-edit/media-edit.component'
 import { MediaEditTextComponent } from '../media-edit-text/media-edit-text.component'
 import { ExperienceService } from '@services/experience.service'
-import { map } from 'rxjs/operators'
+import { map, tap } from 'rxjs/operators'
 import { Observable, merge } from 'rxjs'
 
 @Component({
@@ -58,6 +58,7 @@ export class MediaLibraryComponent implements OnInit {
     })
     this.$expName = this.experienceService.getSelectedExperience().pipe(
       map(exp => exp ? exp.name : undefined),
+      tap(expName => this.filterForm.get('experience').setValue(expName)),
     )
   }
 
