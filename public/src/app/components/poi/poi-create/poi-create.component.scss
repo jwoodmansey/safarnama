@@ -2,8 +2,14 @@
   padding: 16px;
 }
 
-.create-button {
-  display: block;
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .create-button {
+    display: block;
+  }
 }
 
 mcc-color-picker {

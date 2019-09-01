@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { ExperienceService } from '@services/experience.service'
 import { PoiService } from '@services/poi.service'
 import { of, Subscription } from 'rxjs'
-import { flatMap } from 'rxjs/operators'
+import { flatMap, take } from 'rxjs/operators'
 import { MatSnackBar, MatDialog } from '@angular/material'
 import { CreatingPointOfInterest, PointOfInterest } from '@models/place'
 import { PlaceTypeService } from '@services/place-type.service'
@@ -165,6 +165,26 @@ export class PoiCreateComponent implements OnInit, OnDestroy {
   compareFn(t1: PlaceType, t2: PlaceType): boolean {
     return t1 !== undefined && t2 !== undefined
       ? t1._id === t2._id || t1.name === t2.name : t1 === t2
+  }
+
+  deletePlace(): void {
+    if (!this.editingPoi) {
+      throw new Error('Must be editing to delete')
+    }
+    // tslint:disable-next-line:max-line-length
+    if (confirm('Are you sure you want to delete this place? Any associated media will be kept in your media library.')) {
+      this.poiService.deletePoi(
+        this.editingPoi.id,
+      )
+      .pipe(
+        take(1),
+      ).subscribe(() => {
+        this.snackBar.open(this.editingPoi.name + ' deleted', undefined, {
+          duration: 5000,
+        })
+        this.router.navigate(['/'])
+      })
+    }
   }
 
   // openMediaAttacher(): void {
