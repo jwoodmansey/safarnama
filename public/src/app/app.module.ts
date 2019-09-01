@@ -69,6 +69,7 @@ import { AdminModule } from './admin/admin.module'
 import enGB from '@angular/common/locales/en-GB'
 import { registerLocaleData } from '@angular/common'
 import { CollaboratorsComponent } from './components/collaborators/collaborators.component'
+import { PrivacyComponent } from './pages/privacy/privacy.component'
 
 registerLocaleData(enGB)
 
@@ -103,6 +104,7 @@ registerPlugin(FilePondPluginImagePreview)
     TermsComponent,
     UserEditComponent,
     CollaboratorsComponent,
+    PrivacyComponent,
   ],
   entryComponents: [
     PromptExperienceDialogComponent,
