@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { createPlaceType, getAllMyPlaceTypes } from '../controllers/PlaceTypeController'
+import { createPlaceType, getAllMyPlaceTypes, deletePlaceType } from '../controllers/PlaceTypeController'
 
 /**
  * Place types are a way of categorising Places
@@ -20,7 +20,7 @@ export class PlaceTypeRouter {
      */
     this.router.get('/mine', getAllMyPlaceTypes)
 
-    this.router.delete('/:id')
+    this.router.delete('/:id', deletePlaceType)
 
     return this.router
   }

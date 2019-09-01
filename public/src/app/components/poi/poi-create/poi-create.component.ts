@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core'
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { ExperienceService } from '@services/experience.service'
 import { PoiService } from '@services/poi.service'
 import { of, Subscription } from 'rxjs'
 import { flatMap, take } from 'rxjs/operators'
-import { MatSnackBar, MatDialog } from '@angular/material'
+import { MatSnackBar, MatDialog, MatMenuTrigger } from '@angular/material'
 import { CreatingPointOfInterest, PointOfInterest } from '@models/place'
 import { PlaceTypeService } from '@services/place-type.service'
 import { PoiTypeLibraryComponent } from '../poi-type-library/poi-type-library.component'
@@ -18,6 +18,11 @@ import { Media } from '@models/media'
   styleUrls: ['./poi-create.component.scss'],
 })
 export class PoiCreateComponent implements OnInit, OnDestroy {
+
+  @ViewChild(MatMenuTrigger)
+  contextMenu: MatMenuTrigger
+
+  contextMenuPosition = { x: '0px', y: '0px' }
 
   public isEditing: boolean = false
   public paramsSubscription: Subscription
@@ -196,4 +201,20 @@ export class PoiCreateComponent implements OnInit, OnDestroy {
   //     },
   //   })
   // }
+  onContextMenu(event: MouseEvent, item: PlaceType): void {
+    // Cant delete default PlaceTypes
+    if (item._id) {
+      event.preventDefault()
+      this.contextMenuPosition.x = event.clientX + 'px'
+      this.contextMenuPosition.y = event.clientY + 'px'
+      this.contextMenu.menuData = { item }
+      this.contextMenu.openMenu()
+    }
+  }
+
+  deletePlaceType(item: PlaceType): void {
+    this.placeTypeService.delete(item._id).subscribe(() => {
+      this.types = this.types.filter(type => type._id !== item._id)
+    })
+  }
 }

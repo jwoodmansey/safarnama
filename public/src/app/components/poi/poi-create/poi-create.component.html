@@ -24,7 +24,7 @@
           <p>&nbsp;{{selectedType.name}}</p>
         </mat-select-trigger>
         <mat-option selected [disabled]="true">Choose a place type</mat-option>
-        <mat-option *ngFor="let type of types" [value]="type">
+        <mat-option *ngFor="let type of types" [value]="type" (contextmenu)="onContextMenu($event, type)">
           <mat-icon>{{type.matIcon}}</mat-icon>
           {{type.name}}
         </mat-option>
@@ -32,6 +32,14 @@
           Add new
         </button>
       </mat-select>
+      <div style="visibility: hidden; position: fixed" [style.left]="contextMenuPosition.x"
+        [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="contextMenu">
+      </div>
+      <mat-menu #contextMenu="matMenu">
+        <ng-template matMenuContent let-item="item">
+          <button mat-menu-item (click)="deletePlaceType(item)">Delete</button>
+        </ng-template>
+      </mat-menu>
     </mat-form-field>
     <mat-divider></mat-divider>
     <h4>Media</h4>

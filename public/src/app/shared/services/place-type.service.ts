@@ -78,4 +78,8 @@ export class PlaceTypeService {
         }),
       )
   }
+
+  public delete(id: string): Observable<any> {
+    return this.http.delete(`${this.PLACE_URL}/${id}`)
+  }
 }
