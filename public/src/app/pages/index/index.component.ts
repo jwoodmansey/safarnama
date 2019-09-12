@@ -76,7 +76,6 @@ export class IndexComponent implements OnInit, AfterContentInit {
       tap(poi => console.log('editing poi', poi)),
     )
     this.$isEditingRoute = this.routeEditorService.isEditingRoute()
-    this.goToUsersLocation()
   }
 
   ngAfterContentInit(): void {
@@ -86,6 +85,10 @@ export class IndexComponent implements OnInit, AfterContentInit {
       this.poiService.getAll().subscribe(allPois => {
         console.log('All poi array updated', allPois)
         this.pointsOfInterest = allPois
+
+        if (this.pointsOfInterest.length === 0) {
+          this.goToUsersLocation()
+        }
       })
       this.routeService.getAll().subscribe(allRoutes => {
         console.log('All route array updated', allRoutes)

@@ -42,7 +42,8 @@ export class MediaAddComponent implements OnInit, OnDestroy {
     dropOnPage: true,
     dropOnElement: false,
     labelIdle: 'Drop files here, or click to upload',
-    acceptedFileTypes: 'image/jpeg, image/png, application/pdf, text/plain, audio/mpeg, video/mp4',
+    // tslint:disable-next-line:max-line-length
+    acceptedFileTypes: 'image/jpeg, image/png, application/pdf, text/plain, audio/mpeg, audio/mp3, video/mp4',
     server: {
       url: './api/media',
       process: {
