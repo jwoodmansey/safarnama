@@ -1,6 +1,6 @@
 import { ExperienceData, ExperienceSnapshotData } from '@common/experience'
 import Experience = require('../schema/Experience')
-import { ExperienceModel } from './ExperienceModel'
+import { ExperienceModel, ExperienceSnapshotModel } from './ExperienceModel'
 import ExperienceSnapshot = require('../schema/ExperienceSnapshot')
 import { ObjectID } from 'bson'
 
@@ -40,8 +40,8 @@ export class ExperienceRepo {
     return res
   }
 
-  public async getAllSnapshots() {
-    const res = await ExperienceSnapshot.aggregate([
+  public async getAllSnapshots(featuredOnly = false) {
+    const query: any = [
       {
         $sort: {
           'metaData.version': -1,
@@ -63,7 +63,17 @@ export class ExperienceRepo {
             $first: '$metaData',
           },
         },
-      }]).exec()
+      },
+    ]
+    if (featuredOnly) {
+      query.push({
+        $match: {
+          'metaData.featured': true,
+        },
+      })
+    }
+
+    const res = await ExperienceSnapshot.aggregate(query).exec()
     return res
   }
 
@@ -74,13 +84,19 @@ export class ExperienceRepo {
 
   public async getLatestSnapshotByExperienceId(id: string): Promise<ExperienceSnapshotData | null> {
     console.log('EXPERIENCE REPO: getLatestSnapshotByExperienceId', id)
+    const latest = await this.getLatestSnapshotModelByExperienceId(id)
+    return latest ? latest.toObject() : null
+  }
+
+  public async getLatestSnapshotModelByExperienceId(id: string):
+    Promise<ExperienceSnapshotModel | null> {
     const snapshot = await ExperienceSnapshot.find({
-      'data._id': new ObjectID(id),
-    }).sort({
-      'metaData.version': 'desc',
-    }).limit(1)
+        'data._id': new ObjectID(id),
+      }).sort({
+        'metaData.version': 'desc',
+      }).limit(1)
     if (snapshot !== null && snapshot.length > 0) {
-      return snapshot[0].toObject()
+      return snapshot[0]
     }
     return null
   }

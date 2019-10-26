@@ -19,7 +19,15 @@ export class AdminService {
     return this.http.get<UserData[]>(`${this.url}/users`)
   }
 
+  // TODO define types for experience snapshots
   getPublishedExperiences(): Observable<any[]> {
     return this.http.get<any[]>(`${this.url}/published-experiences`)
+  }
+
+  setAsExperienceAsFeatured(experienceId: string, feature: boolean = true): Observable<any> {
+    if (feature) {
+      return this.http.post<any>(`${this.url}/published-experiences/${experienceId}/feature`, null)
+    }
+    return this.http.delete<any>(`${this.url}/published-experiences/${experienceId}/feature`)
   }
 }

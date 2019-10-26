@@ -18,6 +18,11 @@ export async function getAllMyExperienceData(request: Request, response: Respons
   return response.json(responseJson)
 }
 
+export async function getAllFeaturedExperiences(_request: Request, response: Response) {
+  const repo = new ExperienceRepo()
+  return response.json(repo.getAllSnapshots(true))
+}
+
 async function populateExperienceData(experience: ExperienceData): Promise<ExperienceData> {
   // can we use a populate on the get?
   const placeRepo = new PointOfInterestRepo()

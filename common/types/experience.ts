@@ -31,6 +31,7 @@ export type MetaData = {
   created_at: Date,
   shortLink?: string,
   ownerPublicProfile: PublicProfile,
+  featured?: boolean,
 }
 
 export type PublicProfile = {

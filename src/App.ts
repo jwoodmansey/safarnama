@@ -170,7 +170,7 @@ app.use(fileUpload({
 
 app.use('/api/auth/', new AuthenticationRouter().getRouter())
 app.use('/api/experience', new ExperienceRouter().getRouter())
-app.use('/api/experiences', ensureAuthenticated(), new ExperiencesRouter().getRouter())
+app.use('/api/experiences', new ExperiencesRouter().getRouter())
 app.use('/api/point-of-interest', ensureAuthenticated(), new PointOfInterestRouter().getRouter())
 app.use('/api/route', ensureAuthenticated(), new RouteRouter().getRouter())
 app.use('/api/user', ensureAuthenticated(), new UserRouter().getRouter())
