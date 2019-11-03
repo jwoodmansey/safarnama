@@ -1,38 +1,17 @@
-# typescript-express-passportjs
-ExpressJS template project uses TypeScript, Moongose, Continuous Integration [CircleCI.io](https://circleci.com/) and Code Coverage [CodeCov.io](https://codecov.io)
+# Safarnama 
+Safarnama is a platform for creating, publishing, and exploring cultural heritage experiences. 
 
-[![codecov](https://codecov.io/gh/thanhtruong0315/typescript-express-passportjs/branch/master/graph/badge.svg)](https://codecov.io/gh/thanhtruong0315/typescript-express-passportjs)
-[![CircleCI](https://circleci.com/gh/thanhtruong0315/typescript-express-passportjs/tree/master.svg?style=shield)](https://circleci.com/gh/thanhtruong0315/typescript-express-passportjs/tree/master)
+## Creating experiences 
+Users can create and publish experiences using the authoring application, documentation for this can be found here.
 
-### Node.js version >= 4.0
-### Typescript@2.0.7 
+## Viewing experiences
+Users can view experiences using the Android App, documentation for this can be found here. 
 
-Run npm install:
-```shell
-npm install -g typescript nodemon mocha nyc codecov
-npm install
-```
+## API
+The API is written with Node.js and Typescript using an Express router. It follows a simple layered architecture of Router -> Controller -> Data access repo. Mongoose is used for accessing MongoDB and Passport.js for authentication. 
 
-Test:
-```shell
-npm test
-```
-
-Start Server:
-```shell
-cd src
-node App.js
-```
-
-How to change mongodb database URL
-* Open [src/Services/Database](https://github.com/thanhtruong0315/typescript-express-passportjs/blob/master/src/Services/Database.ts)
-* Change URL
-```
-mongoose.connect('<YOUR-DATABASE-URL>');
-```
-Generate Secret Key in *Config* folder.
-=============
-```
-$ ssh-keygen
-$ openssl rsa -in private_key_filename -pubout -outform PEM -out public_key_output_filename
-```
+### TODO
+* Better layering on the API. The controllers, should not have any dependency on Express or the req/res params. 
+* Cleaner error handling. 
+* Clean up the App.ts, this can be separated into initialisation files.
+* Unit testing.
