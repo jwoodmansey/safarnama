@@ -82,7 +82,8 @@ export class ExperienceRepo {
     return Experience.findById(id)
   }
 
-  public async getLatestSnapshotByExperienceId(id: string): Promise<ExperienceSnapshotData | null> {
+  public async getLatestSnapshotByExperienceId(id: string):
+    Promise<ExperienceSnapshotData | null> {
     console.log('EXPERIENCE REPO: getLatestSnapshotByExperienceId', id)
     const latest = await this.getLatestSnapshotModelByExperienceId(id)
     return latest ? latest.toObject() : null
@@ -91,10 +92,10 @@ export class ExperienceRepo {
   public async getLatestSnapshotModelByExperienceId(id: string):
     Promise<ExperienceSnapshotModel | null> {
     const snapshot = await ExperienceSnapshot.find({
-        'data._id': new ObjectID(id),
-      }).sort({
-        'metaData.version': 'desc',
-      }).limit(1)
+      'data._id': new ObjectID(id),
+    }).sort({
+      'metaData.version': 'desc',
+    }).limit(1)
     if (snapshot !== null && snapshot.length > 0) {
       return snapshot[0]
     }

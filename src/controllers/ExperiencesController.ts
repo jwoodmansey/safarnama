@@ -20,7 +20,8 @@ export async function getAllMyExperienceData(request: Request, response: Respons
 
 export async function getAllFeaturedExperiences(_request: Request, response: Response) {
   const repo = new ExperienceRepo()
-  return response.json(repo.getAllSnapshots(true))
+  const exps = await repo.getAllSnapshots(true)
+  return response.json(exps)
 }
 
 async function populateExperienceData(experience: ExperienceData): Promise<ExperienceData> {
