@@ -39,6 +39,7 @@ export class MediaRepo {
       acknowledgements?: string,
       description?: string,
       associatedExperiences?: string[],
+      externalLinks?: string[]
     }): Promise<MediaDocument> {
     console.log('MEDIA REPO: Delete', id)
     const model = await Media.findById(id)

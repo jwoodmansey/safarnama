@@ -12,4 +12,5 @@ export type MediaDocument = {
   description?: string,
   acknowledgements?: string,
   associatedExperiences?: string[],
+  externalLinks?: {name: string, url: string}[],
 }

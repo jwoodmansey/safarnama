@@ -66,6 +66,14 @@ export class Media {
     this.doc.acknowledgements = val
   }
 
+  set externalLinks(val: {name: string, url: string}[] | undefined) {
+    this.doc.externalLinks = val
+  }
+
+  get externalLinks() {
+    return this.doc.externalLinks
+  }
+
   get createdAt(): Date | undefined {
     return new Date(this.doc.created_at)
   }

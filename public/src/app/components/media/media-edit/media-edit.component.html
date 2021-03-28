@@ -14,6 +14,28 @@
         <textarea matInput cdkTextareaAutosize placeholder="Acknowledgements"
           formControlName="acknowledgements"></textarea>
       </mat-form-field>
+      <div
+        formArrayName="externalLinks"
+        *ngFor="let item of form.get('externalLinks')['controls']; let i = index;"
+      >
+        <mat-card [formGroupName]="i" class="external-link">
+          <mat-form-field>
+            <input matInput formControlName="name" placeholder="Name">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Url</mat-label>
+            <input matInput formControlName="url" placeholder="https://...">
+          </mat-form-field>
+          <button mat-icon-button color="warn" aria-label="Remove external link" type="button" (click)="removeExternalLink(i)" >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-card>
+      </div>
+
+      <button mat-button (click)="addExternalLink()" type="button">
+        Add external link
+      </button>
+      <mat-divider></mat-divider>
     </div>
   </div>
   <div mat-dialog-actions>

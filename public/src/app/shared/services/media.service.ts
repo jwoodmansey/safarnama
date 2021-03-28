@@ -62,7 +62,9 @@ export class MediaService {
       name: string,
       acknowledgements: string,
       description: string,
+      externalLinks: string[],
     }): Promise<MediaDocument> {
+    console.log('Media item edited', edit)
     return this.http.put<MediaDocument>(
       `${this.FILES_URL}/${id}`,
       edit,

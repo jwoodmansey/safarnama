@@ -15,6 +15,16 @@ export = mongoose.model<MediaModel>('Media', new mongoose.Schema({
   associatedExperiences: [{
     type: mongoose.Schema.Types.ObjectId, ref: 'Experience', required: false,
   }],
+  externalLinks: [{
+    name: {
+      type: String,
+      required: true
+    },
+    url: {
+      type: String,
+      required: true
+    }, 
+  }]
   // geo: {
   //   type: {
   //     type: String,
