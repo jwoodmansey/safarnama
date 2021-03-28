@@ -2,6 +2,7 @@ import { Component, OnInit, OnChanges, ViewChild, ElementRef } from '@angular/co
 import { RouteEditorService, EditingRoute } from '@services/editors/route-editor.service'
 import { Observable } from 'rxjs'
 import { AgmPolyline } from '@agm/core'
+import { tap } from 'rxjs/operators'
 
 @Component({
   selector: 'app-route-editor',
@@ -17,8 +18,9 @@ export class RouteEditorComponent implements OnInit, OnChanges {
   constructor(private routeEditorService: RouteEditorService) { }
 
   ngOnInit(): void {
-    this.$route = this.routeEditorService.getRoute()
-    console.log(this.lineRef.nativeElement.points)
+    this.$route = this.routeEditorService.getRoute().pipe((tap((r) => console.log('Got route', r))))
+    // console.log(this.lineRef.nativeElement.points)
+    console.log('ROUTEDITOR')
   }
 
   ngOnChanges(): void {
@@ -27,5 +29,9 @@ export class RouteEditorComponent implements OnInit, OnChanges {
 
   public lineDragEnd($event): void {
     console.log($event)
+  }
+
+  public pointsChanged($event): void {
+    console.log('event')
   }
 }

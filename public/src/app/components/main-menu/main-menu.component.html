@@ -35,11 +35,6 @@
       <span>View all</span>
     </button>
   </mat-menu>
-  <ng-container *ngIf="isExperienceMine | async">
-    <mat-divider></mat-divider>
-    <a mat-list-item href="javascript:void(0)" (click)="publish()">Publish</a>
-  </ng-container>
-  <!-- <a mat-list-item href="javascript:void(0)" [matMenuTriggerFor]="route">Routes</a>
   <mat-menu #route="matMenu">
     <button [disabled]="!isExperienceOpen" [routerLink]="['/route/create']" mat-menu-item>
       <mat-icon>navigation</mat-icon>
@@ -49,7 +44,13 @@
       <mat-icon>view_list</mat-icon>
       <span>View all</span>
     </button>
-  </mat-menu> -->
+  </mat-menu>
+  <!-- <mat-divider></mat-divider>
+  <a mat-list-item href="javascript:void(0)" [matMenuTriggerFor]="route">Routes</a>
+  <ng-container *ngIf="isExperienceMine | async">
+    <mat-divider></mat-divider>
+    <a mat-list-item href="javascript:void(0)" (click)="publish()">Publish</a>
+  </ng-container> -->
   <mat-divider></mat-divider>
   <a mat-list-item href="javascript:void(0)" (click)="viewMediaLibrary()">Media Library</a>
   <mat-divider></mat-divider>

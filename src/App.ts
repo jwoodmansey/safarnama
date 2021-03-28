@@ -176,13 +176,13 @@ app.use('/api/route', ensureAuthenticated(), new RouteRouter().getRouter())
 app.use('/api/user', ensureAuthenticated(), new UserRouter().getRouter())
 app.use('/api/media', ensureAuthenticated(), new MediaRouter().getRouter())
 app.use('/api/admin', ensureAuthenticated(), new AdminRouter().getRouter())
-app.use('/api/storage/media', express.static('media'))
+app.use('/api/storage/media', express.static('media') as any)
 
 app.use('/api/place-types', ensureAuthenticated(), new PlaceTypeRouter().getRouter())
 
 const sslConfig: any = (environment as any).ssl
 if (sslConfig) {
-  app.use('/', express.static('public/dist/safarnama'))
+  app.use('/', express.static('public/dist/safarnama') as any)
 
   app.use('/*', (_req, res) => {
     res.sendFile('index.html', { root: 'public/dist/safarnama' })

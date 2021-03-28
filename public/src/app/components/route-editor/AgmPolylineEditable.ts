@@ -18,6 +18,7 @@ export class AgmPolylineEditableDirective extends AgmPolyline implements AfterCo
 
   public ngAfterContentInit(): void {
     this.initEventListners()
+    super.ngAfterContentInit()
   }
 
   private initEventListners(): void {

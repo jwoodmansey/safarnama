@@ -5,6 +5,7 @@ import { MediaDocument } from '@common/media'
 import { map, flatMap, take, tap } from 'rxjs/operators'
 import { Media } from '@models/media'
 import { environment } from 'environments/environment'
+import { ExperienceService } from './experience.service'
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +21,7 @@ export class MediaService {
 
   constructor(
     private http: HttpClient,
+    private experienceService: ExperienceService,
   ) { }
 
   getAll(): Observable<Media[]> {
@@ -48,7 +50,7 @@ export class MediaService {
       reportProgress: true,
     }
     return this.http.post(
-      `${this.MEDIA_URL}/process`,
+      `${this.MEDIA_URL}/process?expId=${this.experienceService.getSelectedExperienceId()}`,
       formData,
       options,
     ).pipe(take(1)).toPromise()
