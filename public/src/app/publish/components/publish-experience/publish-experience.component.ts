@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core'
 import { ExperienceService } from '@services/experience.service'
 import { ExperienceSnapshotData } from '@common/experience'
 import { Subscription, combineLatest } from 'rxjs'
-import deepEqual = require('deep-equal')
+import deepEqual from 'deep-equal'
 import { MatDialogRef } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http'
 import { take } from 'rxjs/operators'

@@ -50,7 +50,7 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'download', loadChildren: './download/download.module#DownloadModule',
+    path: 'download', loadChildren: () => import('./download/download.module').then(m => m.DownloadModule),
   },
   {
     path: 'privacy',

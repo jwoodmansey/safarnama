@@ -9,7 +9,7 @@ import {
 import { FormControl } from "@angular/forms";
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { MatChipInputEvent } from "@angular/material/chips";
-import { MatDialog, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ExperienceData } from "@common/experience";
 import { AdminService } from "app/admin/shared/services/admin.service";
@@ -37,6 +37,7 @@ export class FeatureExperienceComponent implements OnInit {
   constructor(
     private adminService: AdminService,
     private dialog: MatDialog,
+    private dialogRef: MatDialogRef<FeatureExperienceComponent>,
     @Inject(MAT_DIALOG_DATA) public experience: ExperienceData,
     private snackBar: MatSnackBar
   ) {
@@ -91,6 +92,11 @@ export class FeatureExperienceComponent implements OnInit {
         );
         this.dialog.closeAll()
       });
+  }
+
+
+  close() {
+    this.dialogRef.close()
   }
 
   private _filter(value: string): string[] {
