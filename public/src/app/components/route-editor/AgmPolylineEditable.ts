@@ -25,7 +25,7 @@ export class AgmPolylineEditableDirective extends AgmPolyline implements AfterCo
 
   private initEventListners(): void {
     // tslint:disable-next-line:no-this-assignment
-    const self: any = this
+    // const self: any = this
 
     // const checkForPathsChange = () => {
     //   self.polylineManager._polylines
@@ -51,15 +51,15 @@ export class AgmPolylineEditableDirective extends AgmPolyline implements AfterCo
     //   .subscribe(checkForPathsChange)
   }
 
-  private convertToLatLngLiteral(array: any): LatLngLiteral[] {
-    const result: LatLngLiteral[] = []
-    for (const coords of array) {
-      result.push({
-        lat: coords.lat(),
-        lng: coords.lng(),
-      })
-    }
-    return result
-  }
+  // private convertToLatLngLiteral(array: any): LatLngLiteral[] {
+  //   const result: LatLngLiteral[] = []
+  //   for (const coords of array) {
+  //     result.push({
+  //       lat: coords.lat(),
+  //       lng: coords.lng(),
+  //     })
+  //   }
+  //   return result
+  // }
 
 }
