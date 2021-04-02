@@ -33,7 +33,7 @@ import { CreateExperienceDialogComponent }
   from './components/experience/create-experience-dialog/create-experience-dialog.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { PoiCreateComponent } from './components/poi/poi-create/poi-create.component'
-import { MccColorPickerModule } from 'material-community-components'
+import { MccColorPickerModule } from 'material-community-components/color-picker'
 import { MainMenuComponent } from './components/main-menu/main-menu.component'
 import { PoiViewAllComponent } from './components/poi/poi-view-all/poi-view-all.component'
 import { ExperienceEditComponent }
@@ -49,7 +49,6 @@ import * as FilePondPluginFileValidateType from 'filepond-plugin-file-validate-t
 import * as FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import { MediaEditComponent } from './components/media/media-edit/media-edit.component'
 import { MediaItemComponent } from './components/media/media-item/media-item.component'
-import { MediumEditorModule } from 'angular2-medium-editor'
 import { PoiTypeLibraryComponent }
   from '@components/poi/poi-type-library/poi-type-library.component'
 import { SafePipe } from './shared/pipes/safe.pipe'
@@ -71,6 +70,7 @@ import enGB from '@angular/common/locales/en-GB'
 import { registerLocaleData } from '@angular/common'
 import { CollaboratorsComponent } from './components/collaborators/collaborators.component'
 import { PrivacyComponent } from './pages/privacy/privacy.component'
+import { QuillModule } from 'ngx-quill'
 
 registerLocaleData(enGB)
 
@@ -125,7 +125,14 @@ registerPlugin(FilePondPluginImagePreview)
     MatSortModule,
     PublishModule,
     AdminModule,
-    MediumEditorModule,
+    QuillModule.forRoot({
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ 'header': [1, 2, 3] }],
+        ]
+      }
+    }),
     MatListModule,
     MatGridListModule,
     MatProgressSpinnerModule,

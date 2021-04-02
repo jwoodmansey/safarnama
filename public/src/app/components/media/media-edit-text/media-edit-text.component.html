@@ -1,17 +1,16 @@
 <h1 mat-dialog-title>{{mediaItem ? 'Edit':'Create'}} Text</h1>
-<!-- <form [formGroup]="form" (ngSubmit)="submit()"> -->
+<form [formGroup]="form" >
 <div class="content" mat-dialog-content>
   <p>Type your text below, highlight text for formatting options</p>
-  <medium-editor [(editorModel)]="textVar"
-    [editorOptions]="{'toolbar': {'buttons': ['bold', 'italic', 'underline', 'h1', 'h2', 'h3']}}"></medium-editor>
+  <quill-editor formControlName="html" format="html" theme="snow"></quill-editor>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="close()">Cancel</button>
-  <button *ngIf="!mediaItem; else editing" [disabled]="textVar === undefined || textVar.length === 0" mat-button
+  <button *ngIf="!mediaItem; else editing" [disabled]="!form.valid" mat-button
     class="mat-primary" (click)="done()" cdkFocusInitial>Save</button>
   <ng-template #editing>
-    <button mat-button class="mat-primary" [disabled]="textVar === undefined || textVar.length === 0" (click)="edit()"
+    <button mat-button class="mat-primary" [disabled]="!form.valid" (click)="edit()"
       cdkFocusInitial>Save</button>
   </ng-template>
 </div>
-<!-- </form> -->
+</form>

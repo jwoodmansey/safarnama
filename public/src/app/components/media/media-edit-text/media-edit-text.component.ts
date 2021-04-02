@@ -4,6 +4,7 @@ import { Media } from '@models/media'
 import { MediaService } from '@services/media.service'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { take } from 'rxjs/operators'
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-media-edit-text',
@@ -14,12 +15,16 @@ export class MediaEditTextComponent implements OnInit {
 
   public textVar: any = ''
 
+  public form: FormGroup
+
   constructor(public dialogRef: MatDialogRef<MediaEditTextComponent>,
               @Inject(MAT_DIALOG_DATA) public mediaItem: Media,
               private http: HttpClient,
-              private mediaService: MediaService) { }
+              private mediaService: MediaService, 
+              private fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.form = this.fb.group({'html': new FormControl('', [Validators.required, Validators.minLength(1)])})
     if (this.mediaItem) {
       if (this.mediaItem.type !== 'Text') {
         alert('Error, cannot edit this media type as text')
@@ -32,6 +37,7 @@ export class MediaEditTextComponent implements OnInit {
           }).pipe(take(1)).subscribe(resp => {
             console.log('resp', resp)
             this.textVar = resp
+            this.form.setValue({html: resp})
           })
       }
     }
@@ -65,7 +71,7 @@ export class MediaEditTextComponent implements OnInit {
   }
 
   private getFile(): File {
-    return new File([this.textVar], 'text.html', {
+    return new File([this.form.get('html').value], 'text.html', {
       type: 'text/html',
     })
   }

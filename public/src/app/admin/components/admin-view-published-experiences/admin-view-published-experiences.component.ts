@@ -14,7 +14,7 @@ import { FeatureExperienceComponent } from '../feature-experience/feature-experi
 export class AdminViewPublishedExperiencesComponent implements OnInit, OnDestroy {
 
   public experiences: any[]
-  public data = new MatTableDataSource<any>(this.experiences)
+  public data = new MatTableDataSource<any>()
   // 'description',
   public displayedColumns: string[] = ['name', 'createdAt', 'version', 'shortLink',
     'owner', 'actions']

@@ -68,3 +68,7 @@ $saf-app-theme: mat-light-theme($saf-app-primary, $saf-app-accent);
 .mat-dialog-actions {
   justify-content: flex-end;
 }
+
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.bubble.css';
+@import '~quill/dist/quill.snow.css';
