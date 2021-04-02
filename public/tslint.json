@@ -17,6 +17,9 @@
     "arrow-parens": [
       false
     ],
+    "deprecation": {
+      "severity": "warning"
+    },
     "ter-arrow-parens": [
       true,
       "as-needed"
