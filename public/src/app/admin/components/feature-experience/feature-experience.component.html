@@ -1,0 +1,38 @@
+<h1 mat-dialog-title>Feature experience</h1>
+<form (ngSubmit)="submit()">
+  <div class="content" mat-dialog-content>
+    <div class="fields">
+      <p>Featuring an experience will display it in the list of featured experiences, in the mobile apps. Assign a tag to have it only show in specific apps.</p>
+      <mat-form-field class="chip-list">
+        <mat-label>Tags</mat-label>
+        <mat-chip-list #chipList aria-label="Tag selection">
+          <mat-chip
+            *ngFor="let tag of tags"
+            [selectable]="selectable"
+            [removable]="removable"
+            (removed)="remove(tag)">
+            {{tag}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input
+            placeholder="New tag..."
+            #fruitInput
+            [formControl]="tagCtrl"
+            [matAutocomplete]="auto"
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+          <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+            {{tag}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="close()">Cancel</button>
+    <button mat-button class="mat-primary" type="submit" cdkFocusInitial>Feature</button>
+  </div>
+</form>

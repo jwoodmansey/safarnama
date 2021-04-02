@@ -32,6 +32,9 @@ export async function setFeatured(request: Request, response: Response, featured
     return response.status(404).send()
   }
   experience.metaData.featured = featured
+  if (request.body.tags) {
+    experience.metaData.tags = request.body.tags
+  }
   const res = await experience.save()
   return response.json(res)
 }

@@ -24,9 +24,9 @@ export class AdminService {
     return this.http.get<any[]>(`${this.url}/published-experiences`)
   }
 
-  setAsExperienceAsFeatured(experienceId: string, feature: boolean = true): Observable<any> {
+  setAsExperienceAsFeatured(experienceId: string, feature: boolean = true, tags?: string[]): Observable<any> {
     if (feature) {
-      return this.http.post<any>(`${this.url}/published-experiences/${experienceId}/feature`, null)
+      return this.http.post<any>(`${this.url}/published-experiences/${experienceId}/feature`, {tags})
     }
     return this.http.delete<any>(`${this.url}/published-experiences/${experienceId}/feature`)
   }

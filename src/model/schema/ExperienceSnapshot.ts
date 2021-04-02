@@ -15,6 +15,7 @@ const ExperienceSnapshotSchema = new mongoose.Schema({
     size: { type: Number, default: 0 },
     shortLink: { type: String, required: false },
     featured: {  type: Boolean, required: false, default: false },
+    tags: [{type: String}],
     ownerPublicProfile: {
       required: false,
       id: {

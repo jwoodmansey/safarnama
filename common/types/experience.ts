@@ -32,6 +32,7 @@ export type MetaData = {
   shortLink?: string,
   ownerPublicProfile: PublicProfile,
   featured?: boolean,
+  tags?: string[]
 }
 
 export type PublicProfile = {
