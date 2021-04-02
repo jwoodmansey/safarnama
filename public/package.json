@@ -38,7 +38,7 @@
     "filepond-plugin-file-validate-type": "^1.2.3",
     "filepond-plugin-image-preview": "^4.0.4",
     "markerwithlabel": "^2.0.2",
-    "material-community-components": "^6.0.0",
+    "material-community-components": "^10.0.0",
     "medium-editor": "^5.23.3",
     "ngx-filepond": "^5.0.0",
     "rxjs": "~6.6.7",
