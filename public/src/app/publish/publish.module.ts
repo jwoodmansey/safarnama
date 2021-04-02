@@ -17,9 +17,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatDialogModule,
     MatProgressSpinnerModule,
   ],
-  entryComponents: [
-    PublishExperienceComponent,
-  ],
   exports: [
     PublishExperienceComponent,
   ],

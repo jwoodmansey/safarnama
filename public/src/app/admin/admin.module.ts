@@ -22,11 +22,6 @@ import { FeatureExperienceComponent } from './components/feature-experience/feat
     AdminViewPublishedExperiencesComponent,
     FeatureExperienceComponent,
   ],
-  entryComponents: [
-    AdminViewUsersComponent,
-    AdminViewPublishedExperiencesComponent,
-    FeatureExperienceComponent,
-  ],
   imports: [
     CommonModule,
     MatDialogModule,
