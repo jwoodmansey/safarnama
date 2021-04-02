@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MediaAddComponent } from './media-add.component';
 
@@ -6,7 +6,7 @@ describe('MediaAddComponent', () => {
   let component: MediaAddComponent;
   let fixture: ComponentFixture<MediaAddComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MediaAddComponent ]
     })

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing'
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing'
 
 import { PoiViewAllComponent } from './poi-view-all.component'
 
@@ -6,7 +6,7 @@ describe('PoiViewAllComponent', () => {
   let component: PoiViewAllComponent
   let fixture: ComponentFixture<PoiViewAllComponent>
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [PoiViewAllComponent],
     })
