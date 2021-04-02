@@ -7,14 +7,10 @@ import {
   ViewChild
 } from "@angular/core";
 import { FormControl } from "@angular/forms";
-import {
-  MatAutocomplete,
-  MatAutocompleteSelectedEvent,
-  MatChipInputEvent,
-  MatDialog,
-  MatSnackBar,
-  MAT_DIALOG_DATA
-} from "@angular/material";
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
+import { MatChipInputEvent } from "@angular/material/chips";
+import { MatDialog, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { ExperienceData } from "@common/experience";
 import { AdminService } from "app/admin/shared/services/admin.service";
 import { Observable } from "rxjs";

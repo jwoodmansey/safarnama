@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core'
-import { MatDialogRef } from '@angular/material'
+import { MatDialogRef } from '@angular/material/dialog';
 import { MediaService } from '@services/media.service'
 import { ExperienceService } from '@services/experience.service'
 

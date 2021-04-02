@@ -3,7 +3,7 @@ import { UserService } from '@services/user.service'
 import { FormBuilder, FormGroup } from '@angular/forms'
 import { Router } from '@angular/router'
 import { PublicProfile } from '@common/experience'
-import { MatSnackBar } from '@angular/material'
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-user-edit',

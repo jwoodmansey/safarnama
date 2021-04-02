@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { MatDialogRef, MatDialog } from '@angular/material'
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { TermsComponent } from '../../../pages/terms/terms.component'
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { MatDialogRef, MatDialog } from '@angular/material'
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { OpenExperienceDialogComponent } from
 '../open-experience-dialog/open-experience-dialog.component'
 import { CreateExperienceDialogComponent } from

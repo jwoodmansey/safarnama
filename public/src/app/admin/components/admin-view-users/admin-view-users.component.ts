@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
-import { MatTableDataSource } from '@angular/material'
+import { MatTableDataSource } from '@angular/material/table';
 import { UserData } from '@common/user'
 import { AdminService } from 'app/admin/shared/services/admin.service'
 import { Subscription } from 'rxjs'

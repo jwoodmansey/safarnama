@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { MatDialog, MatDialogRef } from '@angular/material'
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { PlaceTypeService } from '@services/place-type.service'
 import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { ICONS } from './icons'

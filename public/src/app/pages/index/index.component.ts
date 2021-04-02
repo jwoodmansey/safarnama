@@ -1,6 +1,6 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 import { Component, OnInit, AfterContentInit, NgZone } from '@angular/core'
-import { MatDialog } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog';
 import { ExperienceData } from '@common/experience'
 import { PromptExperienceDialogComponent } from
   '@components/experience/prompt-experience-dialog/prompt-experience-dialog.component'

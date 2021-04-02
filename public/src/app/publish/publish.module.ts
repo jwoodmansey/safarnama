@@ -4,7 +4,9 @@ import { QRCodeModule } from 'angularx-qrcode'
 import {
   PublishExperienceComponent,
 } from './components/publish-experience/publish-experience.component'
-import { MatButtonModule, MatDialogModule, MatProgressSpinnerModule } from '@angular/material'
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [PublishExperienceComponent],

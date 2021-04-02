@@ -5,7 +5,9 @@ import { ExperienceService } from '@services/experience.service'
 import { PoiService } from '@services/poi.service'
 import { of, Subscription } from 'rxjs'
 import { flatMap, take } from 'rxjs/operators'
-import { MatSnackBar, MatDialog, MatMenuTrigger } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CreatingPointOfInterest, PointOfInterest } from '@models/place'
 import { PlaceTypeService } from '@services/place-type.service'
 import { PoiTypeLibraryComponent } from '../poi-type-library/poi-type-library.component'

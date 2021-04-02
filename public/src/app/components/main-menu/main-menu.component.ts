@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { MatDialog } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog';
 import { PoiViewAllComponent } from '@components/poi/poi-view-all/poi-view-all.component'
 import { MediaLibraryComponent } from '@components/media/media-library/media-library.component'
 import {

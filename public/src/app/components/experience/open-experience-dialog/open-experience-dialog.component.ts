@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { MatDialog, MatDialogRef } from '@angular/material'
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ExperienceData } from '@common/experience'
 import { ExperiencesService } from '@services/experiences.service'
 import { ExperienceService } from '@services/experience.service'

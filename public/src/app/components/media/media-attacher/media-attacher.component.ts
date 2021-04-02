@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { Media } from '@models/media'
-import { MatDialog } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog';
 import { MediaLibraryComponent } from '../media-library/media-library.component'
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop'
 import { MediaEditTextComponent } from '../media-edit-text/media-edit-text.component'

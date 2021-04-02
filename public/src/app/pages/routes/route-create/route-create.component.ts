@@ -8,7 +8,7 @@ import { LatLngLiteral } from '@agm/core'
 import { Subscription, of } from 'rxjs'
 import { flatMap, take } from 'rxjs/operators'
 import { ActivatedRoute, Router } from '@angular/router'
-import { MatSnackBar } from '@angular/material'
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-route-create',

@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
 import { AdminService } from 'app/admin/shared/services/admin.service'
 import { Subscription } from 'rxjs'
-import { MatTableDataSource, MatSnackBar, MatDialog } from '@angular/material'
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 import { FeatureExperienceComponent } from '../feature-experience/feature-experience.component'
 
 @Component({

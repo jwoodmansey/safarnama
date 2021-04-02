@@ -5,7 +5,9 @@ import { DownloadRoutingModule } from './download-routing.module'
 import {
   DownloadExperienceComponent,
 } from './components/download-experience/download-experience.component'
-import { MatStepperModule, MatIconModule, MatButtonModule } from '@angular/material'
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatStepperModule } from '@angular/material/stepper';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper'
 import { QRCodeModule } from 'angularx-qrcode';
 

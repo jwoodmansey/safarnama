@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core'
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Media } from '@models/media'
 import { MediaService } from '@services/media.service'
 
