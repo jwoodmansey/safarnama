@@ -28,7 +28,7 @@ export class RouteEditorComponent implements OnInit, OnChanges {
   }
 
   public lineDragEnd($event): void {
-    console.log($event)
+    console.log('Line drag end',$event)
   }
 
   public pointsChanged($event): void {

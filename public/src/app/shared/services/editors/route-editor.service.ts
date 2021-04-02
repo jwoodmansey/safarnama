@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core'
-import { LatLngLiteral } from '@agm/core'
 import { BehaviorSubject, Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { Route } from '@models/route'
+import { LatLngLiteral } from '@models/geo/LatLng'
 
 export class EditingRoute {
 

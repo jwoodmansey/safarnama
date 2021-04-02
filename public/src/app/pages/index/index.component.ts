@@ -1,4 +1,3 @@
-import { LatLngLiteral, MouseEvent } from '@agm/core'
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 import { Component, OnInit, AfterContentInit, NgZone } from '@angular/core'
 import { MatDialog } from '@angular/material'
@@ -17,6 +16,9 @@ import { RouteEditorService } from '@services/editors/route-editor.service'
 import { PointOfInterest, CreatingPointOfInterest } from '@models/place'
 import { RouteService } from '@services/route.service'
 import { Route } from '@models/route'
+import { LatLngLiteral } from '@models/geo/LatLng'
+
+type MouseEvent = {coords: LatLngLiteral}
 
 @Component({
   selector: 'app-index',

@@ -1,6 +1,6 @@
-import { LatLngLiteral } from '@agm/core'
 import { GeoEntity } from '@models/geo/GeoEntity'
 import { RouteDocument, Direction } from '@common/route'
+import { LatLngLiteral } from '@models/geo/LatLng'
 
 export class Route implements GeoEntity {
 

@@ -3,13 +3,11 @@
 
 
 "@agm/core@^1.0.0-beta.5":
-  version "1.0.0-beta.5"
-  resolved "https://registry.yarnpkg.com/@agm/core/-/core-1.0.0-beta.5.tgz#6dbceb666b2dbc4a868b97e1340a3faceb5f2113"
-
-"@ajqua/marker-with-label@^1.0.0-beta.4d":
-  version "1.0.0-beta.4d"
-  resolved "https://registry.yarnpkg.com/@ajqua/marker-with-label/-/marker-with-label-1.0.0-beta.4d.tgz#0c1f9a31fda3c6cf0e653c8696dd50b15ba87a30"
-  integrity sha512-KZYhhya+nFXnMwhRfGGhc09Ao6vFIGYGg1axhnApxb8dD40NVXxtVfZDL6Rmzo8yeELebT+S5fOutQZ/XDQQNQ==
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@agm/core/-/core-1.1.0.tgz#6f8dcbac068f681fe4fa9b0a0cbf660588025911"
+  integrity sha512-cMvmm3+3/uuVFurLv1FKhE0/6ssIlDvYBjQFCi8ELg7h0OY2MkIU1MXWr7z+f/xZ08E936I4eeddni6k4yUTIA==
+  dependencies:
+    tslib "^1.9.0"
 
 "@angular-devkit/architect@0.10.7":
   version "0.10.7"
@@ -3978,10 +3976,10 @@ markerwithlabel@^2.0.2:
   resolved "https://registry.yarnpkg.com/markerwithlabel/-/markerwithlabel-2.0.2.tgz#fa6aee4abb0ee553e24e2b708226858f58b8729e"
   integrity sha512-C/cbm1A0h/u54gwHk5ZJNdUU3V3+1BbCpRPMsMyFA7vF4yL+aB4rWpxACz29TpQ+cTg6/iQroExh0PMSRGtQFg==
 
-material-community-components@^3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/material-community-components/-/material-community-components-3.4.0.tgz#bf2986de6f6f840ddf6e19a4c700d437708a91bc"
-  integrity sha512-YgYew8MIw3Teo1VTfQfiANX+LjdFqzuKRdcSytyKh3dslUAald/5J+0C17vgs/EGzQ6xuG60OVM9sJuHuJSNJA==
+material-community-components@^5.0.0:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/material-community-components/-/material-community-components-5.0.1.tgz#842fdc14534ad03f8b0fbc6b71b66bf1930c5da3"
+  integrity sha512-DQsBaQMm487r5/8OcRVtCN3t9MuE0jFaOtS/RBKNHVBzu6lj1xqNwMGb8SgcmyR6pzIidVLJj1FrAtA/mEXIYg==
   dependencies:
     tslib "^1.9.0"
 
