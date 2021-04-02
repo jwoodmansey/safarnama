@@ -4,11 +4,11 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { RouteService } from '@services/route.service'
 import { Route } from '@models/route'
 import { ExperienceService } from '@services/experience.service'
-import { LatLngLiteral } from '@agm/core'
 import { Subscription, of } from 'rxjs'
 import { flatMap, take } from 'rxjs/operators'
 import { ActivatedRoute, Router } from '@angular/router'
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LatLngLiteral } from '@models/geo/LatLng'
 
 @Component({
   selector: 'app-route-create',

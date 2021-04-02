@@ -156,6 +156,7 @@ export class IndexComponent implements OnInit, AfterContentInit {
     })
   }
   mapClicked($event: MouseEvent): void {
+    console.log('mapClicked', $event)
     if (this.poiService.isCreatingPoi()) {
       this.poiService.setInitialLatLng($event.coords.lat, $event.coords.lng)
     } else if (this.routeEditorService.isEditingRoutePrimitive()) {
