@@ -32,7 +32,7 @@ export class MediaAddComponent implements OnInit, OnDestroy {
     this.mediaService.triggerRefresh()
   }
 
-  @ViewChild('myPond') myPond: any
+  @ViewChild('myPond', {static: true}) myPond: any
 
   pondFiles = []
 

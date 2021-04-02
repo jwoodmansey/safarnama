@@ -35,8 +35,8 @@ export class FeatureExperienceComponent implements OnInit {
   tags: string[] = [];
   allTags: string[] = ["Ports Past and Present", "Delhi"];
 
-  @ViewChild("tagInput") tagInput: ElementRef<HTMLInputElement>;
-  @ViewChild("auto") matAutocomplete: MatAutocomplete;
+  @ViewChild("tagInput", {static: true}) tagInput: ElementRef<HTMLInputElement>;
+  @ViewChild("auto", {static: true}) matAutocomplete: MatAutocomplete;
 
   constructor(
     private adminService: AdminService,

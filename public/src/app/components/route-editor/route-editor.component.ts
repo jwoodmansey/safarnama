@@ -11,7 +11,7 @@ import { tap } from 'rxjs/operators'
 })
 export class RouteEditorComponent implements OnInit, OnChanges {
 
-  @ViewChild('line')
+  @ViewChild('line', {static: true})
   public lineRef: ElementRef<AgmPolyline>
   public $route: Observable<EditingRoute>
 

@@ -14,7 +14,7 @@ export class PoiViewAllComponent implements OnInit {
   public pois: PointOfInterest[] = []
   public data = new MatTableDataSource<PointOfInterest>(this.pois)
   public displayedColumns: string[] = ['type', 'name', 'mediaItems', 'actions']
-  @ViewChild(MatSort) sort: MatSort
+  @ViewChild(MatSort, {static: true}) sort: MatSort
 
   constructor(
     public dialogRef: MatDialogRef<PoiViewAllComponent>,

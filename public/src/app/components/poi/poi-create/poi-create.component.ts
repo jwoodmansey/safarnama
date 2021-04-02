@@ -19,7 +19,7 @@ import { Media } from '@models/media'
 })
 export class PoiCreateComponent implements OnInit, OnDestroy {
 
-  @ViewChild(MatMenuTrigger)
+  @ViewChild(MatMenuTrigger, {static: true})
   contextMenu: MatMenuTrigger
 
   contextMenuPosition = { x: '0px', y: '0px' }
