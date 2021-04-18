@@ -8,7 +8,7 @@ import { LoginComponent } from '@components/user/login/login.component';
 import { LatLngLiteral } from '@models/geo/LatLng';
 import { CreatingPointOfInterest, PointOfInterest } from '@models/place';
 import { Route } from '@models/route';
-import { RouteEditorService } from '@services/editors/route-editor.service';
+import { EditingRoute, RouteEditorService } from '@services/editors/route-editor.service';
 import { ExperienceService } from '@services/experience.service';
 import { ExperiencesService } from '@services/experiences.service';
 import { MapService } from '@services/map.service';
@@ -34,7 +34,7 @@ export class IndexComponent implements OnInit, AfterContentInit {
 
   public $creatingPointOfInterest: Observable<CreatingPointOfInterest | undefined>
   public editingPoiId: string | undefined = undefined
-  public $isEditingRoute: any
+  public $editingRoute: Observable<EditingRoute | undefined>
   public editingRouteId: string | undefined = undefined
 
   public $lat: Observable<number> = this.mapService.getLat()
@@ -77,21 +77,7 @@ export class IndexComponent implements OnInit, AfterContentInit {
       }),
       tap(poi => console.log('editing poi', poi)),
     )
-    // this.$isEditingRoute = this.routeEditorService.getRoute().pipe(
-    //   tap((route) => {
-    //     console.log('editing route here', route)
-    //     this.editingRouteId = route?.route.id
-    //   })
-    // )
-    this.$isEditingRoute = this.routeEditorService.getRoute().subscribe((route) => {
-      console.log('EDITING ID', this.editingRouteId)
-      this.editingRouteId = route?.route?.id
-      console.log('EDITING ID', this.editingRouteId)
-    }, () => {
-      console.error('error')
-    }, () => {
-      console.log('complete')
-    })
+    this.$editingRoute = this.routeEditorService.getRoute()
   }
 
   ngAfterContentInit(): void {
@@ -242,36 +228,10 @@ export class IndexComponent implements OnInit, AfterContentInit {
     secondChild.style.backgroundPosition = '0 0'
     secondChild.style.backgroundRepeat = 'no-repeat'
     firstChild.appendChild(secondChild)
-
-    // new GoogleMapsAPIWrapper().getNativeMap()
-    // google.maps.event.addListener(map, 'center_changed', () => {
-    //   secondChild.style['background-position'] = '0 0'
-    // })
-
     firstChild.addEventListener('click', () => {
-      // const imgX = 0
-      // const animationInterval = setInterval(() => {
-      //   imgX = -imgX - 18
-      //   secondChild.style['background-position'] = imgX + 'px 0'
-      // },                                    500)
-
       if (navigator.geolocation) {
         this.goToUsersLocation()
-        // clearInterval(animationInterval)
-        // secondChild.style['background-position'] = '-144px 0'
-
-        // navigator.geolocation.getCurrentPosition(function (position) {
-        // tslint:disable-next-line:max-line-length
-        //   const latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
-        //   map.setCenter(latlng)
-        //   clearInterval(animationInterval)
-        //   secondChild.style['background-position'] = '-144px 0'
-        // })
       }
-      // else {
-        // clearInterval(animationInterval)
-        // secondChild.style['background-position'] = '0 0'
-      // }
     })
 
     // controlDiv = 1
