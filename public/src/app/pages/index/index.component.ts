@@ -12,7 +12,7 @@ import { map, tap } from 'rxjs/operators'
 import { ExperiencesService } from '@services/experiences.service'
 import { Router } from '@angular/router'
 import { MapService } from '@services/map.service'
-import { RouteEditorService } from '@services/editors/route-editor.service'
+import { EditingRoute, RouteEditorService } from '@services/editors/route-editor.service'
 import { PointOfInterest, CreatingPointOfInterest } from '@models/place'
 import { RouteService } from '@services/route.service'
 import { Route } from '@models/route'
@@ -35,7 +35,8 @@ export class IndexComponent implements OnInit, AfterContentInit {
 
   public $creatingPointOfInterest: Observable<CreatingPointOfInterest | undefined>
   public editingPoiId: string | undefined = undefined
-  public $isEditingRoute: Observable<boolean>
+  public $isEditingRoute: Observable<EditingRoute | undefined>
+  public editingRouteId: string | undefined = undefined
 
   public $lat: Observable<number> = this.mapService.getLat()
   public $lng: Observable<number> = this.mapService.getLng()
@@ -77,7 +78,21 @@ export class IndexComponent implements OnInit, AfterContentInit {
       }),
       tap(poi => console.log('editing poi', poi)),
     )
-    this.$isEditingRoute = this.routeEditorService.isEditingRoute()
+    // this.$isEditingRoute = this.routeEditorService.getRoute().pipe(
+    //   tap((route) => {
+    //     console.log('editing route here', route)
+    //     this.editingRouteId = route?.route.id
+    //   })
+    // )
+    this.routeEditorService.getRoute().subscribe((route) => {
+      console.log('EDITING ID', this.editingRouteId)
+      this.editingRouteId = route.route.id
+      console.log('EDITING ID', this.editingRouteId)
+    }, () => {
+      console.error('error')
+    }, () => {
+      console.log('complete')
+    })
   }
 
   ngAfterContentInit(): void {
@@ -193,8 +208,11 @@ export class IndexComponent implements OnInit, AfterContentInit {
     }
   }
 
-  mapReady($event): void {
-    this.addYourLocationButton($event)
+  mapReady(map): void {
+    // this.addYourLocationButton()
+    map.addListener('click', (e: any) => {
+      console.log(e.latLng.lat(), e.latLng.lng());
+  });
   }
 
   // This isnt yet working

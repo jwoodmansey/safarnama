@@ -4,6 +4,7 @@ import { PointOfInterestRepo } from '../model/repo/PointOfInterestRepo'
 import { loadRealPaths } from './MediaController'
 // import { RouteRepo } from '../model/repo/RouteRepo'
 import { Request, Response } from 'express'
+import { RouteRepo } from '../model/repo/RouteRepo'
 
 export async function getAllMyExperienceData(request: Request, response: Response) {
   const repo = new ExperienceRepo()
@@ -25,12 +26,9 @@ export async function getAllFeaturedExperiences(_request: Request, response: Res
 }
 
 async function populateExperienceData(experience: ExperienceData): Promise<ExperienceData> {
-  // can we use a populate on the get?
   const placeRepo = new PointOfInterestRepo()
-  // const routeRepo = new RouteRepo()
-
-  experience.pointOfInterests = []
-  experience.routes = []
+  const routeRepo = new RouteRepo()
+  experience.routes = [] = await routeRepo.getAllByExperience(experience._id)
   experience.pointOfInterests = await placeRepo.getAllByExperience(
         experience._id)
   experience.pointOfInterests.forEach((poi) => {
@@ -38,6 +36,5 @@ async function populateExperienceData(experience: ExperienceData): Promise<Exper
       poi.media = loadRealPaths(poi.media)
     }
   })
-  // experience.routes = await routeRepo.getAllByExperience(experience._id)
   return experience
 }

@@ -1,0 +1,5 @@
+<mat-card id="container" *ngIf="isEditingRoute | async">
+  <button mat-icon-button aria-label="Undo last point" (click)="undo()" [disabled]="(editingRoute | async)?.getPoints().length === 0">
+    <mat-icon>undo</mat-icon>
+  </button>
+</mat-card>

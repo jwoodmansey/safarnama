@@ -1,7 +1,13 @@
-<agm-polyline-editable *ngIf="($route | async) as route" #line [editable]="true" strokeColor="route.colour" (pointsChanged)="pointsChanged($event)" (lineDragEnd)="lineDragEnd($event)" [zIndex]="5">
-  <agm-polyline-point *ngFor="let point of route.points" [latitude]="point.lat" [longitude]="point.lng" >
-  </agm-polyline-point>
-</agm-polyline-editable>
+<ng-container  *ngIf="($route | async) as route">
+  <agm-polyline *ngIf="showLine" #line [editable]="false" (ngModelChange)="pointsChanged()" [strokeColor]="route.colour" (polyPathChange)="pointsChanged($event)" [zIndex]="5">
+    <agm-polyline-point *ngFor="let point of route.points" [latitude]="point.lat" [longitude]="point.lng" >
+    </agm-polyline-point>
+  </agm-polyline>
+  <agm-marker *ngIf="route.points[0]" [latitude]="route.points[0].lat" [longitude]="route.points[0].lng" [label]="{
+    color: 'white', text: 'flag', fontFamily: 'Material Icons'
+  }">
+  </agm-marker>
+</ng-container>
 <!-- <agm-polyline *ngIf="($route | async) as route" #line [editable]="true" strokeColor="route.colour"  [zIndex]="5">
   <agm-polyline-point *ngFor="let point of route.points" [latitude]="point.lat" [longitude]="point.lng">
   </agm-polyline-point>

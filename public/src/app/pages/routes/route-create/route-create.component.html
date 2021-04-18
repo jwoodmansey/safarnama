@@ -18,5 +18,7 @@
       </mat-form-field>
       <mat-divider></mat-divider>
       <button class="create-button" type="submit" [disabled]="!valid()" mat-raised-button>{{isEditingId ? 'Edit' : 'Create'}}</button>
+      <!-- <button *ngIf="isEditing" class="delete-button" type="button" (click)="deletePlace()" mat-button>Delete
+        place</button> -->
     </form>
   </div>

@@ -28,32 +28,26 @@
           </agm-circle>
         </ng-container>
       </ng-container>
-      <!-- <ng-container> -->
-      <app-route-editor *ngIf="($isEditingRoute | async)"></app-route-editor>
-      <!-- <agm-polyline [editable]="true">
-          <agm-polyline-point [latitude]="54" [longitude]="-2">
-          </agm-polyline-point>
-          <agm-polyline-point [latitude]="54" [longitude]="-2">
-          </agm-polyline-point>
-        </agm-polyline> -->
-      <!-- </ng-container> -->
+      <app-route-editor></app-route-editor>
       <ng-container *ngFor="let poi of pointsOfInterest; let i=index">
         <ng-container *ngIf="!editingPoiId || editingPoiId !== poi.id">
           <agm-marker [latitude]="poi.lat" [longitude]="poi.lng" (markerClick)="markerClicked(poi.id)"
             [agmFitBounds]="($creatingPointOfInterest | async) === undefined" [label]="{
               color: 'white', text: poi.placeType.matIcon, fontFamily: 'Material Icons'
             }"></agm-marker>
-          <!-- [fillColor]="poi.triggerZone.colour"  -->
           <agm-circle [radius]="poi.triggerZone.radius" [strokeColor]="'#000'" [strokeWeight]="1" [strokePosition]="0"
             [latitude]="poi.triggerZone.lat" [longitude]="poi.triggerZone.lng" [zIndex]="2">
           </agm-circle>
         </ng-container>
       </ng-container>
-      <agm-polyline *ngFor="let route of routes" [strokeColor]="route.colour" (lineClick)="lineClicked(route.id)">
-        <agm-polyline-point *ngFor="let point of route.points" [latitude]="point.lat" [longitude]="point.lng">
-        </agm-polyline-point>
-      </agm-polyline>
+      <ng-container *ngFor="let route of routes">
+        <agm-polyline *ngIf="!editingRouteId || editingRouteId !== route.id"  [strokeColor]="route.colour" (lineClick)="lineClicked(route.id)">
+          <agm-polyline-point *ngFor="let point of route.points" [latitude]="point.lat" [longitude]="point.lng">
+          </agm-polyline-point>
+        </agm-polyline>
+      </ng-container>
     </agm-map>
+    <app-route-toolbar></app-route-toolbar>
     <!-- Add Content Here -->
   </mat-sidenav-content>
 </mat-sidenav-container>

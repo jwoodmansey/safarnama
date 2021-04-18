@@ -70,7 +70,9 @@ import enGB from '@angular/common/locales/en-GB'
 import { registerLocaleData } from '@angular/common'
 import { CollaboratorsComponent } from './components/collaborators/collaborators.component'
 import { PrivacyComponent } from './pages/privacy/privacy.component'
-import { QuillModule } from 'ngx-quill'
+import { QuillModule } from 'ngx-quill';
+import { RouteViewAllComponent } from './components/route/route-view-all/route-view-all.component';
+import { RouteToolbarComponent } from './components/route/route-toolbar/route-toolbar.component'
 
 registerLocaleData(enGB)
 
@@ -106,6 +108,8 @@ registerPlugin(FilePondPluginImagePreview)
     UserEditComponent,
     CollaboratorsComponent,
     PrivacyComponent,
+    RouteViewAllComponent,
+    RouteToolbarComponent,
   ],
   imports: [
     BrowserModule,
