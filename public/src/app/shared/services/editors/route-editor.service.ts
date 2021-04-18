@@ -53,10 +53,13 @@ export class RouteEditorService {
   private editingRoute: EditingRoute | undefined
   private $editingRoute: BehaviorSubject<EditingRoute | undefined> = new BehaviorSubject(undefined)
 
-  constructor() { }
+  constructor() { 
+    console.error('DUPLICATE', this)
+  }
 
   public startEditing(route?: Route): void {
     this.editingRoute = new EditingRoute(route)
+    console.log('EDITING ROUTE', this.editingRoute)
     this.$editingRoute.next(this.editingRoute)
   }
 

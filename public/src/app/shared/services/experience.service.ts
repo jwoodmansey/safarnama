@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment'
 import { PoiService } from './poi.service'
 import { tap } from 'rxjs/operators'
 import { RouteService } from './route.service'
+import { RouteEditorService } from './editors/route-editor.service'
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,8 @@ export class ExperienceService {
 
   constructor(private http: HttpClient,
               private routeService: RouteService,
-              private poiService: PoiService) { }
+              private poiService: PoiService,
+              private routeEditorService: RouteEditorService) { }
 
   getExperience(id: string): Observable<ExperienceData> {
     return this.http.get<ExperienceData>(this.EXPERIENCE_URL, { withCredentials: true })
@@ -36,6 +38,7 @@ export class ExperienceService {
   }
 
   getSelectedExperience(): Observable<ExperienceData> {
+    this.routeEditorService.getRoute()
     return this.selectedExperienceObservable.asObservable()
   }
 

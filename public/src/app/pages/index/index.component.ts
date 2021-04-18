@@ -1,22 +1,21 @@
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
-import { Component, OnInit, AfterContentInit, NgZone } from '@angular/core'
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { AfterContentInit, Component, NgZone, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ExperienceData } from '@common/experience'
-import { PromptExperienceDialogComponent } from
-  '@components/experience/prompt-experience-dialog/prompt-experience-dialog.component'
-import { LoginComponent } from '@components/user/login/login.component'
-import { ExperienceService } from '@services/experience.service'
-import { PoiService } from '@services/poi.service'
-import { Observable } from 'rxjs'
-import { map, tap } from 'rxjs/operators'
-import { ExperiencesService } from '@services/experiences.service'
-import { Router } from '@angular/router'
-import { MapService } from '@services/map.service'
-import { EditingRoute, RouteEditorService } from '@services/editors/route-editor.service'
-import { PointOfInterest, CreatingPointOfInterest } from '@models/place'
-import { RouteService } from '@services/route.service'
-import { Route } from '@models/route'
-import { LatLngLiteral } from '@models/geo/LatLng'
+import { Router } from '@angular/router';
+import { ExperienceData } from '@common/experience';
+import { PromptExperienceDialogComponent } from '@components/experience/prompt-experience-dialog/prompt-experience-dialog.component';
+import { LoginComponent } from '@components/user/login/login.component';
+import { LatLngLiteral } from '@models/geo/LatLng';
+import { CreatingPointOfInterest, PointOfInterest } from '@models/place';
+import { Route } from '@models/route';
+import { RouteEditorService } from '@services/editors/route-editor.service';
+import { ExperienceService } from '@services/experience.service';
+import { ExperiencesService } from '@services/experiences.service';
+import { MapService } from '@services/map.service';
+import { PoiService } from '@services/poi.service';
+import { RouteService } from '@services/route.service';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 type MouseEvent = {coords: LatLngLiteral}
 
@@ -35,7 +34,7 @@ export class IndexComponent implements OnInit, AfterContentInit {
 
   public $creatingPointOfInterest: Observable<CreatingPointOfInterest | undefined>
   public editingPoiId: string | undefined = undefined
-  public $isEditingRoute: Observable<EditingRoute | undefined>
+  public $isEditingRoute: any
   public editingRouteId: string | undefined = undefined
 
   public $lat: Observable<number> = this.mapService.getLat()
@@ -84,9 +83,9 @@ export class IndexComponent implements OnInit, AfterContentInit {
     //     this.editingRouteId = route?.route.id
     //   })
     // )
-    this.routeEditorService.getRoute().subscribe((route) => {
+    this.$isEditingRoute = this.routeEditorService.getRoute().subscribe((route) => {
       console.log('EDITING ID', this.editingRouteId)
-      this.editingRouteId = route.route.id
+      this.editingRouteId = route?.route?.id
       console.log('EDITING ID', this.editingRouteId)
     }, () => {
       console.error('error')
