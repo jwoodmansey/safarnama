@@ -1,14 +1,14 @@
-<agm-polyline-editable *ngIf="($route | async) as route" #line [editable]="true" strokeColor="route.colour" (pointsChanged)="pointsChanged($event)" (lineDragEnd)="lineDragEnd($event)" [zIndex]="5">
-  <agm-polyline-point *ngFor="let point of route.points" [latitude]="point.lat" [longitude]="point.lng" >
-  </agm-polyline-point>
-</agm-polyline-editable>
-<!-- <agm-polyline *ngIf="($route | async) as route" #line [editable]="true" strokeColor="route.colour"  [zIndex]="5">
-  <agm-polyline-point *ngFor="let point of route.points" [latitude]="point.lat" [longitude]="point.lng">
-  </agm-polyline-point>
-</agm-polyline> -->
-
-<!-- <ng-container *ngIf="($route | async) as route">
-  <agm-marker [markerDraggable]="true"  *ngFor="let point of route.points"  
-  [latitude]="point.lat" [longitude]="point.lng" [agmFitBounds]="true"
-  (dragEnd)="dragEnd($event)" [zIndex]="5"></agm-marker>
-</ng-container> -->
+<ng-container  *ngIf="($route | async) as route">
+  <agm-polyline *ngIf="showLine" #line [editable]="false" (ngModelChange)="pointsChanged()" [strokeColor]="route.getColour()" (polyPathChange)="pointsChanged($event)" [zIndex]="5">
+    <agm-polyline-point *ngFor="let point of route.getPoints()" [latitude]="point.lat" [longitude]="point.lng" >
+    </agm-polyline-point>
+  </agm-polyline>
+  <agm-marker *ngIf="route.getPoints()[0] as firstPoint" [latitude]="firstPoint.lat" [longitude]="firstPoint.lng" [iconUrl] [label]="{
+    color: route.getColour(), text: 'outlined_flag', fontFamily: 'Material Icons'
+  }">
+  </agm-marker>
+  <agm-marker *ngIf="route.getPoints()[route.getPoints().length -1] as lastPoint" [latitude]="lastPoint.lat" [longitude]="lastPoint.lng" [label]="{
+    color: route.getColour(), text: 'flag', fontFamily: 'Material Icons'
+  }">
+  </agm-marker>
+</ng-container>

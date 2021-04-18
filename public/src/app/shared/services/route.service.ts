@@ -3,7 +3,7 @@ import { Route } from '@models/route'
 import { Observable, BehaviorSubject } from 'rxjs'
 import { environment } from 'environments/environment'
 import { HttpClient  } from '@angular/common/http'
-import { tap } from 'rxjs/operators'
+import { map, tap } from 'rxjs/operators'
 import { RouteDocument } from '@common/route'
 
 @Injectable({
@@ -62,7 +62,14 @@ export class RouteService {
   )
   }
 
-  public delete(routeId: string): void {
-    throw new Error('Stub')
+  public delete(routeId: string): Observable<boolean> {
+    return this.http.delete(`${this.ROUTE_URL}/${routeId}`).pipe(
+      map(() => true),
+      tap(() => {
+        const idx = this.allRoutes.findIndex(route => route.id === routeId)
+        this.allRoutes.splice(idx, 1)
+        this.allRoutesObservable.next(this.allRoutes)
+      })
+    )
   }
 }

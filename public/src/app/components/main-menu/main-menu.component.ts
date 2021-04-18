@@ -22,6 +22,7 @@ import {
   AdminViewPublishedExperiencesComponent,
 } from 'app/admin/components/admin-view-published-experiences/admin-view-published-experiences.component'
 import { CollaboratorsComponent } from '@components/collaborators/collaborators.component'
+import { RouteViewAllComponent } from '@components/route/route-view-all/route-view-all.component';
 
 @Component({
   selector: 'app-main-menu',
@@ -55,6 +56,13 @@ export class MainMenuComponent implements OnInit {
 
   viewAllPointsOfInterest(): void {
     this.dialog.open(PoiViewAllComponent, {
+      width: '800px',
+      disableClose: false,
+    })
+  }
+
+  viewAllRoutes(): void {
+    this.dialog.open(RouteViewAllComponent, {
       width: '800px',
       disableClose: false,
     })

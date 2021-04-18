@@ -1,22 +1,21 @@
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
-import { Component, OnInit, AfterContentInit, NgZone } from '@angular/core'
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { AfterContentInit, Component, NgZone, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ExperienceData } from '@common/experience'
-import { PromptExperienceDialogComponent } from
-  '@components/experience/prompt-experience-dialog/prompt-experience-dialog.component'
-import { LoginComponent } from '@components/user/login/login.component'
-import { ExperienceService } from '@services/experience.service'
-import { PoiService } from '@services/poi.service'
-import { Observable } from 'rxjs'
-import { map, tap } from 'rxjs/operators'
-import { ExperiencesService } from '@services/experiences.service'
-import { Router } from '@angular/router'
-import { MapService } from '@services/map.service'
-import { RouteEditorService } from '@services/editors/route-editor.service'
-import { PointOfInterest, CreatingPointOfInterest } from '@models/place'
-import { RouteService } from '@services/route.service'
-import { Route } from '@models/route'
-import { LatLngLiteral } from '@models/geo/LatLng'
+import { Router } from '@angular/router';
+import { ExperienceData } from '@common/experience';
+import { PromptExperienceDialogComponent } from '@components/experience/prompt-experience-dialog/prompt-experience-dialog.component';
+import { LoginComponent } from '@components/user/login/login.component';
+import { LatLngLiteral } from '@models/geo/LatLng';
+import { CreatingPointOfInterest, PointOfInterest } from '@models/place';
+import { Route } from '@models/route';
+import { EditingRoute, RouteEditorService } from '@services/editors/route-editor.service';
+import { ExperienceService } from '@services/experience.service';
+import { ExperiencesService } from '@services/experiences.service';
+import { MapService } from '@services/map.service';
+import { PoiService } from '@services/poi.service';
+import { RouteService } from '@services/route.service';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 type MouseEvent = {coords: LatLngLiteral}
 
@@ -35,7 +34,8 @@ export class IndexComponent implements OnInit, AfterContentInit {
 
   public $creatingPointOfInterest: Observable<CreatingPointOfInterest | undefined>
   public editingPoiId: string | undefined = undefined
-  public $isEditingRoute: Observable<boolean>
+  public $editingRoute: Observable<EditingRoute | undefined>
+  public editingRouteId: string | undefined = undefined
 
   public $lat: Observable<number> = this.mapService.getLat()
   public $lng: Observable<number> = this.mapService.getLng()
@@ -77,7 +77,7 @@ export class IndexComponent implements OnInit, AfterContentInit {
       }),
       tap(poi => console.log('editing poi', poi)),
     )
-    this.$isEditingRoute = this.routeEditorService.isEditingRoute()
+    this.$editingRoute = this.routeEditorService.getRoute()
   }
 
   ngAfterContentInit(): void {
@@ -193,8 +193,11 @@ export class IndexComponent implements OnInit, AfterContentInit {
     }
   }
 
-  mapReady($event): void {
-    this.addYourLocationButton($event)
+  mapReady(map): void {
+    // this.addYourLocationButton()
+    map.addListener('click', (e: any) => {
+      console.log(e.latLng.lat(), e.latLng.lng());
+  });
   }
 
   // This isnt yet working
@@ -225,36 +228,10 @@ export class IndexComponent implements OnInit, AfterContentInit {
     secondChild.style.backgroundPosition = '0 0'
     secondChild.style.backgroundRepeat = 'no-repeat'
     firstChild.appendChild(secondChild)
-
-    // new GoogleMapsAPIWrapper().getNativeMap()
-    // google.maps.event.addListener(map, 'center_changed', () => {
-    //   secondChild.style['background-position'] = '0 0'
-    // })
-
     firstChild.addEventListener('click', () => {
-      // const imgX = 0
-      // const animationInterval = setInterval(() => {
-      //   imgX = -imgX - 18
-      //   secondChild.style['background-position'] = imgX + 'px 0'
-      // },                                    500)
-
       if (navigator.geolocation) {
         this.goToUsersLocation()
-        // clearInterval(animationInterval)
-        // secondChild.style['background-position'] = '-144px 0'
-
-        // navigator.geolocation.getCurrentPosition(function (position) {
-        // tslint:disable-next-line:max-line-length
-        //   const latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
-        //   map.setCenter(latlng)
-        //   clearInterval(animationInterval)
-        //   secondChild.style['background-position'] = '-144px 0'
-        // })
       }
-      // else {
-        // clearInterval(animationInterval)
-        // secondChild.style['background-position'] = '0 0'
-      // }
     })
 
     // controlDiv = 1

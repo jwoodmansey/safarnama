@@ -14,6 +14,7 @@
     <agm-map (mapClick)="mapClicked($event)" style="height:100%;" [latitude]="$lat | async" [longitude]="$lng |async"
       [fitBounds]="pointsOfInterest !== undefined && pointsOfInterest.length > 0 && ($creatingPointOfInterest | async) === undefined"
       (mapReady)="mapReady($event)"
+      [clickableIcons]="false"
       [zoom]="$zoom | async">
       <ng-container *ngIf="($creatingPointOfInterest | async) as creatingPointOfInterest">
         <ng-container *ngIf="creatingPointOfInterest !== undefined">
@@ -28,32 +29,36 @@
           </agm-circle>
         </ng-container>
       </ng-container>
-      <!-- <ng-container> -->
-      <app-route-editor *ngIf="($isEditingRoute | async)"></app-route-editor>
-      <!-- <agm-polyline [editable]="true">
-          <agm-polyline-point [latitude]="54" [longitude]="-2">
-          </agm-polyline-point>
-          <agm-polyline-point [latitude]="54" [longitude]="-2">
-          </agm-polyline-point>
-        </agm-polyline> -->
-      <!-- </ng-container> -->
       <ng-container *ngFor="let poi of pointsOfInterest; let i=index">
         <ng-container *ngIf="!editingPoiId || editingPoiId !== poi.id">
           <agm-marker [latitude]="poi.lat" [longitude]="poi.lng" (markerClick)="markerClicked(poi.id)"
             [agmFitBounds]="($creatingPointOfInterest | async) === undefined" [label]="{
               color: 'white', text: poi.placeType.matIcon, fontFamily: 'Material Icons'
             }"></agm-marker>
-          <!-- [fillColor]="poi.triggerZone.colour"  -->
           <agm-circle [radius]="poi.triggerZone.radius" [strokeColor]="'#000'" [strokeWeight]="1" [strokePosition]="0"
             [latitude]="poi.triggerZone.lat" [longitude]="poi.triggerZone.lng" [zIndex]="2">
           </agm-circle>
         </ng-container>
       </ng-container>
-      <agm-polyline *ngFor="let route of routes" [strokeColor]="route.colour" (lineClick)="lineClicked(route.id)">
-        <agm-polyline-point *ngFor="let point of route.points" [latitude]="point.lat" [longitude]="point.lng">
-        </agm-polyline-point>
-      </agm-polyline>
+      <app-route-editor *ngIf="$editingRoute | async"></app-route-editor>
+      <ng-container *ngFor="let route of routes">
+        <ng-container  *ngIf="($editingRoute | async)?.route?.id !== route.id">
+          <agm-polyline [strokeColor]="route.colour" (lineClick)="lineClicked(route.id)">
+            <agm-polyline-point *ngFor="let point of route.points" [latitude]="point.lat" [longitude]="point.lng">
+            </agm-polyline-point>
+          </agm-polyline>
+          <agm-marker *ngIf="route.points[0] as firstPoint" [latitude]="firstPoint.lat" [longitude]="firstPoint.lng" [iconUrl] [label]="{
+            color: route.colour, text: 'outlined_flag', fontFamily: 'Material Icons'
+          }" (markerClick)="lineClicked(route.id)">
+          </agm-marker>
+          <agm-marker *ngIf="route.points[route.points.length -1] as lastPoint" [latitude]="lastPoint.lat" [longitude]="lastPoint.lng" [label]="{
+            color: route.colour, text: 'flag', fontFamily: 'Material Icons'
+
+          }" (markerClick)="lineClicked(route.id)"></agm-marker>
+        </ng-container>
+      </ng-container>
     </agm-map>
+    <app-route-toolbar></app-route-toolbar>
     <!-- Add Content Here -->
   </mat-sidenav-content>
 </mat-sidenav-container>

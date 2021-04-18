@@ -47,6 +47,7 @@ export class RouteCreateComponent implements OnInit, OnDestroy {
       }
     })
     this.routeEditorService.getRoute().subscribe(route => {
+      console.log('route-create subscribe')
       if (route) {
         this.coords = route.getPoints()
       }

@@ -10,17 +10,22 @@ export class EditingRoute {
   private points: LatLngLiteral[] = []
   private colour: string = '#51D9A9'
 
-  constructor(route?: Route) {
+  constructor(public route?: Route) {
     if (route) {
       this.creating = false
       this.colour = route.colour
       //  Clone as these are objects
       this.points.push(...route.points.map(x => ({ ...x })))
+      console.log('editing route', this.route)
     }
   }
 
   addPoint(point: LatLngLiteral): void {
     this.points.push(point)
+  }
+
+  removeLastPoint(): void {
+    this.points.pop()
   }
 
   isCreating(): boolean {
@@ -36,7 +41,6 @@ export class EditingRoute {
   }
 
   getPoints(): LatLngLiteral[] {
-    console.log(this.points)
     return this.points
   }
 }
@@ -49,11 +53,13 @@ export class RouteEditorService {
   private editingRoute: EditingRoute | undefined
   private $editingRoute: BehaviorSubject<EditingRoute | undefined> = new BehaviorSubject(undefined)
 
-  constructor() { }
+  constructor() { 
+    console.error('DUPLICATE', this)
+  }
 
   public startEditing(route?: Route): void {
     this.editingRoute = new EditingRoute(route)
-    console.log('start editing')
+    console.log('EDITING ROUTE', this.editingRoute)
     this.$editingRoute.next(this.editingRoute)
   }
 
@@ -70,17 +76,24 @@ export class RouteEditorService {
     return this.editingRoute !== undefined
   }
 
-  public getRoute(): Observable<EditingRoute> {
+  public getRoute(): Observable<EditingRoute | undefined> {
     return this.$editingRoute.asObservable()
   }
 
   public addPoint(latLng: LatLngLiteral): void {
-    console.log('add point', this.editingRoute, this.editingRoute.isCreating())
     // We only add while in creation mode, other gmaps takes care
-    if (this.editingRoute.isCreating()) {
+    // if (this.editingRoute.isCreating()) {
       this.editingRoute.addPoint(latLng)
       this.$editingRoute.next(this.editingRoute)
-    }
+    // }
+  }
+
+  public undo(): void {
+    // if (this.editingRoute.isCreating()) {
+      this.editingRoute.removeLastPoint()
+      this.$editingRoute.next(this.editingRoute)
+
+    // }
   }
 
   public setColour(colour: string): void {
