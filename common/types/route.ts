@@ -10,4 +10,5 @@ export type RouteDocument = {
   updatedAt?: Date,
   ownerId?: string,
   experienceId: string,
+  description?: string
 }

@@ -3,6 +3,7 @@ import { RouteModel } from '../repo/RouteModel'
 
 export = mongoose.model<RouteModel>('Route', new mongoose.Schema({
   name: { type: String, required: true },
+  description: {type: String, required: false},
   created_at:  { type: Date, default: Date.now },
   updated_at:  { type: Date, default: Date.now },
   ownerId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },

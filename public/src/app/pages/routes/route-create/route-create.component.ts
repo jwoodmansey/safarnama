@@ -23,6 +23,7 @@ export class RouteCreateComponent implements OnInit, OnDestroy {
 
   public routeForm: FormGroup = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
+    description: [''],
     colour: ['#51D9A9'],
   })
 
@@ -43,7 +44,7 @@ export class RouteCreateComponent implements OnInit, OnDestroy {
       this.routeEditorService.startEditing(route)
       if (route) {
         this.isEditingId = route.id
-        this.routeForm.patchValue({ name: route.name, colour: route.colour })
+        this.routeForm.patchValue({ name: route.name, description: route.description, colour: route.colour })
       }
     })
     this.routeEditorService.getRoute().subscribe(route => {
@@ -84,6 +85,7 @@ export class RouteCreateComponent implements OnInit, OnDestroy {
         this.coords,
         this.selectedColor,
         'None',
+        this.routeForm.get('description').value
       )
 
       if (this.isEditingId) {

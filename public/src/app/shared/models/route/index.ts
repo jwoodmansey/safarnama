@@ -9,7 +9,8 @@ export class Route implements GeoEntity {
       public readonly name: string,
       public readonly points: LatLngLiteral[],
       public readonly colour: string,
-      public readonly direction: Direction) {
+      public readonly direction: Direction,
+      public readonly description?: string) {
 
   }
 
@@ -25,6 +26,7 @@ export class Route implements GeoEntity {
       latLngs,
       doc.colour,
       doc.direction,
+      doc.description,
     )
   }
 
@@ -36,6 +38,7 @@ export class Route implements GeoEntity {
       geo: this.toGeoJSONLine(),
       direction: 'None',
       _id: undefined,
+      description: this.description
     }
   }
 
@@ -52,6 +55,7 @@ export class Route implements GeoEntity {
       properties: {
         name: this.name,
         id: this.id,
+        description: this.description,
       },
       geometry: this.toGeoJSONLine(),
     }
