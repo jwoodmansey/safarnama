@@ -66,6 +66,7 @@ import { PublishModule } from './publish/publish.module'
 import { HtmlFromUrlPipe } from './shared/pipes/html-from-url.pipe'
 import { SafePipe } from './shared/pipes/safe.pipe'
 import { UserEditComponent } from './user/user-edit/user-edit.component'
+import { PrivacyAppComponent } from './pages/privacy-app/privacy-app.component'
 
 
 registerLocaleData(enGB)
@@ -104,6 +105,7 @@ registerPlugin(FilePondPluginImagePreview)
     PrivacyComponent,
     RouteViewAllComponent,
     RouteToolbarComponent,
+    PrivacyAppComponent,
   ],
   imports: [
     BrowserModule,

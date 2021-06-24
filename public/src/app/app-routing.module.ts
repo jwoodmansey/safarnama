@@ -56,6 +56,10 @@ const routes: Routes = [
     path: 'privacy',
     component: PrivacyComponent,
   },
+  {
+    path: 'privacy/app',
+    component: PrivacyComponent,
+  },
 ]
 
 @NgModule({
