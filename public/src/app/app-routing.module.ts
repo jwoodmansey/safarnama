@@ -8,6 +8,7 @@ import { ExperienceEditComponent } from
 import { RouteCreateComponent } from '@pages/routes/route-create/route-create.component'
 import { UserEditComponent } from './user/user-edit/user-edit.component'
 import { PrivacyComponent } from '@pages/privacy/privacy.component'
+import { PrivacyAppComponent } from '@pages/privacy-app/privacy-app.component'
 
 const routes: Routes = [
   {
@@ -53,11 +54,11 @@ const routes: Routes = [
     path: 'download', loadChildren: () => import('./download/download.module').then(m => m.DownloadModule),
   },
   {
-    path: 'privacy',
-    component: PrivacyComponent,
+    path: 'privacy/app',
+    component: PrivacyAppComponent,
   },
   {
-    path: 'privacy/app',
+    path: 'privacy',
     component: PrivacyComponent,
   },
 ]
