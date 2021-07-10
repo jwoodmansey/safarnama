@@ -29,7 +29,7 @@ export class FeatureExperienceComponent implements OnInit {
   tagCtrl = new FormControl();
   filteredTags: Observable<string[]>;
   tags: string[] = [];
-  allTags: string[] = ["Ports Past and Present", "Delhi"];
+  allTags: string[] = ["Ports Past and Present", "Delhi", "Safarnama"];
 
   @ViewChild("tagInput", {static: true}) tagInput: ElementRef<HTMLInputElement>;
   @ViewChild("auto", {static: true}) matAutocomplete: MatAutocomplete;

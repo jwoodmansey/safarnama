@@ -4,10 +4,11 @@
     <p>Add users IDs below to allow other users to make changes to the '{{selectedExperience?.name}}' experience.</p>
     <mat-form-field>
       <input formControlName="userId" matInput placeholder="Enter a user's ID to share">
-      <button mat-icon-button matSuffix [disabled]="!form.valid" color="primary" aria-label="Add user id">
-        <mat-icon>add_circle</mat-icon>
-      </button>
     </mat-form-field>
+    <button mat-button class="add" [disabled]="!form.valid" color="primary" aria-label="Add user id">
+      Add
+      <mat-icon>add_circle</mat-icon>
+    </button>
   </form>
   <div class="user" *ngFor="let user of collaborators">
     <img mat-card-avatar [src]="user.photoURL">
