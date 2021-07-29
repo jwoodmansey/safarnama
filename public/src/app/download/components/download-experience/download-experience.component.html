@@ -1,17 +1,24 @@
 <main>
-  <h1>Get started</h1>
+  <h1>{{snapshot.data.name}}</h1>
   <mat-vertical-stepper linear="true">
-
     <mat-step label="Download app">
-
-      <p>First, download the app on the Google Play Store</p>
-      <img class="play-icon" src="/assets/imgs/google-play-badge.png" />
+      <p>First, download the app on the Google Play Store or the App Store     {{snapshot | json}}
+      </p>
+      <div class="logo-container">
+        <img class="play-icon" src="/assets/imgs/google-play-badge.png" />
+        <!-- https://apps.apple.com/us/app/safarnama/id1564730245 -->
+        <a href="https://apps.apple.com/us/app/port-places/id1567361456?itsct=apps_box_badge&amp;itscg=30200"
+          style="display: inline-block; overflow: hidden; border-top-left-radius: 0px; border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-bottom-left-radius: 0px; width: 120px"><img
+            src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1622592000&h=9dcab60ddd5d7b43f331e7e3b0fa65f7"
+            alt="Download on the App Store"
+            style="border-top-left-radius: 0px; margin-top: 4px; border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-bottom-left-radius: 0px; width: 120px;"></a>
+      </div>
       <button mat-button matStepperNext>Next</button>
     </mat-step>
     <mat-step label="Download experience">
       <p>Now, download the experience into the app. If you're on your Android device just tap the open app button, or if
         not just open the app and manually scan the QR code below.</p>
-      <button class="open-app" mat-raised-button color="primary">Open App</button>
+      <a [href]="snapshot.metaData.shortLink"><button class="open-app" mat-raised-button color="primary">Open App</button></a>
       <qrcode [qrdata]="downloadUrl" [size]="256" [level]="'M'"></qrcode>
     </mat-step>
 
@@ -24,6 +31,7 @@
   </ng-template> -->
   </mat-vertical-stepper>
   <footer>
+    <small>Apple® and App Store® are trademarks of Apple Inc.</small>
     <small>Google Play and the Google Play logo are trademarks of Google LLC.</small>
   </footer>
 </main>

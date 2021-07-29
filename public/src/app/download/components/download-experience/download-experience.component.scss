@@ -8,7 +8,11 @@ button {
     margin-bottom: 16px;
   }
 }
-
-.play-icon {
-  width: 150px;
+.logo-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  .play-icon {
+    width: 150px;
+  }
 }

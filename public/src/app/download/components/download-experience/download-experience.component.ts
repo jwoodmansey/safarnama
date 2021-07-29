@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core'
+import { ExperienceSnapshotData } from '@common/experience'
+import { ExperienceService } from '@services/experience.service'
 
 @Component({
   selector: 'app-download-experience',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core'
 })
 export class DownloadExperienceComponent implements OnInit {
 
-  constructor() { }
+  public snapshot: ExperienceSnapshotData | undefined
+
+  constructor(private experienceService: ExperienceService) { }
 
   ngOnInit(): void {
+    const split = window.location.href.split('/')
+    this.experienceService.getLatestPublishedSnapshot(split[split.length -1 ]).subscribe((snapshot) => {
+      this.snapshot = snapshot
+    })
   }
 
   get downloadUrl(): string {
