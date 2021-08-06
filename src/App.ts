@@ -177,6 +177,7 @@ app.use('/api/user', ensureAuthenticated(), new UserRouter().getRouter())
 app.use('/api/media', ensureAuthenticated(), new MediaRouter().getRouter())
 app.use('/api/admin', ensureAuthenticated(), new AdminRouter().getRouter())
 app.use('/api/storage/media', express.static('media') as any)
+app.use('/api/storage/icon', express.static('icon') as any)
 
 app.use('/api/place-types', ensureAuthenticated(), new PlaceTypeRouter().getRouter())
 

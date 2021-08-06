@@ -32,6 +32,8 @@ import { IndexComponent } from '@pages/index/index.component'
 import { RouteCreateComponent } from '@pages/routes/route-create/route-create.component'
 import { ExperienceService } from '@services/experience.service'
 import { environment } from 'environments/environment'
+import FilePondPluginFileEncode from 'filepond-plugin-file-encode'
+import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size'
 import * as FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 import * as FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import { MccColorPickerModule } from 'material-community-components/color-picker'
@@ -60,19 +62,21 @@ import { RouteToolbarComponent } from './components/route/route-toolbar/route-to
 import { RouteViewAllComponent } from './components/route/route-view-all/route-view-all.component'
 import { LoginComponent } from './components/user/login/login.component'
 import { ExperienceEditComponent } from './pages/experience/experience-edit/experience-edit.component'
+import { PrivacyAppComponent } from './pages/privacy-app/privacy-app.component'
 import { PrivacyComponent } from './pages/privacy/privacy.component'
 import { TermsComponent } from './pages/terms/terms.component'
 import { PublishModule } from './publish/publish.module'
 import { HtmlFromUrlPipe } from './shared/pipes/html-from-url.pipe'
 import { SafePipe } from './shared/pipes/safe.pipe'
 import { UserEditComponent } from './user/user-edit/user-edit.component'
-import { PrivacyAppComponent } from './pages/privacy-app/privacy-app.component'
 
 
 registerLocaleData(enGB)
 
 registerPlugin(FilePondPluginFileValidateType)
 registerPlugin(FilePondPluginImagePreview)
+registerPlugin(FilePondPluginFileEncode)
+registerPlugin(FilePondPluginFileValidateSize);
 
 @NgModule({
   declarations: [

@@ -1,22 +1,16 @@
+import { ExperienceData } from '@common/experience'
+import { MediaDocument } from '@common/media'
 import { Request, Response } from 'express'
-import { UploadedFile } from 'express-fileupload'
-import { checkOwner } from '../utils/auth'
-import * as fs from 'fs'
 // @ts-ignore
 import * as filepreview from 'filepreview'
-import { MediaRepo } from '../model/repo/MediaRepo'
-import { MediaDocument } from '@common/media'
 import { environment } from '../config/env'
 import { MediaModel } from '../model/repo/MediaModel'
-import { ExperienceData } from '@common/experience'
-
-interface UploadedFileExtended extends UploadedFile {
-  md5: string,
-  size: number,
-}
+import { MediaRepo } from '../model/repo/MediaRepo'
+import UploadedFileExtended from '../types/UploadedFileExtended'
+import { checkOwner } from '../utils/auth'
+import { makeDirectoryIfNotExists } from '../utils/file'
 
 export async function processUpload(request: Request, response: Response) {
-  const repo = new MediaRepo()
   if (!request.files || Object.keys(request.files).length === 0 ||
     !request.files.filepond || Object.keys(request.files.filepond).length === 0) {
     return response.status(400).send({ code: 400, error: 'No files were uploaded.' })
@@ -28,6 +22,8 @@ export async function processUpload(request: Request, response: Response) {
       // const arr = filesOrFile
       // todo multi upload support
     } else {
+      const repo = new MediaRepo()
+
       const file: UploadedFileExtended = filesOrFile as UploadedFileExtended
       console.log('FILE', file)
 
@@ -172,14 +168,8 @@ export function loadRealPaths(media: MediaDocument[]): MediaDocument[] {
 
 const MEDIA_DIRECTORY = environment.api.mediaDir
 function createMediaPathIfNotExists(ownerId: string): void {
-  if (!fs.existsSync(MEDIA_DIRECTORY)) {
-    fs.mkdirSync(MEDIA_DIRECTORY)
-  }
-
-  const userDir = `${MEDIA_DIRECTORY}/${ownerId}`
-  if (!fs.existsSync(userDir)) {
-    fs.mkdirSync(userDir)
-  }
+  makeDirectoryIfNotExists(MEDIA_DIRECTORY)
+  makeDirectoryIfNotExists(`${MEDIA_DIRECTORY}/${ownerId}`)
 }
 
 function getPathForMedia(ownerId: string, mediaId: string, ext: string): string {

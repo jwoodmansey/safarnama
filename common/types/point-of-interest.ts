@@ -25,7 +25,8 @@ export type TriggerZone = {
 
 export type PlaceType = {
   name: string,
-  matIcon: string,
+  imageIcon?: string,
+  matIcon?: string,
   _id: any,
   ownerId: string,
 }
