@@ -43,6 +43,7 @@ Config/Dev/Private.key
 Config/Dev/Public.pem
 
 /media
+/icon
 
 /src/config/env.ts
 /public/src/environments/environment.ts

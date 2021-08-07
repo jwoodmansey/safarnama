@@ -10,7 +10,7 @@ export async function createPlaceType(request: Request, response: Response) {
   const repo = new PlaceTypeRepo()
   const type: PlaceType = {
     ...request.body,
-    imageIcon: request.body.icon ? true : undefined,
+    imageIcon: request.body.imageIcon ? true : undefined,
     createdAt: new Date(),
     ownerId: request.user._id,
   }
@@ -21,8 +21,9 @@ export async function createPlaceType(request: Request, response: Response) {
     makeDirectoryIfNotExists(`${environment.api.iconDir}/${res.ownerId}`)
     console.log('Going to move to path', filePath)
     if (type.imageIcon) {
-      fs.writeFile(res._id, request.body.imageIcon.split(';base64,').pop(), { encoding: 'base64' }, async function (err) {
+      fs.writeFile(filePath, request.body.imageIcon.split(';base64,').pop(), { encoding: 'base64' }, async function (err) {
         if (err) {
+          console.error(err)
           return response.status(500).json({ code: 500, error: err })
         }
         console.log('File created from base64 icon');
@@ -49,7 +50,7 @@ export async function getAllMyPlaceTypes(request: Request, response: Response) {
   const data: PlaceType[] = await repo.getAllByUser(request.user._id)
   return response.json(data.map(p => ({
     ...p,
-    imageIcon: `${environment.api.publicUrl}/storage/${getPathForIcon(p.ownerId, p._id)}`,
+    imageIcon: p.imageIcon ? `${environment.api.publicUrl}/storage/${getPathForIcon(p.ownerId, p._id)}` : undefined,
   })))
 }
 
