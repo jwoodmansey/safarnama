@@ -22,7 +22,8 @@
       <mat-label>Type</mat-label>
       <mat-select formControlName="type" [compareWith]="compareFn">
         <mat-select-trigger *ngIf="selectedType">
-          <mat-icon>{{ selectedType.matIcon }}</mat-icon>
+          <mat-icon *ngIf="selectedType.matIcon && !selectedType.imageIconURL">{{ selectedType.matIcon }}</mat-icon>
+          <img *ngIf="selectedType.imageIconURL" class="mat-icon" [src]="selectedType.imageIconURL" />
           <p>&nbsp;{{ selectedType.name }}</p>
         </mat-select-trigger>
         <mat-option selected [disabled]="true">Choose a place type</mat-option>
@@ -32,7 +33,7 @@
           (contextmenu)="onContextMenu($event, type)"
         >
           <mat-icon *ngIf="type.matIcon">{{ type.matIcon }}</mat-icon>
-          <img *ngIf="type.imageIcon" class="mat-icon" [src]="type.imageIcon" />
+          <img *ngIf="type.imageIconURL" class="mat-icon" [src]="type.imageIconURL" />
           {{ type.name }}
         </mat-option>
         <button mat-button (click)="openPlaceTypeLibrary()">Add new</button>

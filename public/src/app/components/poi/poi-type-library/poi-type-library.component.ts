@@ -120,7 +120,7 @@ export class PoiTypeLibraryComponent implements OnInit {
       this.placeTypeService.create({
         name: this.form.get('name').value,
         matIcon: this.selectedIcon,
-        imageIcon: file?.getFileEncodeBase64String(),
+        imageIconURL: file?.getFileEncodeBase64String(),
         _id: undefined,
         ownerId: undefined,
       }).subscribe(() => {

@@ -29,6 +29,10 @@ export = mongoose.model<PointOfInterestModel>('PointOfInterest', new mongoose.Sc
       type: String,
       required: false,
     },
+    imageIconURL: {
+      type: String,
+      required: false,
+    },
   },
   triggerZone: {
     type: {
