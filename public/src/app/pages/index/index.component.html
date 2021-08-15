@@ -32,7 +32,13 @@
       <ng-container *ngFor="let poi of pointsOfInterest; let i=index">
         <ng-container *ngIf="!editingPoiId || editingPoiId !== poi.id">
           <agm-marker [latitude]="poi.lat" [longitude]="poi.lng" (markerClick)="markerClicked(poi.id)"
-            [agmFitBounds]="($creatingPointOfInterest | async) === undefined" [label]="{
+            [iconUrl]="{
+            url: poi.placeType.imageIconURL,
+            scaledSize: {
+              width: 16,
+              height: 16
+            }}"
+            [agmFitBounds]="($creatingPointOfInterest | async) === undefined" [label]="poi.placeType.imageIconURL ? undefined :{
               color: 'white', text: poi.placeType.matIcon, fontFamily: 'Material Icons'
             }"></agm-marker>
           <agm-circle [radius]="poi.triggerZone.radius" [strokeColor]="'#000'" [strokeWeight]="1" [strokePosition]="0"

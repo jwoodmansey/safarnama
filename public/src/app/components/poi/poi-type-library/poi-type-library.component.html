@@ -2,25 +2,55 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
   <div class="content" mat-dialog-content>
     <div class="fields">
-      <p>Here can create a new place type to assign your places to. </p>
+      <p>Here can create a new place type to assign your places to.</p>
       <mat-form-field>
-        <input matInput placeholder="Name" formControlName="name">
+        <input matInput placeholder="Name" formControlName="name" />
       </mat-form-field>
-      <mat-form-field>
-        <input matInput formControlName="search" (ngModelChange)="searchChange($event)"
-          placeholder="Search for an icon">
-      </mat-form-field>
-      <div class="icon-container">
-        <mat-grid-list *ngIf="loaded" cols="5" rowHeight="1:1">
-          <mat-grid-tile class="item" [class.selected]="icon === selectedIcon" (click)="iconClicked(icon)" *ngFor="let icon of filteredIcons">
-            <mat-icon>{{icon}}</mat-icon>
-          </mat-grid-tile>
-        </mat-grid-list>
-      </div>
+      <file-pond
+        #myPond
+        [options]="pondOptions"
+        [files]="pondFiles"
+        (onprocessfileprogress)="pondHandleProgress($event)"
+        (oninit)="pondHandleInit()"
+        (onaddfile)="pondHandleAddFile($event)"
+        (onerror)="pondHandleError($event)"
+        (onprocessfileabort)="pondHandleAbort($event)"
+      >
+      </file-pond>
+      <ng-container *ngIf="!hasFile">
+        <mat-form-field>
+          <input
+            matInput
+            formControlName="search"
+            (ngModelChange)="searchChange($event)"
+            placeholder="Search for an icon"
+          />
+        </mat-form-field>
+        <div class="icon-container">
+          <mat-grid-list *ngIf="loaded" cols="5" rowHeight="1:1">
+            <mat-grid-tile
+              class="item"
+              [class.selected]="icon === selectedIcon"
+              (click)="iconClicked(icon)"
+              *ngFor="let icon of filteredIcons"
+            >
+              <mat-icon>{{ icon }}</mat-icon>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </div>
+      </ng-container>
     </div>
   </div>
   <div mat-dialog-actions>
     <button mat-button (click)="close()">Cancel</button>
-    <button mat-button class="mat-primary" type="submit" [disabled]="!isValid" cdkFocusInitial>Create</button>
+    <button
+      mat-button
+      class="mat-primary"
+      type="submit"
+      [disabled]="!isValid"
+      cdkFocusInitial
+    >
+      Create
+    </button>
   </div>
 </form>

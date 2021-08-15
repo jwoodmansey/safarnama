@@ -3,7 +3,7 @@ import PlaceType = require('../schema/PlaceType')
 
 export class PlaceTypeRepo {
 
-  public async add(type: PlaceTypeDocument): Promise<string> {
+  public async add(type: PlaceTypeDocument): Promise<PlaceTypeDocument> {
     console.log('PLACE TYPE REPO: Adding new type', type)
     const data = new PlaceType({ ...type })
     const dbResp = await data.save()
