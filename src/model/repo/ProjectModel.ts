@@ -1,4 +1,4 @@
 import * as mongoose from 'mongoose'
-import { Project } from '@common/project'
+import { ProjectData } from '@common/project'
 
-export interface ProjectModel extends Project, mongoose.Document {}
+export interface ProjectModel extends ProjectData, mongoose.Document {}

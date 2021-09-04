@@ -20,6 +20,7 @@ export async function createExperience(request: Request, response: Response) {
     description: request.body.description,
     createdAt: new Date(),
     ownerId: request.user._id,
+    projects: request.body.projects
   }
   try {
     const res = await repo.addNewExperience(experienceData)
