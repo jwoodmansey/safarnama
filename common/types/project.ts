@@ -14,7 +14,7 @@ type App = {
 }
 
 export type ProjectData = {
-  _id: string,
+  _id: any,
   name: string,
   description?: string,
   createdAt?: Date,

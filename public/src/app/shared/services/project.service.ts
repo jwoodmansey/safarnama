@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { ProjectData } from '@common/project';
 import { environment } from 'environments/environment';
 import { Observable, of } from 'rxjs';
-import { catchError, share, tap } from 'rxjs/operators';
+import { catchError, map, share, tap, withLatestFrom } from 'rxjs/operators';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class ProjectService {
 
   constructor(
     private http: HttpClient,
+    private userService: UserService
   ) { }
 
   public getList(): Observable<ProjectData[]> {
@@ -21,5 +23,15 @@ export class ProjectService {
       catchError(() => of([])),
       tap(types => console.log('Types got:', types)),
       share())
+  }
+
+  public getListAdmin(): Observable<ProjectData[]> {
+    return this.getList().pipe(
+      withLatestFrom(this.userService.getUserId()),
+      tap(([,userId]) =>console.log(userId)),
+      map(([projects, userId]) =>
+        projects.filter(p => p.members?.find(m => m.roles.includes('admin') && m.userId === userId) !== undefined)
+      )
+    )
   }
 }
