@@ -71,6 +71,7 @@ import { SafePipe } from './shared/pipes/safe.pipe'
 import { UserEditComponent } from './user/user-edit/user-edit.component';
 import { ProjectViewAllComponent } from './components/project/project-view-all/project-view-all.component';
 import { ProjectViewComponent } from './components/project/project-view/project-view.component'
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 registerLocaleData(enGB)
@@ -131,6 +132,7 @@ registerPlugin(FilePondPluginFileValidateSize);
     DragDropModule,
     MatSnackBarModule,
     MatSortModule,
+    MatTabsModule,
     PublishModule,
     AdminModule,
     QuillModule.forRoot({

@@ -38,10 +38,10 @@ export class ProjectViewAllComponent implements OnInit, OnDestroy {
 
   manageProject(id: string): void {
     this.dialog.open(ProjectViewComponent, {
-      width: '400px',
+      width: '750px',
       disableClose: false,
       data: {
-        id,
+        project: this.projects.find(p => p._id === id),
       }
     })
   }
