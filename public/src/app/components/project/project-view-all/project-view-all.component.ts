@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProjectData } from '@common/project';
 import { ProjectService } from '@services/project.service';
 import { Subscription } from 'rxjs';
+import { ProjectViewComponent } from '../project-view/project-view.component';
 
 @Component({
   selector: 'app-project-view-all',
@@ -17,7 +19,8 @@ export class ProjectViewAllComponent implements OnInit, OnDestroy {
   public displayedColumns: string[] = ['name', 'actions']
 
   constructor(
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -34,7 +37,13 @@ export class ProjectViewAllComponent implements OnInit, OnDestroy {
   }
 
   manageProject(id: string): void {
-    alert(id)
+    this.dialog.open(ProjectViewComponent, {
+      width: '400px',
+      disableClose: false,
+      data: {
+        id,
+      }
+    })
   }
 
 }

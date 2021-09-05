@@ -69,7 +69,8 @@ import { PublishModule } from './publish/publish.module'
 import { HtmlFromUrlPipe } from './shared/pipes/html-from-url.pipe'
 import { SafePipe } from './shared/pipes/safe.pipe'
 import { UserEditComponent } from './user/user-edit/user-edit.component';
-import { ProjectViewAllComponent } from './components/project/project-view-all/project-view-all.component'
+import { ProjectViewAllComponent } from './components/project/project-view-all/project-view-all.component';
+import { ProjectViewComponent } from './components/project/project-view/project-view.component'
 
 
 registerLocaleData(enGB)
@@ -112,6 +113,7 @@ registerPlugin(FilePondPluginFileValidateSize);
     RouteToolbarComponent,
     PrivacyAppComponent,
     ProjectViewAllComponent,
+    ProjectViewComponent,
   ],
   imports: [
     BrowserModule,
