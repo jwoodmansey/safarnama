@@ -14,4 +14,9 @@ export class ProjectRepo {
     return Project.find().lean()
     // return Project.find({"members.userId": userId}).lean()
   }
+
+  public async getById(id: string): Promise<ProjectData> {
+    return Project.findById(id).populate('members.userId').lean()
+    // return Project.find({"members.userId": userId}).lean()
+  }
 }

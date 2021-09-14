@@ -12,3 +12,5 @@ export async function getAllMyProjects(request: Request, response: Response) {
   console.log('Got projects', data)
   return response.json(data)
 }
+
+// export get

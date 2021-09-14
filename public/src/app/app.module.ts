@@ -72,6 +72,9 @@ import { UserEditComponent } from './user/user-edit/user-edit.component';
 import { ProjectViewAllComponent } from './components/project/project-view-all/project-view-all.component';
 import { ProjectViewComponent } from './components/project/project-view/project-view.component'
 import { MatTabsModule } from '@angular/material/tabs';
+import { ProjectViewUserComponent } from './components/project/project-view-user/project-view-user.component';
+import { ProjectViewDetailsComponent } from './components/project/project-view-details/project-view-details.component';
+import { ProjectViewPublishedExperienceComponent } from './components/project/project-view-published-experience/project-view-published-experience.component';
 
 
 registerLocaleData(enGB)
@@ -115,6 +118,9 @@ registerPlugin(FilePondPluginFileValidateSize);
     PrivacyAppComponent,
     ProjectViewAllComponent,
     ProjectViewComponent,
+    ProjectViewUserComponent,
+    ProjectViewDetailsComponent,
+    ProjectViewPublishedExperienceComponent,
   ],
   imports: [
     BrowserModule,
