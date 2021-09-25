@@ -21,6 +21,7 @@ import * as https from 'https'
 import * as fs from 'fs'
 import { UserRouter } from './Routes/UserRouter'
 import { AdminRouter } from './Routes/AdminRouter'
+import { ProjectRouter } from './Routes/ProjectRouter'
 
 mongoose.connect(
   // tslint:disable-next-line:max-line-length
@@ -180,6 +181,7 @@ app.use('/api/storage/media', express.static('media') as any)
 app.use('/api/storage/icon', express.static('icon') as any)
 
 app.use('/api/place-types', ensureAuthenticated(), new PlaceTypeRouter().getRouter())
+app.use('/api/project', ensureAuthenticated(), new ProjectRouter().getRouter())
 
 const sslConfig: any = (environment as any).ssl
 if (sslConfig) {

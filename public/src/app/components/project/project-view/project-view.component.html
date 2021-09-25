@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>{{ project.name }}</h1>
+<div mat-dialog-content>
+  <mat-tab-group>
+    <mat-tab label="Published Experiences"
+      ><app-project-view-published-experience
+        [project]="project"
+      ></app-project-view-published-experience
+    ></mat-tab>
+    <mat-tab label="Users"
+      ><app-project-view-user [projectData]="project"></app-project-view-user
+    ></mat-tab>
+    <mat-tab label="Details"
+      ><app-project-view-details [project]="project"></app-project-view-details
+    ></mat-tab>
+  </mat-tab-group>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+</div>

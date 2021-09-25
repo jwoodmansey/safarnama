@@ -1,9 +1,5 @@
 import { Router } from 'express'
-// @ts-ignore
-import { ensureAuthenticated } from 'connect-ensure-authenticated'
-import {
-  getAllUsers, getAllPublishedExperiences, featureExperience, ensureAdmin, unFeatureExperience,
-} from '../controllers/AdminController'
+import { ensureAdmin, ensureAdminOfProjectForExperience, featureExperience, getAllPublishedExperiences, getAllUsers, unFeatureExperience } from '../controllers/AdminController'
 
 export class AdminRouter {
 
@@ -28,13 +24,13 @@ export class AdminRouter {
 
     this.router.post(
       '/published-experiences/:id/feature',
-      ensureAdmin,
+      ensureAdminOfProjectForExperience,
       featureExperience,
     )
 
     this.router.delete(
       '/published-experiences/:id/feature',
-      ensureAdmin,
+      ensureAdminOfProjectForExperience,
       unFeatureExperience,
     )
 

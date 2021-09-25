@@ -9,6 +9,11 @@
       </mat-placeholder>
       <textarea matInput formControlName="description" rows="4"></textarea>
     </mat-form-field>
+    <mat-form-field *ngIf="projects">
+      <mat-select formControlName="project" placeholder="Choose a project (optional)">
+        <mat-option [value]="project" *ngFor="let project of projects">{{project.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
   <div mat-dialog-actions>
     <button mat-button enabled class="mat-primary" [disabled]="!form.valid" type="submit">Create</button>

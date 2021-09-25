@@ -23,6 +23,7 @@ import {
 } from 'app/admin/components/admin-view-published-experiences/admin-view-published-experiences.component'
 import { CollaboratorsComponent } from '@components/collaborators/collaborators.component'
 import { RouteViewAllComponent } from '@components/route/route-view-all/route-view-all.component';
+import { ProjectViewAllComponent } from '@components/project/project-view-all/project-view-all.component';
 
 @Component({
   selector: 'app-main-menu',
@@ -65,6 +66,13 @@ export class MainMenuComponent implements OnInit {
     this.dialog.open(RouteViewAllComponent, {
       width: '800px',
       disableClose: false,
+    })
+  }
+
+  viewAllProjects(): void {
+    this.dialog.open(ProjectViewAllComponent, {
+      width: '800px',
+      disableClose: false
     })
   }
 
