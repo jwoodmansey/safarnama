@@ -35,17 +35,26 @@ async function populateMembers(data: ProjectData): Promise<ProjectData> {
 }
 
 export async function setRole(request: Request, response: Response) {
+  const updated = await addRoleToProjectMember(request.params.id, request.params.userId, request.params.role)
+  return response.json(await populateMembers(updated))
+}
+
+export async function addRoleToProjectMember(projectId: string, userId: string, role: string) {
   const repo = new ProjectRepo()
-  const projectId = request.params.id
   // Todo this should be transactional
   const project = await repo.getById(projectId)
-  const updated = await repo.edit(request.params.id, {
-    members: project.members ? project.members.map(m => ({
-      ...m,
-      roles: m.userId.toString() !== request.params.userId ? m.roles : m.roles && !m.roles.includes(request.params.role) ? m.roles.concat(request.params.role) : [request.params.role]
-    })) : []
-  })
-  return response.json(await populateMembers(updated))
+  if (project.members && project.members.find(m => m.userId.toString() === userId) !== undefined) {
+    return repo.edit(projectId, {
+      members: project.members ? project.members.map(m => ({
+        ...m,
+        roles: m.userId.toString() !== userId ? m.roles : m.roles && !m.roles.includes(role) ? m.roles.concat(role) : [role]
+      })) : []
+    })
+  } else {
+    return repo.edit(projectId, {
+      members: project.members ? project.members.concat({ userId, roles: [role] }) : [{ userId, roles: [role] }]
+    })
+  }
 }
 
 export async function removeRole(request: Request, response: Response) {

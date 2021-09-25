@@ -10,6 +10,7 @@ import { loadRealPaths } from './MediaController'
 import { createFirebaseDynamicLink } from './FirebaseDynamicLinkController'
 import { UserRepo } from '../model/repo/UserRepo'
 import { UserData } from '@common/user'
+import { addRoleToProjectMember } from './ProjectController'
 
 // TODO as with other controllers, probably want to pass the repo as a param, so it's mockable
 export async function createExperience(request: Request, response: Response) {
@@ -22,6 +23,13 @@ export async function createExperience(request: Request, response: Response) {
     ownerId: request.user._id,
     projects: request.body.projects
   }
+
+  if (experienceData.projects && experienceData.ownerId) {
+    for (const p of experienceData.projects) {
+      await addRoleToProjectMember(p, experienceData.ownerId, 'creator')
+    }
+  }
+
   try {
     const res = await repo.addNewExperience(experienceData)
     return response.json(res)

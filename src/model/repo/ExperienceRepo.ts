@@ -1,8 +1,8 @@
 import { ExperienceData, ExperienceSnapshotData } from '@common/experience'
-import Experience = require('../schema/Experience')
-import { ExperienceModel, ExperienceSnapshotModel } from './ExperienceModel'
-import ExperienceSnapshot = require('../schema/ExperienceSnapshot')
 import { ObjectID } from 'bson'
+import { ExperienceModel, ExperienceSnapshotModel } from './ExperienceModel'
+import Experience = require('../schema/Experience')
+import ExperienceSnapshot = require('../schema/ExperienceSnapshot')
 
 export class ExperienceRepo {
 
