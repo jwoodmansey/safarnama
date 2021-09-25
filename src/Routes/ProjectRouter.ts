@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import { ensureAdminOfProjectForExperience } from '../controllers/AdminController'
 import { getAllMyProjects, getById, removeRole, setRole } from '../controllers/ProjectController'
 
 /**
@@ -15,11 +16,11 @@ export class ProjectRouter {
      */
     this.router.get('/mine', getAllMyProjects)
 
-    this.router.get('/:id', getById)
-    
-    this.router.put('/:id/member/:userId/:role', setRole)
+    this.router.get('/:id', ensureAdminOfProjectForExperience, getById)
 
-    this.router.delete('/:id/member/:userId/:role', removeRole)
+    this.router.put('/:id/member/:userId/:role', ensureAdminOfProjectForExperience, setRole)
+
+    this.router.delete('/:id/member/:userId/:role', ensureAdminOfProjectForExperience, removeRole)
 
     return this.router
   }

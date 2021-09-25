@@ -19,8 +19,12 @@ export class ProjectService {
     private userService: UserService
   ) { }
 
-  public getList(): Observable<ProjectData[]> {
-    return this.http.get<ProjectData[]>(`${this.PROJECT_URL}/mine`).pipe(
+  public getList(): Observable<(ProjectData & { isAdmin: boolean })[]> {
+    return this.http.get(`${this.PROJECT_URL}/mine`).pipe(
+      withLatestFrom(this.userService.getUserId()),
+      map(([projects, userId]: [ProjectData[], string]) =>
+        projects.map(p => ({ ...p, isAdmin: p.members?.find(m => m.roles.includes('admin') && m.userId === userId) !== undefined }))
+      ),
       catchError(() => of([])),
       tap(types => console.log('Types got:', types)),
       share())
@@ -28,10 +32,9 @@ export class ProjectService {
 
   public getListAdmin(): Observable<ProjectData[]> {
     return this.getList().pipe(
-      withLatestFrom(this.userService.getUserId()),
       tap(([, userId]) => console.log(userId)),
-      map(([projects, userId]) =>
-        projects.filter(p => p.members?.find(m => m.roles.includes('admin') && m.userId === userId) !== undefined)
+      map((projects) =>
+        projects.filter(p => p.isAdmin)
       )
     )
   }
