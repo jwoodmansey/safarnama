@@ -51,7 +51,7 @@ export class CreateExperienceDialogComponent implements OnInit, OnDestroy {
           _id: undefined,
           name: this.form.get('name')!.value,
           description: this.form.get('description')!.value,
-          projects: this.form.get('project') ? [this.form.get('project').value._id] : undefined,
+          projects: this.form.get('project') ? [this.form.get('project').value?._id] : undefined,
         }).subscribe((resp: any) => {
           this.experienceService.setSelectedExperience(resp)
           this.dialogService.closeAll()

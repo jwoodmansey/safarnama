@@ -1,6 +1,7 @@
-type Member = {
+export type Member = {
   userId: string,
   roles: string[]
+  name?: string,
 }
 
 type App = {

@@ -28,10 +28,31 @@ export class ProjectService {
   public getListAdmin(): Observable<ProjectData[]> {
     return this.getList().pipe(
       withLatestFrom(this.userService.getUserId()),
-      tap(([,userId]) =>console.log(userId)),
+      tap(([, userId]) => console.log(userId)),
       map(([projects, userId]) =>
         projects.filter(p => p.members?.find(m => m.roles.includes('admin') && m.userId === userId) !== undefined)
       )
+    )
+  }
+
+  public getById(id: string): Observable<ProjectData> {
+    return this.http.get<ProjectData>(`${this.PROJECT_URL}/${id}`).pipe(
+      catchError(() => of(undefined)),
+      share()
+    )
+  }
+
+  public setRole(id: string, userId: string, role: string): Observable<ProjectData> {
+    return this.http.put(`${this.PROJECT_URL}/${id}/member/${userId}/${role}`, {}).pipe(
+      catchError(() => of(undefined)),
+      share()
+    )
+  }
+
+  public removeRole(id: string, userId: string, role: string): Observable<ProjectData> {
+    return this.http.delete(`${this.PROJECT_URL}/${id}/member/${userId}/${role}`, {}).pipe(
+      catchError(() => of(undefined)),
+      share()
     )
   }
 }

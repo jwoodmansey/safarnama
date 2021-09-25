@@ -1,8 +1,9 @@
-import { Request, Response, NextFunction } from 'express'
-import { UserRepo } from '../model/repo/UserRepo'
+import { Member, ProjectData } from '@common/project'
 import { UserData } from '@common/user'
+import { NextFunction, Request, Response } from 'express'
 import { ExperienceRepo } from '../model/repo/ExperienceRepo'
-// import { ProjectRepo } from '../model/repo/ProjectRepo'
+import { ProjectRepo } from '../model/repo/ProjectRepo'
+import { UserRepo } from '../model/repo/UserRepo'
 
 export async function getAllUsers(_request: Request, response: Response) {
   const userRepo = new UserRepo()
@@ -52,28 +53,35 @@ function isUserAdmin(request: Request): boolean {
   return userData.roles !== undefined && userData.roles.includes('admin')
 }
 
-// async function isUserAdminOfProjectForExperience(request: Request): Promise<boolean> {
-//   const userData = request.user as UserData
-//   // Admins can always access admin functions of ANY project
-//   if (isUserAdmin(request)) {
-//     return true
-//   }
-//   const experienceId = request.params.id
-//   const experienceRepo = new ExperienceRepo()
-//   const projectRepo = new ProjectRepo()
-//   const [experience, projects] = await Promise.all([
-//     experienceRepo.getModelById(experienceId),
-//     projectRepo.getAllForUser(userData._id)
-//   ])
-//   if (!experience) {
-//     return false
-//   }
-//   return experience.projects?.find(
-//     experienceProject => projects.find(p =>
-//       experienceProject == p._id &&
-//       p.members?.find(m =>
-//         m.roles.includes('admin') &&
-//         m.userId === userData._id
-//       ) !== undefined)
-//   ) !== undefined
-// }
+
+export async function ensureAdminOfProjectForExperience(request: Request, response: Response, next: NextFunction) {
+  if (!(await isUserAdminOfProjectForExperience(request))) {
+    return response.status(401).send()
+  }
+  return next()
+}
+
+async function isUserAdminOfProjectForExperience(request: Request): Promise<boolean> {
+  const userData = request.user as UserData
+  // Admins can always access admin functions of ANY project
+  if (isUserAdmin(request)) {
+    return true
+  }
+  const experienceId = request.params.id
+  const experienceRepo = new ExperienceRepo()
+  const projectRepo = new ProjectRepo()
+  const [experience, projects] = await Promise.all([
+    experienceRepo.getModelById(experienceId),
+    projectRepo.getAllForUser(userData._id)
+  ])
+  if (!experience) {
+    return false
+  }
+  return experience.projects ? experience.projects.find(
+    (experienceProject: string) => projects.find((p: ProjectData) => experienceProject == p._id &&
+      p.members ? p.members.find((m: Member) => m.roles.includes('admin') &&
+        m.userId === userData._id
+      ) !== undefined : false
+    ) !== undefined
+  ) !== undefined : false
+}
