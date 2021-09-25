@@ -16,18 +16,22 @@ export async function getAllMyProjects(request: Request, response: Response) {
 
 export async function getById(request: Request, response: Response) {
   const repo = new ProjectRepo()
-  const userRepo = new UserRepo()
   const data: ProjectData = await repo.getById(request.params.id)
+
+  return response.json(await populateMembers(data))
+}
+
+async function populateMembers(data: ProjectData): Promise<ProjectData> {
   //Populate some fields from the user into members, for now we'll only do name.
+  const userRepo = new UserRepo()
   const members = await Promise.all(data.members ? data.members.map(m => userRepo.get(m.userId).then((user) => ({
     ...m,
     name: user ? user.displayName : undefined,
   }))) : [])
-  const extendedData: ProjectData = {
+  return {
     ...data,
     members: members || []
   }
-  return response.json(extendedData)
 }
 
 export async function setRole(request: Request, response: Response) {
@@ -38,10 +42,10 @@ export async function setRole(request: Request, response: Response) {
   const updated = await repo.edit(request.params.id, {
     members: project.members ? project.members.map(m => ({
       ...m,
-      roles: m.userId !== request.params.userId ? m.roles : m.roles.includes(request.params.role) ? m.roles : m.roles.concat([request.params.role])
+      roles: m.userId.toString() !== request.params.userId ? m.roles : m.roles && !m.roles.includes(request.params.role) ? m.roles.concat(request.params.role) : [request.params.role]
     })) : []
   })
-  return response.json(updated)
+  return response.json(await populateMembers(updated))
 }
 
 export async function removeRole(request: Request, response: Response) {
@@ -58,5 +62,5 @@ export async function removeRole(request: Request, response: Response) {
       });
     }) : []
   })
-  return response.json(updated)
+  return response.json(await populateMembers(updated))
 }

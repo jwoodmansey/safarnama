@@ -24,7 +24,7 @@ export class ProjectViewAllComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.subscription = this.projectService.getListAdmin().subscribe((projects) => {
+    this.subscription = this.projectService.getList().subscribe((projects) => {
       this.projects = projects
       this.data = new MatTableDataSource<ProjectData>(projects)
     })

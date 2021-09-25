@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ProjectData } from '@common/project';
 import { environment } from 'environments/environment';
-import { Observable, of } from 'rxjs';
-import { catchError, map, share, tap, withLatestFrom } from 'rxjs/operators';
+import { merge, Observable, of, Subject } from 'rxjs';
+import { catchError, filter, map, share, tap, withLatestFrom } from 'rxjs/operators';
 import { UserService } from './user.service';
 
 @Injectable({
@@ -12,6 +12,7 @@ import { UserService } from './user.service';
 export class ProjectService {
 
   private readonly PROJECT_URL = environment.api.url + 'project'
+  private refreshObservable: Subject<ProjectData> = new Subject()
 
   constructor(
     private http: HttpClient,
@@ -36,15 +37,18 @@ export class ProjectService {
   }
 
   public getById(id: string): Observable<ProjectData> {
-    return this.http.get<ProjectData>(`${this.PROJECT_URL}/${id}`).pipe(
-      catchError(() => of(undefined)),
-      share()
-    )
+    return merge(
+      this.refreshObservable.pipe(filter(p => p._id === id)),
+      this.http.get<ProjectData>(`${this.PROJECT_URL}/${id}`).pipe(
+        catchError(() => of(undefined)),
+        share()
+      ))
   }
 
   public setRole(id: string, userId: string, role: string): Observable<ProjectData> {
     return this.http.put(`${this.PROJECT_URL}/${id}/member/${userId}/${role}`, {}).pipe(
       catchError(() => of(undefined)),
+      tap((project) => this.refreshObservable.next(project)),
       share()
     )
   }
@@ -52,6 +56,7 @@ export class ProjectService {
   public removeRole(id: string, userId: string, role: string): Observable<ProjectData> {
     return this.http.delete(`${this.PROJECT_URL}/${id}/member/${userId}/${role}`, {}).pipe(
       catchError(() => of(undefined)),
+      tap((project) => this.refreshObservable.next(project)),
       share()
     )
   }

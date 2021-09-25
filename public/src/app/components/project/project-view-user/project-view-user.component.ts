@@ -27,7 +27,7 @@ export class ProjectViewUserComponent implements OnInit, OnChanges {
 
 
   public toggleAdmin(member: Member) {
-    if (member.roles.includes('admin')) {
+    if (member.roles?.includes('admin')) {
       this.projectService.removeRole(this.projectData._id, member.userId, 'admin').subscribe((project) => {
         this.projectData = project
       })
