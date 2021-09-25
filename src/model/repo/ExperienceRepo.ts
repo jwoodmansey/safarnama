@@ -40,7 +40,7 @@ export class ExperienceRepo {
     return res
   }
 
-  public async getAllSnapshots(featuredOnly = false) {
+  public async getAllSnapshots(featuredOnly = false): Promise<any[]> {
     const query: any = [
       {
         $sort: {
@@ -62,6 +62,9 @@ export class ExperienceRepo {
           metaData: {
             $first: '$metaData',
           },
+          projects: {
+            $first: '$data.projects'
+          }
         },
       },
     ]

@@ -11,10 +11,20 @@ export async function getAllUsers(_request: Request, response: Response) {
   return response.json(allUsers.map(user => ({ ...user, token: {} })))
 }
 
-export async function getAllPublishedExperiences(_request: Request, response: Response) {
+export async function getAllPublishedExperiences(request: Request, response: Response) {
   const experienceRepo = new ExperienceRepo()
   const res = await experienceRepo.getAllSnapshots()
   console.log(res)
+  if (request.query.projectId) {
+    // todo move to repo level
+    return response.json(res.filter((snap) => {
+      console.log('snap', snap.data !== undefined)
+      if (snap.data && snap.data.projects) {
+        console.log(request.query.projectId, JSON.stringify(snap.data.projects))
+      }
+      return snap.projects && snap.projects.find((p: any) => p.toString() === request.query.projectId) !== undefined
+    }))
+  }
   return response.json(res)
 }
 
