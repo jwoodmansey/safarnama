@@ -3,8 +3,9 @@ import { RouteRepo } from '../model/repo/RouteRepo'
 import { Request, Response } from 'express'
 import { checkOwner, selectUserId } from '../utils/auth'
 
+const repo = new RouteRepo()
+
 export async function createRoute(request: Request, response: Response) {
-  const repo = new RouteRepo()
   const routeData: RouteDocument = {
     ...request.body,
     createdAt: new Date(),
@@ -20,7 +21,6 @@ export async function createRoute(request: Request, response: Response) {
 
 export async function editRoute(request: Request, response: Response) {
   try {
-    const repo = new RouteRepo()
     const route = await repo.getModel(request.params.routeId)
     if (route === null) {
       return response.status(404).json({ error: 'Route not found' })
@@ -39,7 +39,6 @@ export async function editRoute(request: Request, response: Response) {
 
 export async function deleteRoute(request: Request, response: Response) {
   try {
-    const repo = new RouteRepo()
     const route = await repo.getModel(request.params.routeId)
     if (route === null) {
       return response.status(404).json({ error: 'Route not found' })

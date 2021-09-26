@@ -6,11 +6,11 @@ import ExperienceSnapshot = require('../schema/ExperienceSnapshot')
 
 export class ExperienceRepo {
 
-  public async addNewExperience(experienceData: ExperienceData): Promise<string> {
+  public async addNewExperience(experienceData: ExperienceData): Promise<ExperienceData> {
     console.log('EXPERIENCE REPO: Adding new experience', experienceData)
     const e = new Experience(experienceData)
     const dbResp = await e.save()
-    return JSON.stringify(dbResp)
+    return dbResp.toObject()
   }
 
   public async getAllByUser(userId: string): Promise<ExperienceData[]> {
@@ -21,22 +21,6 @@ export class ExperienceRepo {
         { collaborators: userId },
       ],
     }).lean()
-
-    // TODO I think we might want to decouple POIs and routes from experiences,
-    // and instead have experiences include the place/route ID
-    // .populate([
-    //   {
-    //     path: 'pointOfInterests',
-    //     populate: {
-    //       path: 'media',
-    //       model: 'Media',
-    //     },
-    //   },
-    //   {
-    //     path: 'routes',
-    //   },
-    // ])
-    console.log('res', res)
     return res
   }
 
@@ -80,7 +64,6 @@ export class ExperienceRepo {
     return res
   }
 
-  // todo, dont expose the models to the controllers
   public async getModelById(id: string): Promise<ExperienceModel | null> {
     return Experience.findById(id)
   }
@@ -106,8 +89,7 @@ export class ExperienceRepo {
   }
 
   public async deleteAllSanpshotsByExperienceId(id: string): Promise<void> {
-    const res = await ExperienceSnapshot.deleteMany({ 'data._id': new ObjectID(id) }).exec()
-    console.log(res)
+    await ExperienceSnapshot.deleteMany({ 'data._id': new ObjectID(id) }).exec()
   }
 
   public async saveSnapshot(experienceSnapshot: ExperienceSnapshotData):

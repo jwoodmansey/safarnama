@@ -4,21 +4,16 @@ import { ProjectRepo } from "../model/repo/ProjectRepo";
 import { UserRepo } from "../model/repo/UserRepo";
 import { selectUserId } from "../utils/auth";
 
-export function createProject() {
-
-}
+const repo = new ProjectRepo()
 
 export async function getAllMyProjects(request: Request, response: Response) {
-  const repo = new ProjectRepo()
   const data: ProjectData[] = await repo.getAllForUser(selectUserId(request))
   console.log('Got projects', data)
   return response.json(data)
 }
 
 export async function getById(request: Request, response: Response) {
-  const repo = new ProjectRepo()
   const data: ProjectData = await repo.getById(request.params.id)
-
   return response.json(await populateMembers(data))
 }
 
@@ -41,7 +36,6 @@ export async function setRole(request: Request, response: Response) {
 }
 
 export async function addRoleToProjectMember(projectId: string, userId: string, role: string) {
-  const repo = new ProjectRepo()
   // Todo this should be transactional
   const project = await repo.getById(projectId)
   if (project.members && project.members.find(m => m.userId.toString() === userId) !== undefined) {
@@ -59,7 +53,6 @@ export async function addRoleToProjectMember(projectId: string, userId: string, 
 }
 
 export async function removeRole(request: Request, response: Response) {
-  const repo = new ProjectRepo()
   const projectId = request.params.id
   // Todo this should be transactional
   const project = await repo.getById(projectId)

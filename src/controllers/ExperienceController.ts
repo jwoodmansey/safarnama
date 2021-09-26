@@ -12,7 +12,6 @@ import { UserRepo } from '../model/repo/UserRepo'
 import { UserData } from '@common/user'
 import { addRoleToProjectMember } from './ProjectController'
 
-// TODO as with other controllers, probably want to pass the repo as a param, so it's mockable
 export async function createExperience(request: Request, response: Response) {
   const repo = new ExperienceRepo()
   const experienceData: ExperienceData = {

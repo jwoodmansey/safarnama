@@ -8,9 +8,10 @@ import { MediaRepo } from '../model/repo/MediaRepo'
 import { ExperienceRepo } from '../model/repo/ExperienceRepo'
 import { PointOfInterestModel } from '../model/repo/PointOfInterestModel'
 
+const repo = new PointOfInterestRepo()
+const expRepo = new ExperienceRepo()
+
 export async function createPlace(request: Request, response: Response) {
-  const repo = new PointOfInterestRepo()
-  const expRepo = new ExperienceRepo()
   const exp = await expRepo.getModelById(request.body.experienceId)
   if (exp === null) {
     return response.status(404).json({ error: 'Place not found' })

@@ -6,8 +6,8 @@ import { PlaceTypeRepo } from '../model/repo/PlaceTypeRepo'
 import { checkOwner, selectUserId } from '../utils/auth'
 import { makeDirectoryIfNotExists } from '../utils/file'
 
+const repo = new PlaceTypeRepo()
 export async function createPlaceType(request: Request, response: Response) {
-  const repo = new PlaceTypeRepo()
   const type: PlaceType = {
     ...request.body,
     imageIconURL: request.body.imageIconURL ? true : undefined,
@@ -46,7 +46,6 @@ function getPathForIcon(ownerId: string, mediaId: string): string {
 }
 
 export async function getAllMyPlaceTypes(request: Request, response: Response) {
-  const repo = new PlaceTypeRepo()
   const data: PlaceType[] = await repo.getAllByUser(selectUserId(request))
   return response.json(data.map(p => ({
     ...p,
@@ -55,7 +54,6 @@ export async function getAllMyPlaceTypes(request: Request, response: Response) {
 }
 
 export async function deletePlaceType(request: Request, response: Response) {
-  const repo = new PlaceTypeRepo()
   const id = request.params.id
   try {
     const placeType = await repo.getById(request.params.id)
