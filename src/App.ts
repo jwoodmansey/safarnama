@@ -26,7 +26,7 @@ import { ProjectRouter } from './Routes/ProjectRouter'
 mongoose.connect(
   // tslint:disable-next-line:max-line-length
   environment.db.mongoUri,
-  { useNewUrlParser: true, dbName: 'test' }).then(() => {
+  { dbName: 'test' }).then(() => {
     console.log('Connection to the Atlas Cluster is successful!')
   })
   .catch((err) => {
@@ -59,7 +59,7 @@ passport.use(new FacebookStrategy(
     // providers.
     User.findOne(
       { facebookId: profile.id },
-      (err: any, user) => {
+      (err: any, user: any) => {
         if (err) {
           console.log('findOne error', err)
           done(err, undefined)
@@ -123,7 +123,7 @@ passport.serializeUser((user, cb) => {
 })
 
 passport.deserializeUser((obj, cb) => {
-  cb(null, obj)
+  cb(null, obj as any)
 })
 
 const app: express.Application = express()
@@ -142,7 +142,7 @@ app.use(require('express-session')({
 
 // Initialize Passport and restore authentication state, if any, from the
 // session.
-app.use(passport.initialize())
+app.use(passport.initialize() as any)
 app.use(passport.session())
 // app.use(ensureAuthenticated().unless({
 //   path: [
@@ -167,7 +167,7 @@ app.use(fileUpload({
   tempFileDir: '/tmp/',
   safeFileNames: true,
   preserveExtension: true,
-}))
+}) as any)
 
 app.use('/api/auth/', new AuthenticationRouter().getRouter())
 app.use('/api/experience', new ExperienceRouter().getRouter())

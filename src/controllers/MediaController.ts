@@ -7,7 +7,7 @@ import { environment } from '../config/env'
 import { MediaModel } from '../model/repo/MediaModel'
 import { MediaRepo } from '../model/repo/MediaRepo'
 import UploadedFileExtended from '../types/UploadedFileExtended'
-import { checkOwner } from '../utils/auth'
+import { checkOwner, selectUserId } from '../utils/auth'
 import { makeDirectoryIfNotExists } from '../utils/file'
 
 export async function processUpload(request: Request, response: Response) {
@@ -28,7 +28,7 @@ export async function processUpload(request: Request, response: Response) {
       console.log('FILE', file)
 
       const ext = getExtension(file)
-      const ownerId = request.user._id
+      const ownerId = selectUserId(request)
       const id = await repo.add({
         ownerId,
         path: ext,
@@ -86,7 +86,7 @@ export async function editMedia(request: Request, response: Response) {
 
       const file: UploadedFileExtended = request.files.filepond as UploadedFileExtended
       const ext = getExtension(file)
-      const ownerId = request.user._id
+      const ownerId = selectUserId(request)
       const filePath = getPathForMedia(ownerId, id, ext)
       console.log('Going to move to path', filePath)
       file.mv(filePath, async (e) => {
@@ -113,8 +113,8 @@ export async function isCollaboratingOnAnExperience(
   const exps = (media.associatedExperiences as any) as ExperienceData[]
   // Allow the experience owner or any collaborator to edit this media item
   return exps.find(
-    exp => request.user._id === exp.ownerId || (
-      exp.collaborators !== undefined && exp.collaborators.includes(request.user._id)
+    exp => selectUserId(request) === exp.ownerId || (
+      exp.collaborators !== undefined && exp.collaborators.includes(selectUserId(request))
     ) !== undefined,
   ) !== undefined
 }
@@ -143,7 +143,7 @@ export async function deleteMedia(request: Request, response: Response) {
 export async function getMine(request: Request, response: Response) {
   const repo = new MediaRepo()
   try {
-    const media = await repo.getAllByUser(request.user._id)
+    const media = await repo.getAllByUser(selectUserId(request))
     const parsedMedia = loadRealPaths(media)
     return response.json(parsedMedia)
 

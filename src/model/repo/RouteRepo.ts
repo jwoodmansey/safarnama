@@ -7,7 +7,7 @@ export class RouteRepo {
     console.log('ROUTE REPO: Adding new Route', routeData)
     const e = new Route({ ...routeData })
     const dbResp = await e.save()
-    return dbResp.toJSON()
+    return JSON.stringify(dbResp.toJSON())
   }
 
   public async getAllByUser(userId: string): Promise<RouteDocument[]> {

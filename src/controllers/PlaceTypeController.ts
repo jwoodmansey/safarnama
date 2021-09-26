@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import * as fs from 'fs'
 import { environment } from '../config/env'
 import { PlaceTypeRepo } from '../model/repo/PlaceTypeRepo'
-import { checkOwner } from '../utils/auth'
+import { checkOwner, selectUserId } from '../utils/auth'
 import { makeDirectoryIfNotExists } from '../utils/file'
 
 export async function createPlaceType(request: Request, response: Response) {
@@ -12,7 +12,7 @@ export async function createPlaceType(request: Request, response: Response) {
     ...request.body,
     imageIconURL: request.body.imageIconURL ? true : undefined,
     createdAt: new Date(),
-    ownerId: request.user._id,
+    ownerId: selectUserId(request),
   }
   try {
     const res = await repo.add(type)
@@ -47,7 +47,7 @@ function getPathForIcon(ownerId: string, mediaId: string): string {
 
 export async function getAllMyPlaceTypes(request: Request, response: Response) {
   const repo = new PlaceTypeRepo()
-  const data: PlaceType[] = await repo.getAllByUser(request.user._id)
+  const data: PlaceType[] = await repo.getAllByUser(selectUserId(request))
   return response.json(data.map(p => ({
     ...p,
     imageIconURL: p.imageIconURL ? `${environment.api.publicUrl}/storage/${getPathForIcon(p.ownerId, p._id)}` : undefined,

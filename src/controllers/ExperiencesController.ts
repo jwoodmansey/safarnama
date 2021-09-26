@@ -4,15 +4,16 @@ import { PointOfInterestRepo } from '../model/repo/PointOfInterestRepo'
 import { loadRealPaths } from './MediaController'
 import { Request, Response } from 'express'
 import { RouteRepo } from '../model/repo/RouteRepo'
+import { selectUserId } from '../utils/auth'
 
 export async function getAllMyExperienceData(request: Request, response: Response) {
   const repo = new ExperienceRepo()
 
-  const data: ExperienceData[] = await repo.getAllByUser(request.user._id)
+  const data: ExperienceData[] = await repo.getAllByUser(selectUserId(request))
   const promises = data.map(data => populateExperienceData(data))
   const populated = await Promise.all(promises)
   const responseJson: ExperienceResponseData = {
-    forUserId: request.user._id,
+    forUserId: selectUserId(request),
     data: populated,
   }
   return response.json(responseJson)

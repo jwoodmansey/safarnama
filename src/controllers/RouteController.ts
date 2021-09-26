@@ -1,14 +1,14 @@
 import { RouteDocument } from '@common/route'
 import { RouteRepo } from '../model/repo/RouteRepo'
 import { Request, Response } from 'express'
-import { checkOwner } from '../utils/auth'
+import { checkOwner, selectUserId } from '../utils/auth'
 
 export async function createRoute(request: Request, response: Response) {
   const repo = new RouteRepo()
   const routeData: RouteDocument = {
     ...request.body,
     createdAt: new Date(),
-    ownerId: request.user._id,
+    ownerId: selectUserId(request),
   }
   try {
     const res = await repo.add(routeData)

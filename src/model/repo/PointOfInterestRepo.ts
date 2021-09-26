@@ -9,7 +9,7 @@ export class PointOfInterestRepo {
     console.log('POI REPO: Adding new POI', poiData)
     const e = new PointOfInterest({ ...poiData })
     const dbResp = await e.save()
-    const withMedia = await dbResp.populate('media').execPopulate()
+    const withMedia = await dbResp.populate('media')
     return withMedia.toObject()
   }
 

@@ -1,10 +1,11 @@
 import { Request, Response } from 'express'
 import { UserRepo } from '../model/repo/UserRepo'
 import { PublicProfile } from '@common/experience'
+import { selectUserId } from '../utils/auth'
 
 export async function getMyProfile(request: Request, response: Response) {
   try {
-    const profile = await getProfileById(request.user._id)
+    const profile = await getProfileById(selectUserId(request))
     console.log('getMyProfile', profile)
     return response.json(profile)
   } catch (e) {
@@ -29,7 +30,7 @@ async function getProfileById(id: string): Promise<PublicProfile | undefined> {
 
 export async function editProfile(request: Request, response: Response) {
   try {
-    const thisUser = request.user._id
+    const thisUser = selectUserId(request)
     const editingUser = request.params.userId
     if (thisUser !== editingUser) {
       return response.status(401).json(

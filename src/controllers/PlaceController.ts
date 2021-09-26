@@ -1,6 +1,6 @@
 import { PointOfInterestRepo } from '../model/repo/PointOfInterestRepo'
 import { Request, Response } from 'express'
-import { checkOwner } from '../utils/auth'
+import { checkOwner, selectUserId } from '../utils/auth'
 import { MediaDocument } from '@common/media'
 import { PointOfInterestDocument } from '@common/point-of-interest'
 import { loadRealPaths } from '../controllers/MediaController'
@@ -16,7 +16,7 @@ export async function createPlace(request: Request, response: Response) {
     return response.status(404).json({ error: 'Place not found' })
   }
   if (!checkOwner(request, exp) &&
-    !(exp.collaborators && exp.collaborators.includes(request.user._id))
+    !(exp.collaborators && exp.collaborators.includes(selectUserId(request)))
   ) {
     return response.status(401).json(
       { error: 'You do not have permission to add a place to this experience' })
@@ -78,7 +78,7 @@ export async function editPlace(request: Request, response: Response) {
       createdAt: poi.createdAt,
     })
     const pop = (await poi.save()).populate('media')
-    const resp = await pop.execPopulate()
+    const resp = await pop
     const obj = resp.toObject()
     loadRealMediaPaths(obj)
     return response.json(obj)
@@ -124,6 +124,5 @@ export async function isAnExperienceCollaborator(
   if (!exp.collaborators) {
     return false
   }
-  console.log(exp.collaborators, request.user._id)
-  return exp.collaborators.includes(request.user._id)
+  return exp.collaborators.includes(selectUserId(request))
 }

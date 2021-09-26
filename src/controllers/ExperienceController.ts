@@ -20,7 +20,7 @@ export async function createExperience(request: Request, response: Response) {
     name: request.body.name,
     description: request.body.description,
     createdAt: new Date(),
-    ownerId: request.user._id,
+    ownerId: (request.user as UserData)?._id,
     projects: request.body.projects
   }
 
@@ -121,7 +121,10 @@ export async function publishExperienceSnapshot(request: Request, response: Resp
     )
 
     const userRepo = new UserRepo()
-    const ownerId = request.user._id
+    const ownerId = (request.user as UserData)?._id
+    if (!ownerId) {
+      throw new Error('User not found')
+    }
     const user = await userRepo.get(ownerId)
     if (!user) {
       throw new Error('User not found')
@@ -235,7 +238,7 @@ export async function removeCollaboratorFromExperience(request: Request, respons
   console.log('newArray', JSON.stringify(newArray))
   experience.collaborators = newArray
   await experience.save()
-  const populated = await experience.populate('collaborators').execPopulate()
+  const populated = await experience.populate('collaborators')
   const collabs: UserData[] = (populated.collaborators as any)
   return response.json(userDataToPublicProfile(collabs))
 }
@@ -250,7 +253,7 @@ export async function getCollaboratorsForExperience(request: Request, response: 
     return response.status(401).json(
       { error: 'You do not have permission to view collaborators for this experience' })
   }
-  const populated = await experience.populate('collaborators').execPopulate()
+  const populated = await experience.populate('collaborators')
   const collabs: UserData[] = (populated.collaborators as any)
   return response.json(userDataToPublicProfile(collabs))
 }

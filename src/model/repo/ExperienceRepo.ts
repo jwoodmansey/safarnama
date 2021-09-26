@@ -10,7 +10,7 @@ export class ExperienceRepo {
     console.log('EXPERIENCE REPO: Adding new experience', experienceData)
     const e = new Experience(experienceData)
     const dbResp = await e.save()
-    return dbResp.toJSON()
+    return JSON.stringify(dbResp)
   }
 
   public async getAllByUser(userId: string): Promise<ExperienceData[]> {

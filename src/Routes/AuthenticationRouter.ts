@@ -13,7 +13,7 @@ export class AuthenticationRouter {
       const a = req as any
       a.session.destroy((_err: any) => {
         console.error(_err)
-        req.user = null
+        req.user = undefined
         res.clearCookie('connect.sid')
         res.redirect('/')
       })

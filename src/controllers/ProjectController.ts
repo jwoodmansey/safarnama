@@ -2,6 +2,7 @@ import { ProjectData } from "@common/project";
 import { Request, Response } from "express";
 import { ProjectRepo } from "../model/repo/ProjectRepo";
 import { UserRepo } from "../model/repo/UserRepo";
+import { selectUserId } from "../utils/auth";
 
 export function createProject() {
 
@@ -9,7 +10,7 @@ export function createProject() {
 
 export async function getAllMyProjects(request: Request, response: Response) {
   const repo = new ProjectRepo()
-  const data: ProjectData[] = await repo.getAllForUser(request.user._id)
+  const data: ProjectData[] = await repo.getAllForUser(selectUserId(request))
   console.log('Got projects', data)
   return response.json(data)
 }

@@ -18,7 +18,8 @@
     "noUnusedLocals": true,
     "suppressImplicitAnyIndexErrors": true,
     "typeRoots": [
-      "node_modules/@types"
+      "node_modules/@types",
+      "@types"
     ],
     "lib": [
       "es2016",
