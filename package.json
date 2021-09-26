@@ -1,7 +1,7 @@
 {
-  "name": "typescript-express-passportjs",
+  "name": "safarnama",
   "version": "1.0.0",
-  "description": "ExpressJS template project uses TypeScript, Moongose, Continuous Integration (CircleCI.io) and Code Coverage (CodeCov.io)",
+  "description": "Backend services for Safarnama Cultural Heritage Platform",
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/App.ts",
@@ -10,28 +10,10 @@
     "test": "nyc mocha",
     "posttest": "nyc report --reporter=json && codecov -f coverage/*.json"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/thanhtruong0315/typescript-express-passportjs"
-  },
-  "keywords": [
-    "codecov",
-    "typescript",
-    "expressjs",
-    "circleci",
-    "coverage",
-    "mongodb",
-    "passportjs"
-  ],
-  "author": "Thanh Truong <vagabondtt1503@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/thanhtruong0315/typescript-express-passportjs/issues"
-  },
-  "homepage": "https://github.com/thanhtruong0315/typescript-express-passportjs/blob/master/README.md",
+  "private": true,
+  "author": "Jack Woodmansey",
   "dependencies": {
     "axios": "^0.21.4",
-    "body-parser": "^1.19.0",
     "connect-ensure-authenticated": "^1.0.10",
     "connect-ensure-login": "^0.1.1",
     "cookie-parser": "^1.4.5",
