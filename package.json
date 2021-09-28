@@ -22,7 +22,7 @@
     "express-fileupload": "^1.2.1",
     "express-session": "^1.17.2",
     "express-validator": "^6.12.1",
-    "filepreview": "^1.0.16",
+    "filepreview": "file:filepreview",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.7",
     "mongoose-sequence": "^5.3.1",
