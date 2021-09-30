@@ -21,7 +21,7 @@ export class MediaRepo {
   }
 
   public async getModelWithExperiences(mediaId: string): Promise<MediaModel | null> {
-    const res = await Media.findById(mediaId).populate('associatedExperienes')
+    const res = await Media.findById(mediaId).populate('associatedExperiences')
     return res
   }
 

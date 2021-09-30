@@ -71,7 +71,7 @@ export async function processUpload(request: Request, response: Response) {
 export async function editMedia(request: Request, response: Response) {
   try {
     const repo = new MediaRepo()
-    console.log('Media edit request', request.body)
+    console.log('Media edit request', request.body, request.files)
     const id = request.params.mediaId
     const media = await repo.getModelWithExperiences(id)
     if (media === null) {

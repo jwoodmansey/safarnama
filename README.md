@@ -57,7 +57,7 @@ The Safarnama mobile app allows users to download and explore cultural heritage 
 
 Once the user has the app scanning an experience QR code, either with Safarma or with their native device camera app, or pressing an experience link will allow them to view or download an experience. Users can choose to either view and explore the experience immediately, or download the experience. *Downloading* the experience will ensure that all experience data, including media, is downloaded locally onto the users device. This may be useful in areas with limited mobile internet coverage, or to improve accesibility for users without mobile internet plans at all. Users may also choose to view any experience from the list of featured experiences, and this does not require them to have a QR code or experience link.
 
-Users can easily switch between experiences from the side menu, and from here there are options to download additional experiences. The user can press on any place directly on the map to view information and media about that place, in addition, if they physically enter a place's trigger zone then they will receive a push notification linking to that place. 
+Users can easily switch between experiences from the side menu, and there are options to download additional experiences. The user can press on any place directly on the map to view information and media about that place, in addition, if they physically enter a place's trigger zone then they will receive a push notification linking to that place. 
 
 As experiences are edited and changes published in the authoring tool the mobile app will keep these up to date, so the user should always have the latest version.
 
