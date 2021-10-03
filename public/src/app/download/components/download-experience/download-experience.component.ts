@@ -14,7 +14,7 @@ export class DownloadExperienceComponent implements OnInit {
   private iosAppId = "1564730245"
 
   public snapshot: ExperienceSnapshotData | undefined
-  public iOSURL: string = "https://apps.apple.com/us/app/safarnama/id1564730245"
+  public iOSURL: string = `https://apps.apple.com/us/app/safarnama/id${this.iosAppId}`
   public androidURL = `https://play.google.com/store/apps/details?id=${this.androidPkg}&hl=en_US&gl=US`
   public experienceURL: string | undefined
 
@@ -22,16 +22,19 @@ export class DownloadExperienceComponent implements OnInit {
 
   ngOnInit(): void {
     const split = window.location.href.split('/')
-    this.experienceService.getLatestPublishedSnapshot(split[split.length -1 ]).subscribe((snapshot) => {
+    this.experienceService.getLatestPublishedSnapshot(split[split.length - 1]).subscribe((snapshot) => {
       this.snapshot = snapshot
-      // TODO we need the concept of projects in the authorting tool, so these can be dynamically set by admins
-      if (snapshot.metaData.tags?.includes("Ports Past and Present")) {
-        this.iosAppId = "id1567361456"
-        this.androidPkg = `${this.androidPkg}.portspastpresent`
-        this.iosBundleID = "eu.portspastpresent.app"
-        this.iOSURL = "https://apps.apple.com/us/app/port-places/id1567361456?itsct=apps_box_badge&amp;itscg=30200"
-        this.androidURL = `https://play.google.com/store/apps/details?id=${this.androidPkg}&hl=en_US&gl=US`
-      } 
+      if (snapshot.projectData.iOS.appStoreId) {
+        this.iosAppId = `id${snapshot.projectData.iOS.appStoreId}`
+      }
+      if (snapshot.projectData.android.package) {
+        this.androidPkg = snapshot.projectData.android.package
+      }
+      if (snapshot.projectData.iOS.bundleId) {
+        this.iosBundleID = snapshot.projectData.iOS.bundleId
+      }
+      this.iOSURL = `https://apps.apple.com/us/app/${this.iosAppId}`
+      this.androidURL = `https://play.google.com/store/apps/details?id=${this.androidPkg}&hl=en_US&gl=US`
       this.experienceURL = `https://safarnama.page.link/?link=${window.location.href}&apn=${this.androidPkg}&ibi=${this.iosBundleID}&isi=${this.iosAppId}`
     })
   }

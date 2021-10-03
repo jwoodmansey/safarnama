@@ -1,1 +1,47 @@
-<p>{{project | json}}</p>
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <!-- {{ project | json }} -->
+  <div mat-dialog-content>
+    <mat-form-field class="desc">
+      <mat-placeholder style="white-space: normal"
+        >Description
+      </mat-placeholder>
+      <textarea matInput formControlName="description" rows="4"></textarea>
+    </mat-form-field>
+    <div [formGroup]="form.get('iOS')">
+      <mat-form-field>
+        <input
+          formControlName="appStoreId"
+          matInput
+          placeholder="iOS App Store ID"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <input
+          formControlName="bundleId"
+          matInput
+          placeholder="iOS Bundle ID"
+        />
+      </mat-form-field>
+    </div>
+    <div [formGroup]="form.get('android')">
+      <mat-form-field>
+        <input
+          formControlName="package"
+          matInput
+          placeholder="Android Package Name"
+        />
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button
+      mat-button
+      enabled
+      class="mat-primary"
+      [disabled]="!form.valid"
+      type="submit"
+    >
+      Save
+    </button>
+  </div>
+</form>

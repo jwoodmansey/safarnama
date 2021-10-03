@@ -14,6 +14,19 @@ export async function getAllMyProjects(request: Request, response: Response) {
 
 export async function getById(request: Request, response: Response) {
   const data: ProjectData = await repo.getById(request.params.id)
+  if (!data) {
+    return response.sendStatus(404)
+  }
+  return response.json(await populateMembers(data))
+}
+
+export async function editById(request: Request, response: Response) {
+  // Can only edit these keys
+  if (!Object.keys(request.body).every(key => ['android', 'iOS', 'description'].includes(key))) {
+    console.warn('Tried to edit a project property that is not editable', Object.keys(request.body))
+    return response.sendStatus(400)    
+  }
+  const data: ProjectData = await repo.edit(request.params.id, request.body)
   return response.json(await populateMembers(data))
 }
 

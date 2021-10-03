@@ -4,16 +4,6 @@ export type Member = {
   name?: string,
 }
 
-type App = {
-  iOS: {
-    appStoreId: string
-    bundleId: string,
-  },
-  android: {
-    package: string
-  },
-}
-
 export type ProjectData = {
   _id: any,
   name: string,
@@ -21,5 +11,11 @@ export type ProjectData = {
   createdAt?: Date,
   updatedAt?: Date,
   members?: Member[],
-  app?: App,
+  iOS?: {
+    appStoreId: string
+    bundleId: string,
+  },
+  android?: {
+    package: string
+  },
 }

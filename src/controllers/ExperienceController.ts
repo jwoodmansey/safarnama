@@ -1,15 +1,16 @@
-import { Request, Response } from 'express'
 import { ExperienceData, ExperienceSnapshotData, PublicProfile } from '@common/experience'
-import { ExperienceRepo } from '../model/repo/ExperienceRepo'
-import { checkOwner } from '../utils/auth'
-import { PointOfInterestRepo } from '../model/repo/PointOfInterestRepo'
-import { RouteRepo } from '../model/repo/RouteRepo'
-import { PointOfInterestDocument } from '@common/point-of-interest'
 import { MediaDocument } from '@common/media'
-import { loadRealPaths } from './MediaController'
-import { createFirebaseDynamicLink } from './FirebaseDynamicLinkController'
-import { UserRepo } from '../model/repo/UserRepo'
+import { PointOfInterestDocument } from '@common/point-of-interest'
 import { UserData } from '@common/user'
+import { Request, Response } from 'express'
+import { ExperienceRepo } from '../model/repo/ExperienceRepo'
+import { PointOfInterestRepo } from '../model/repo/PointOfInterestRepo'
+import { ProjectRepo } from '../model/repo/ProjectRepo'
+import { RouteRepo } from '../model/repo/RouteRepo'
+import { UserRepo } from '../model/repo/UserRepo'
+import { checkOwner } from '../utils/auth'
+import { createFirebaseDynamicLink } from './FirebaseDynamicLinkController'
+import { loadRealPaths } from './MediaController'
 import { addRoleToProjectMember } from './ProjectController'
 
 export async function createExperience(request: Request, response: Response) {
@@ -59,8 +60,13 @@ export async function editExperience(request: Request, response: Response) {
 
 export async function getExperienceSnapshot(request: Request, response: Response) {
   const repo = new ExperienceRepo()
+  const projectRepo = new ProjectRepo()
   try {
     const snapshot = await repo.getLatestSnapshotByExperienceId(request.params.experienceId)
+    if (snapshot?.data.projects && snapshot.data.projects[0]) {
+      snapshot.projectData = await projectRepo.getById(snapshot.data.projects[0])
+    }
+    
     if (snapshot === null) {
       return response.status(404).json({ error: 'Experience snapshot not found' })
     }

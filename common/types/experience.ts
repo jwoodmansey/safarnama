@@ -1,5 +1,6 @@
 import * as GeoJSON from 'geojson'
 import { PointOfInterestDocument } from './point-of-interest'
+import { ProjectData } from './project'
 import { RouteDocument } from './route'
 
 export type ExperienceResponseData = {
@@ -49,6 +50,7 @@ export type ExperienceSnapshotData = {
   data: ExperienceData,
   _id: any,
   ownerId: string,
+  projectData?: ProjectData
 }
 
 // export type ExperienceSnapshotInnerData = ExperienceData & {

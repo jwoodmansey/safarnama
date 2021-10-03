@@ -63,4 +63,12 @@ export class ProjectService {
       share()
     )
   }
+
+  public edit(id: string, edit: Partial<ProjectData>): Observable<ProjectData> {
+    return this.http.put(`${this.PROJECT_URL}/${id}`, edit).pipe(
+      catchError(() => of(undefined)),
+      tap((project) => this.refreshObservable.next(project)),
+      share()
+    )
+  }
 }
