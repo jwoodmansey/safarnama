@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose'
 import { PointOfInterestModel } from '../repo/PointOfInterestModel'
 
-export = mongoose.model<PointOfInterestModel>('PointOfInterest', new mongoose.Schema({
+export const PointOfInterest = mongoose.model<PointOfInterestModel>('PointOfInterest', new mongoose.Schema({
   name: { type: String, required: true },
   description: String,
   createdAt: Date,

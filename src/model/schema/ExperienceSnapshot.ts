@@ -50,4 +50,4 @@ ExperienceSnapshotSchema.plugin(AUTO_INCREMENT, {
   inc_field: 'metaData.version',
   reference_fields: ['data._id'],
 })
-export = mongoose.model<ExperienceSnapshotModel>('ExperienceSnapshot', ExperienceSnapshotSchema)
+export const ExperienceSnapshot = mongoose.model<ExperienceSnapshotModel>('ExperienceSnapshot', ExperienceSnapshotSchema)

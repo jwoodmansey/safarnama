@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose'
 import { RouteModel } from '../repo/RouteModel'
 
-export = mongoose.model<RouteModel>('Route', new mongoose.Schema({
+export const Route = mongoose.model<RouteModel>('Route', new mongoose.Schema({
   name: { type: String, required: true },
   description: {type: String, required: false},
   created_at:  { type: Date, default: Date.now },

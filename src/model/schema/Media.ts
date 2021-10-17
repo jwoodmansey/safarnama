@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose'
 import { MediaModel } from '../repo/MediaModel'
 
-export = mongoose.model<MediaModel>('Media', new mongoose.Schema({
+export const Media = mongoose.model<MediaModel>('Media', new mongoose.Schema({
   path: { type: String, required: true },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },

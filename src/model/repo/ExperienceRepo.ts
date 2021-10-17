@@ -1,27 +1,23 @@
 import { ExperienceData, ExperienceSnapshotData } from '@common/experience'
 import { ObjectID } from 'bson'
+import { Experience } from '../schema/Experience'
+import { ExperienceSnapshot } from '../schema/ExperienceSnapshot'
 import { ExperienceModel, ExperienceSnapshotModel } from './ExperienceModel'
-import Experience = require('../schema/Experience')
-import ExperienceSnapshot = require('../schema/ExperienceSnapshot')
+import { Repository } from './Repository'
 
-export class ExperienceRepo {
+export class ExperienceRepo extends Repository<ExperienceModel, ExperienceData> {
 
-  public async addNewExperience(experienceData: ExperienceData): Promise<ExperienceData> {
-    console.log('EXPERIENCE REPO: Adding new experience', experienceData)
-    const e = new Experience(experienceData)
-    const dbResp = await e.save()
-    return dbResp.toObject()
+  constructor() {
+    super(Experience)
   }
 
   public async getAllByUser(userId: string): Promise<ExperienceData[]> {
-    console.log('EXPERIENCE REPO: Get all by user', userId)
-    const res = await Experience.find({
+    return this.findAll({
       $or: [
         { ownerId: userId },
         { collaborators: userId },
       ],
-    }).lean()
-    return res
+    })
   }
 
   public async getAllSnapshots(featuredOnly = false): Promise<any[]> {

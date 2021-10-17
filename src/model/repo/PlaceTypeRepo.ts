@@ -1,5 +1,5 @@
 import { PlaceType as PlaceTypeDocument } from '@common/point-of-interest'
-import PlaceType = require('../schema/PlaceType')
+import { PlaceType } from '../schema/PlaceType'
 import { PlaceTypeModel } from './PlaceTypeModel'
 import { Repository } from './Repository'
 

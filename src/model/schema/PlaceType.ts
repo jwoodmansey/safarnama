@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose'
 import { PlaceTypeModel } from '../repo/PlaceTypeModel'
 
-export = mongoose.model<PlaceTypeModel>('PlaceType', new mongoose.Schema({
+export const PlaceType = mongoose.model<PlaceTypeModel>('PlaceType', new mongoose.Schema({
   name: { type: String, required: true },
   matIcon: { type: String, required: false },
   imageIconURL: {type: Boolean, required: false },

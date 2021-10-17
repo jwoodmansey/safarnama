@@ -1,7 +1,7 @@
 import { RouteDocument } from '@common/route'
 import { RouteModel } from './RouteModel'
 import { Repository } from './Repository'
-import Route = require('../schema/Route')
+import { Route } from '../schema/Route'
 
 export class RouteRepo extends Repository<RouteModel, RouteDocument> {
 
@@ -9,11 +9,11 @@ export class RouteRepo extends Repository<RouteModel, RouteDocument> {
     super(Route)
   }
 
-  public async getAllByUser(ownerId: string): Promise<RouteDocument[]> {
+  public async findByUserId(ownerId: string): Promise<RouteDocument[]> {
     return this.findAll({ ownerId })
   }
 
-  public async getAllByExperience(experienceId: string): Promise<RouteDocument[]> {
-    return this.findAll({experienceId})
+  public async findByExperienceId(experienceId: string): Promise<RouteDocument[]> {
+    return this.findAll({ experienceId })
   }
 }

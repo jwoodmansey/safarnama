@@ -6,9 +6,9 @@ import { Request, Response } from 'express'
 import { RouteRepo } from '../model/repo/RouteRepo'
 import { selectUserId } from '../utils/auth'
 
-export async function getAllMyExperienceData(request: Request, response: Response) {
-  const repo = new ExperienceRepo()
+const repo = new ExperienceRepo()
 
+export async function getAllMyExperienceData(request: Request, response: Response) {
   const data: ExperienceData[] = await repo.getAllByUser(selectUserId(request))
   const promises = data.map(data => populateExperienceData(data))
   const populated = await Promise.all(promises)
@@ -20,7 +20,6 @@ export async function getAllMyExperienceData(request: Request, response: Respons
 }
 
 export async function getAllFeaturedExperiences(_request: Request, response: Response) {
-  const repo = new ExperienceRepo()
   const exps = await repo.getAllSnapshots(true)
   return response.json(exps)
 }
@@ -28,9 +27,8 @@ export async function getAllFeaturedExperiences(_request: Request, response: Res
 export async function populateExperienceData(experience: ExperienceData): Promise<ExperienceData> {
   const placeRepo = new PointOfInterestRepo()
   const routeRepo = new RouteRepo()
-  experience.routes = [] = await routeRepo.getAllByExperience(experience._id)
-  experience.pointOfInterests = await placeRepo.getAllByExperience(
-        experience._id)
+  experience.routes = [] = await routeRepo.findByExperienceId(experience._id)
+  experience.pointOfInterests = await placeRepo.findByExperienceId(experience._id)
   experience.pointOfInterests.forEach((poi) => {
     if (poi.media) {
       poi.media = loadRealPaths(poi.media)

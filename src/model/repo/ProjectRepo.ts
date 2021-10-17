@@ -1,5 +1,5 @@
 import { ProjectData } from "@common/project";
-import Project = require("../schema/Project");
+import { Project } from "../schema/Project";
 import { ProjectModel } from "./ProjectModel";
 import { Repository } from "./Repository";
 

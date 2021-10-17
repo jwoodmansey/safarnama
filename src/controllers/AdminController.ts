@@ -7,7 +7,7 @@ import { UserRepo } from '../model/repo/UserRepo'
 
 export async function getAllUsers(_request: Request, response: Response) {
   const userRepo = new UserRepo()
-  const allUsers = await userRepo.getAll()
+  const allUsers = await userRepo.findAll()
   return response.json(allUsers.map(user => ({ ...user, token: {} })))
 }
 

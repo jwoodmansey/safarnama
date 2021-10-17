@@ -1,7 +1,4 @@
-import { ExperienceData } from '@common/experience';
 import * as mongoose from 'mongoose';
-import { ExperienceModel } from './ExperienceModel';
-import Experience = require('../schema/Experience')
 
 export class EntityNotFoundError extends Error {
   constructor(message: string) {
@@ -36,14 +33,14 @@ export class Repository<T, D> {
     if (!entity) {
       throw new EntityNotFoundError(`Entity was not found ${id}`)
     }
-    entity.set(id, { ...data, updatedAt: new Date() })
+    entity.set({ ...data, updatedAt: new Date() })
     const dbResp = await entity.save()
     return dbResp.toObject() as D
   }
 
-  async findAll(query?: mongoose.FilterQuery<T>): Promise<D[]> {
-    const results = this.model.find(query)
-    return results.lean()
+  async findAll(query: mongoose.FilterQuery<T> = {}): Promise<D[]> {
+    const results = await this.model.find(query, undefined)
+    return results.map(r => r.toObject()) as D[]
   }
 
   async findByIdOrThrow(id: string): Promise<D> {
@@ -51,21 +48,30 @@ export class Repository<T, D> {
     if (!entity) {
       throw new EntityNotFoundError(`Entity was not found ${id}`)
     }
-    return dbResp.toObject() as D
+    return entity.toObject() as D
+  }
+
+  async findById(id: string): Promise<D | undefined> {
+    const entity = await this.model.findById(id)
+    if (!entity) {
+      return undefined
+    }
+    return entity.toObject() as D
   }
 }
 
-class ExperienceRepo extends Repository<ExperienceModel, ExperienceData> {
-  constructor() {
-    super(Experience)
-  }
+// Example usage
+// class ExperienceRepo extends Repository<ExperienceModel, ExperienceData> {
+//   constructor() {
+//     super(Experience)
+//   }
 
-  findByUserId(userId: string) {
-    return this.findAll({
-      $or: [
-        { ownerId: userId },
-        { collaborators: userId },
-      ],
-    })
-  }
-}
+//   findByUserId(userId: string) {
+//     return this.findAll({
+//       $or: [
+//         { ownerId: userId },
+//         { collaborators: userId },
+//       ],
+//     })
+//   }
+// }

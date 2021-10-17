@@ -1,6 +1,6 @@
 import { MediaDocument } from '@common/media'
-import Media = require('../schema/Media')
 import { MediaModel } from '../repo/MediaModel'
+import { Media } from '../schema/Media'
 import { EntityNotFoundError, Repository } from './Repository'
 
 export class MediaRepo extends Repository<MediaModel, MediaDocument> {
