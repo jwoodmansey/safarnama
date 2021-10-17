@@ -9,6 +9,7 @@ import {
   addCollaboratorsToExperience,
   getCollaboratorsForExperience,
   removeCollaboratorFromExperience,
+  cloneExperience,
 } from '../controllers/ExperienceController'
 
 export class ExperienceRouter {
@@ -32,6 +33,15 @@ export class ExperienceRouter {
      * of the experience
      */
     this.router.post('/:experienceId/publish', ensureAuthenticated(), publishExperienceSnapshot)
+
+    /**
+     * Clones an experience, copying all places, routes etc
+     */
+     this.router.post(
+      '/:experienceId/clone',
+      ensureAuthenticated(),
+      cloneExperience,
+    )
 
     /**
      * Allow a user to collaborate on this experience

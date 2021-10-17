@@ -25,7 +25,7 @@ export async function getAllFeaturedExperiences(_request: Request, response: Res
   return response.json(exps)
 }
 
-async function populateExperienceData(experience: ExperienceData): Promise<ExperienceData> {
+export async function populateExperienceData(experience: ExperienceData): Promise<ExperienceData> {
   const placeRepo = new PointOfInterestRepo()
   const routeRepo = new RouteRepo()
   experience.routes = [] = await routeRepo.getAllByExperience(experience._id)

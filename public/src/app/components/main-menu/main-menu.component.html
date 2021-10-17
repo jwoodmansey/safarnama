@@ -21,6 +21,10 @@
         <mat-icon>edit</mat-icon>
         <span>Edit</span>
       </button>
+      <button [disabled]="!data.isOwner" mat-menu-item (click)="openClone()">
+        <mat-icon>content_copy</mat-icon>
+        <span>Clone</span>
+      </button>
     </ng-container>
   </mat-menu>
   <mat-divider></mat-divider>

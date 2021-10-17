@@ -75,6 +75,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { ProjectViewUserComponent } from './components/project/project-view-user/project-view-user.component';
 import { ProjectViewDetailsComponent } from './components/project/project-view-details/project-view-details.component';
 import { ProjectViewPublishedExperienceComponent } from './components/project/project-view-published-experience/project-view-published-experience.component';
+import { CloneExperienceDialogComponent } from './components/experience/clone-experience-dialog/clone-experience-dialog.component';
 
 
 registerLocaleData(enGB)
@@ -121,6 +122,7 @@ registerPlugin(FilePondPluginFileValidateSize);
     ProjectViewUserComponent,
     ProjectViewDetailsComponent,
     ProjectViewPublishedExperienceComponent,
+    CloneExperienceDialogComponent,
   ],
   imports: [
     BrowserModule,

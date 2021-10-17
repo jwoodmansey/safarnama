@@ -38,6 +38,51 @@ export async function createExperience(request: Request, response: Response) {
   }
 }
 
+export async function cloneExperience(request: Request, response: Response) {
+  const repo = new ExperienceRepo()
+  const placeRepo = new PointOfInterestRepo()
+  const routeRepo = new RouteRepo()
+  const newName = request.body.name
+  const id = request.params.experienceId
+
+  const experience = await repo.getModelById(id)
+  if (experience === null) {
+    return response.status(404).json({ error: 'Experience not found' })
+  }
+  if (!checkOwner(request, experience)) {
+    return response.status(401).json(
+      { error: 'You do not have permission to clone this experience' })
+  }
+  const newData = await repo.addNewExperience({ ...experience.toJSON(), name: newName, _id: undefined })
+  const places = await placeRepo.getAllByExperience(id)
+  const newPlaces = []
+  for (const place of places) {
+    const newPlace = await placeRepo.addNewPointOfInterest({
+      ...place,
+      _id: undefined,
+      experienceId: newData._id,
+    })
+    if (newPlace.media) {
+      newPlace.media = loadRealPaths(newPlace.media)
+    }
+    newPlaces.push(newPlace)
+  }
+  const routes = await routeRepo.getAllByExperience(id)
+  const newRoutes = []
+  for (const route of routes) {
+    newRoutes.push(await routeRepo.add({
+      ...route,
+      _id: undefined,
+      experienceId: newData._id,
+    }))
+  }
+  return response.json({
+    ...newData,
+    routes: newRoutes,
+    pointOfInterests: newPlaces,
+  })
+}
+
 export async function editExperience(request: Request, response: Response) {
   const repo = new ExperienceRepo()
   try {
@@ -66,7 +111,7 @@ export async function getExperienceSnapshot(request: Request, response: Response
     if (snapshot?.data.projects && snapshot.data.projects[0]) {
       snapshot.projectData = await projectRepo.getById(snapshot.data.projects[0])
     }
-    
+
     if (snapshot === null) {
       return response.status(404).json({ error: 'Experience snapshot not found' })
     }

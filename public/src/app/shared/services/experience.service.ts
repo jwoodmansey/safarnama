@@ -19,9 +19,11 @@ export class ExperienceService {
   private selectedExperienceObservable: BehaviorSubject<ExperienceData | undefined> =
     new BehaviorSubject(undefined)
 
-  constructor(private http: HttpClient,
-              private routeService: RouteService,
-              private poiService: PoiService) { }
+  constructor(
+    private http: HttpClient,
+    private routeService: RouteService,
+    private poiService: PoiService
+  ) { }
 
   getExperience(id: string): Observable<ExperienceData> {
     return this.http.get<ExperienceData>(this.EXPERIENCE_URL, { withCredentials: true })
@@ -56,31 +58,41 @@ export class ExperienceService {
     return this.http.post<ExperienceData>(
       this.EXPERIENCE_URL,
       experience, {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-        }),
-      })
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    })
+  }
+
+  cloneExperience(id: string, name: string): Observable<ExperienceData> {
+    return this.http.post<ExperienceData>(
+      `${this.EXPERIENCE_URL}/${id}/clone`,
+      { name }, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    })
   }
 
   editExperience(id: string, name: string, description?: string): Observable<ExperienceData> {
     return this.http.put<ExperienceData>(
       `${this.EXPERIENCE_URL}/${id}`,
       { name, description }, {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-        }),
-      }).pipe(
-        tap(exp => {
-          // Don't lose the POIs
-          if (this.selectedExperience._id === exp._id) {
-            this.selectedExperience = {
-              ...exp,
-              pointOfInterests: this.selectedExperience.pointOfInterests,
-            }
-            this.selectedExperienceObservable.next(this.selectedExperience)
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    }).pipe(
+      tap(exp => {
+        // Don't lose the POIs
+        if (this.selectedExperience._id === exp._id) {
+          this.selectedExperience = {
+            ...exp,
+            pointOfInterests: this.selectedExperience.pointOfInterests,
           }
-        }),
-      )
+          this.selectedExperienceObservable.next(this.selectedExperience)
+        }
+      }),
+    )
   }
 
   publishExperience(id: string): Observable<ExperienceSnapshotData> {

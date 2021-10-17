@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Clone Experience</h1>
+<p>This will create a copy of this experience, including all places, routes, and media.</p>
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div mat-dialog-content>
+    <mat-form-field>
+      <input formControlName="name" matInput placeholder="Name your new experience">
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button enabled class="mat-primary" [disabled]="!form.valid" type="submit">Clone</button>
+  </div>
+</form>
