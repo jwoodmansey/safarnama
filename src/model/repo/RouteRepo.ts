@@ -1,9 +1,8 @@
 import { RouteDocument } from '@common/route'
-import { RouteModel } from './RouteModel'
-import { Repository } from './Repository'
 import { Route } from '../schema/Route'
+import { Repository } from './Repository'
 
-export class RouteRepo extends Repository<RouteModel, RouteDocument> {
+export class RouteRepo extends Repository<typeof Route, RouteDocument> {
 
   constructor() {
     super(Route)

@@ -2,10 +2,9 @@ import { ExperienceData, ExperienceSnapshotData } from '@common/experience'
 import { ObjectID } from 'bson'
 import { Experience } from '../schema/Experience'
 import { ExperienceSnapshot } from '../schema/ExperienceSnapshot'
-import { ExperienceModel, ExperienceSnapshotModel } from './ExperienceModel'
 import { Repository } from './Repository'
 
-export class ExperienceRepo extends Repository<ExperienceModel, ExperienceData> {
+export class ExperienceRepo extends Repository<typeof Experience, ExperienceData> {
 
   constructor() {
     super(Experience)
@@ -60,7 +59,7 @@ export class ExperienceRepo extends Repository<ExperienceModel, ExperienceData> 
     return res
   }
 
-  public async getModelById(id: string): Promise<ExperienceModel | null> {
+  public async getModelById(id: string) {
     return Experience.findById(id)
   }
 
@@ -71,8 +70,7 @@ export class ExperienceRepo extends Repository<ExperienceModel, ExperienceData> 
     return latest ? latest.toObject() : null
   }
 
-  public async getLatestSnapshotModelByExperienceId(id: string):
-    Promise<ExperienceSnapshotModel | null> {
+  public async getLatestSnapshotModelByExperienceId(id: string) {
     const snapshot = await ExperienceSnapshot.find({
       'data._id': new ObjectID(id),
     }).sort({

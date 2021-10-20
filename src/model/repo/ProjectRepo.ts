@@ -1,9 +1,8 @@
 import { ProjectData } from "@common/project";
 import { Project } from "../schema/Project";
-import { ProjectModel } from "./ProjectModel";
 import { Repository } from "./Repository";
 
-export class ProjectRepo extends Repository<ProjectModel, ProjectData> {
+export class ProjectRepo extends Repository<typeof Project, ProjectData> {
 
   constructor() {
     super(Project)

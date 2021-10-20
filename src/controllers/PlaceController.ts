@@ -12,8 +12,8 @@ const repo = new PointOfInterestRepo()
 const expRepo = new ExperienceRepo()
 
 export async function createPlace(request: Request, response: Response) {
-  const exp = await expRepo.getModelById(request.body.experienceId)
-  if (exp === null) {
+  const exp = await expRepo.findById(request.body.experienceId)
+  if (!exp) {
     return response.status(404).json({ error: 'Place not found' })
   }
   if (!checkOwner(request, exp) &&
@@ -113,10 +113,7 @@ export async function isAnExperienceCollaborator(
 ): Promise<boolean> {
   console.log('Checking collaborator')
   const experienceRepo = new ExperienceRepo()
-  const exp = await experienceRepo.getModelById(poi.experienceId)
-  if (!exp) {
-    throw new Error('Experience not found')
-  }
+  const exp = await experienceRepo.findByIdOrThrow(poi.experienceId)
   if (!exp.collaborators) {
     return false
   }

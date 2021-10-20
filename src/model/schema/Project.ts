@@ -1,10 +1,10 @@
-import * as mongoose from 'mongoose'
-import { ProjectModel } from '../repo/ProjectModel'
+import { ProjectData } from '@common/project'
+import { model, Schema } from 'mongoose'
 
-export const Project = mongoose.model<ProjectModel>('Project', new mongoose.Schema({
+export const Project = model<ProjectData>('Project', new Schema({
   name: { type: String, required: true },
   description: { type: String, required: false },
-  members: [{ userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, roles: [{ type: String }] }],
+  members: [{ userId: { type: Schema.Types.ObjectId, ref: 'User' }, roles: [{ type: String }] }],
   iOS: {
     appStoreId: { type: String },
     bundleId: { type: String },

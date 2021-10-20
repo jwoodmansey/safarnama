@@ -1,9 +1,8 @@
-import { User } from '../schema/User'
 import { UserData } from '@common/user'
-import { UserModel } from './UserModel'
+import { User } from '../schema/User'
 import { Repository } from './Repository'
 
-export class UserRepo extends Repository<UserModel, UserData> {
+export class UserRepo extends Repository<typeof User, UserData> {
 
   constructor() {
     super(User)

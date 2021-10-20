@@ -1,11 +1,11 @@
-import * as mongoose from 'mongoose'
-import { PlaceTypeModel } from '../repo/PlaceTypeModel'
+import { PlaceType as PlaceTypeDoc } from '@common/point-of-interest'
+import { model, Schema } from 'mongoose'
 
-export const PlaceType = mongoose.model<PlaceTypeModel>('PlaceType', new mongoose.Schema({
+export const PlaceType = model<PlaceTypeDoc>('PlaceType', new Schema({
   name: { type: String, required: true },
   matIcon: { type: String, required: false },
   imageIconURL: {type: Boolean, required: false },
   created_at:  { type: Date, default: Date.now },
   updated_at:  { type: Date, default: Date.now },
-  ownerId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
+  ownerId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
 }))

@@ -1,9 +1,8 @@
 import { PointOfInterestDocument } from '@common/point-of-interest'
 import { PointOfInterest } from '../schema/PointOfInterest'
-import { PointOfInterestModel } from './PointOfInterestModel'
 import { EntityNotFoundError, Repository } from './Repository'
 
-export class PointOfInterestRepo extends Repository<PointOfInterestModel, PointOfInterestDocument> {
+export class PointOfInterestRepo extends Repository<typeof PointOfInterest, PointOfInterestDocument> {
 
   constructor() {
     super(PointOfInterest)

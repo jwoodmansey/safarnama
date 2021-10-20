@@ -9,8 +9,8 @@ export class EntityNotFoundError extends Error {
 
 
 // The goal here is to never expose the mongoose model outside of repositories
-export class Repository<T, D> {
-  constructor(protected model: mongoose.Model<T>) {
+export class Repository<T extends mongoose.Model<D>, D> {
+  constructor(protected model: T) {
 
   }
 
@@ -38,7 +38,7 @@ export class Repository<T, D> {
     return dbResp.toObject() as D
   }
 
-  async findAll(query: mongoose.FilterQuery<T> = {}): Promise<D[]> {
+  async findAll(query: mongoose.FilterQuery<D> = {}): Promise<D[]> {
     const results = await this.model.find(query, undefined)
     return results.map(r => r.toObject()) as D[]
   }

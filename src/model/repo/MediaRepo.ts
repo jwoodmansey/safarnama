@@ -1,9 +1,8 @@
 import { MediaDocument } from '@common/media'
-import { MediaModel } from '../repo/MediaModel'
 import { Media } from '../schema/Media'
 import { EntityNotFoundError, Repository } from './Repository'
 
-export class MediaRepo extends Repository<MediaModel, MediaDocument> {
+export class MediaRepo extends Repository<typeof Media, MediaDocument> {
 
   constructor() {
     super(Media)
