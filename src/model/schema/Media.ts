@@ -1,11 +1,11 @@
-import * as mongoose from 'mongoose'
-import { MediaModel } from '../repo/MediaModel'
+import { MediaDocument } from '@common/media'
+import {model, Schema} from 'mongoose'
 
-export = mongoose.model<MediaModel>('Media', new mongoose.Schema({
+export const Media = model<MediaDocument>('Media', new Schema({
   path: { type: String, required: true },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },
-  ownerId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
+  ownerId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
   size: { type: Number, required: true },
   md5: { type: String, required: true },
   mimetype: { type: String, required: true },
@@ -13,7 +13,7 @@ export = mongoose.model<MediaModel>('Media', new mongoose.Schema({
   description: { type: String },
   acknowledgements: { type: String },
   associatedExperiences: [{
-    type: mongoose.Schema.Types.ObjectId, ref: 'Experience', required: false,
+    type: Schema.Types.ObjectId, ref: 'Experience', required: false,
   }],
   externalLinks: [{
     name: {

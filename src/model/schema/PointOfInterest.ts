@@ -1,14 +1,14 @@
-import * as mongoose from 'mongoose'
-import { PointOfInterestModel } from '../repo/PointOfInterestModel'
+import { PointOfInterestDocument } from '@common/point-of-interest'
+import { model, Schema } from 'mongoose'
 
-export = mongoose.model<PointOfInterestModel>('PointOfInterest', new mongoose.Schema({
+export const PointOfInterest = model<PointOfInterestDocument>('PointOfInterest', new Schema({
   name: { type: String, required: true },
   description: String,
   createdAt: Date,
   updatedAt: Date,
-  ownerId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
-  experienceId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Experience' },
-  media: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Media' }],
+  ownerId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
+  experienceId: { type: Schema.Types.ObjectId, required: true, ref: 'Experience' },
+  media: [{ type: Schema.Types.ObjectId, ref: 'Media' }],
   location: {
     type: {
       type: String, // Don't do `{ location: { type: String } }`

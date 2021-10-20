@@ -15,7 +15,7 @@ export async function getMyProfile(request: Request, response: Response) {
 
 async function getProfileById(id: string): Promise<PublicProfile | undefined> {
   const userRepo = new UserRepo()
-  const user = await userRepo.get(id)
+  const user = await userRepo.findById(id)
   if (!user) {
     return undefined
   }

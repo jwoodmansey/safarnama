@@ -4,8 +4,8 @@ import { Request, Response } from 'express'
 // @ts-ignore
 import * as filepreview from 'filepreview'
 import { environment } from '../config/env'
-import { MediaModel } from '../model/repo/MediaModel'
 import { MediaRepo } from '../model/repo/MediaRepo'
+import { EntityNotFoundError } from '../model/repo/Repository'
 import UploadedFileExtended from '../types/UploadedFileExtended'
 import { checkOwner, selectUserId } from '../utils/auth'
 import { makeDirectoryIfNotExists } from '../utils/file'
@@ -23,13 +23,10 @@ export async function processUpload(request: Request, response: Response) {
       // todo multi upload support
     } else {
       const repo = new MediaRepo()
-
       const file: UploadedFileExtended = filesOrFile as UploadedFileExtended
-      console.log('FILE', file)
-
       const ext = getExtension(file)
       const ownerId = selectUserId(request)
-      const id = await repo.add({
+      const mediaDoc = await repo.add({
         ownerId,
         path: ext,
         thumbPath: ext,
@@ -39,9 +36,9 @@ export async function processUpload(request: Request, response: Response) {
         _id: undefined,
         associatedExperiences: typeof request.query.expId === 'string' ? [request.query.expId] : undefined,
       })
-      console.log('New media added to database', id)
-      const filePath = getPathForMedia(ownerId, id, ext)
-      const thumbPath = getPathForMediaThumb(ownerId, id)
+      console.log('New media added to database', mediaDoc._id)
+      const filePath = getPathForMedia(ownerId, mediaDoc._id, ext)
+      const thumbPath = getPathForMediaThumb(ownerId, mediaDoc._id)
 
       createMediaPathIfNotExists(ownerId)
 
@@ -49,7 +46,7 @@ export async function processUpload(request: Request, response: Response) {
       file.mv(filePath, async (e) => {
         if (e) {
           console.error(e)
-          await repo.delete(id)
+          await repo.remove(mediaDoc._id)
         }
         filepreview.generate(
           filePath,
@@ -59,7 +56,7 @@ export async function processUpload(request: Request, response: Response) {
             }
             console.log('File preview is' + thumbPath)
           })
-        return response.send(id)
+        return response.send(mediaDoc._id)
       })
     }
     return
@@ -73,10 +70,7 @@ export async function editMedia(request: Request, response: Response) {
     const repo = new MediaRepo()
     console.log('Media edit request', request.body, request.files)
     const id = request.params.mediaId
-    const media = await repo.getModelWithExperiences(id)
-    if (media === null) {
-      return response.status(404).json({ error: 'Media item not found' })
-    }
+    const media = await repo.findByIdOrThrow(id)
     if (!checkOwner(request, media) && !isCollaboratingOnAnExperience(request, media)) {
       return response.status(401).json(
         { error: 'You do not have permission to edit this Media Item' })
@@ -101,13 +95,16 @@ export async function editMedia(request: Request, response: Response) {
     }
     return
   } catch (e) {
+    if (e instanceof EntityNotFoundError) {
+      return response.status(404).json({ error: 'Media item not found' })
+    }
     return response.status(500).json({ code: 500, error: e })
   }
 }
 
 export async function isCollaboratingOnAnExperience(
   request: Request,
-  media: MediaModel,
+  media: MediaDocument,
 ): Promise<boolean> {
   console.log('Checking collaborator')
   const exps = (media.associatedExperiences as any) as ExperienceData[]
@@ -124,7 +121,7 @@ export async function deleteMedia(request: Request, response: Response) {
   try {
     console.log('Media delete request', request.body)
     const id = request.params.mediaId
-    const media = await repo.get(id)
+    const media = await repo.findByIdOrThrow(id)
     if (media === null) {
       return response.status(404).json({ error: 'Media item not found' })
     }
@@ -133,9 +130,12 @@ export async function deleteMedia(request: Request, response: Response) {
         { error: 'You do not have permission to edit this Media Item' })
     }
     // Todo delete the file
-    await repo.delete(id)
+    await repo.remove(id)
     return response.json({ success: true })
   } catch (e) {
+    if (e instanceof EntityNotFoundError) {
+      return response.status(404).json({ error: 'Media item not found' })
+    }
     return response.status(500).json({ code: 500, error: e })
   }
 }

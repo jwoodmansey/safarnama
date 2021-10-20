@@ -1,19 +1,19 @@
-import { PointOfInterestRepo } from '../model/repo/PointOfInterestRepo'
-import { Request, Response } from 'express'
-import { checkOwner, selectUserId } from '../utils/auth'
 import { MediaDocument } from '@common/media'
 import { PointOfInterestDocument } from '@common/point-of-interest'
+import { Request, Response } from 'express'
 import { loadRealPaths } from '../controllers/MediaController'
-import { MediaRepo } from '../model/repo/MediaRepo'
 import { ExperienceRepo } from '../model/repo/ExperienceRepo'
-import { PointOfInterestModel } from '../model/repo/PointOfInterestModel'
+import { MediaRepo } from '../model/repo/MediaRepo'
+import { PointOfInterestRepo } from '../model/repo/PointOfInterestRepo'
+import { EntityNotFoundError } from '../model/repo/Repository'
+import { checkOwner, selectUserId } from '../utils/auth'
 
 const repo = new PointOfInterestRepo()
 const expRepo = new ExperienceRepo()
 
 export async function createPlace(request: Request, response: Response) {
-  const exp = await expRepo.getModelById(request.body.experienceId)
-  if (exp === null) {
+  const exp = await expRepo.findById(request.body.experienceId)
+  if (!exp) {
     return response.status(404).json({ error: 'Place not found' })
   }
   if (!checkOwner(request, exp) &&
@@ -29,7 +29,7 @@ export async function createPlace(request: Request, response: Response) {
     ownerId: exp.ownerId, // The owner is always the experience creator
   }
   try {
-    const res = await repo.addNewPointOfInterest(poiData)
+    const res = await repo.add(poiData)
     loadRealMediaPaths(res)
     return response.json(res)
   } catch (e) {
@@ -41,11 +41,7 @@ export async function editPlace(request: Request, response: Response) {
   const repo = new PointOfInterestRepo()
   const mediaRepo = new MediaRepo()
   try {
-    const poi = await repo.getModel(request.params.poiId)
-
-    if (poi === null) {
-      return response.status(404).json({ error: 'Place not found' })
-    }
+    const poi = await repo.findByIdOrThrow(request.params.poiId)
     if (!checkOwner(request, poi) && !(await isAnExperienceCollaborator(request, poi))) {
       return response.status(401).json(
         { error: 'You do not have permission to edit this Place' })
@@ -58,7 +54,7 @@ export async function editPlace(request: Request, response: Response) {
 
     // Mark each media as now associated with this experience
     mediaIds.forEach(async (id) => {
-      const media = await mediaRepo.get(id)
+      const media = await mediaRepo.findById(id)
       if (media) {
         if (!media.associatedExperiences) {
           media.associatedExperiences = []
@@ -70,20 +66,19 @@ export async function editPlace(request: Request, response: Response) {
         }
       }
     })
-
-    poi.set({
+    const populated = await repo.edit(poi._id, {
       ...request.body,
       media: mediaIds,
       updatedAt: new Date(),
       ownerId: poi.ownerId, // User cannot change this field!!!
       createdAt: poi.createdAt,
     })
-    const pop = (await poi.save()).populate('media')
-    const resp = await pop
-    const obj = resp.toObject()
-    loadRealMediaPaths(obj)
-    return response.json(obj)
+    loadRealMediaPaths(populated)
+    return response.json(populated)
   } catch (e) {
+    if (e instanceof EntityNotFoundError) {
+      return response.status(404).json({ error: 'Place not found' })
+    }
     return response.status(500).json({ code: 500, error: e })
   }
 }
@@ -91,17 +86,17 @@ export async function editPlace(request: Request, response: Response) {
 export async function deletePlace(request: Request, response: Response) {
   const repo = new PointOfInterestRepo()
   try {
-    const poi = await repo.getModel(request.params.poiId)
-    if (poi === null) {
-      return response.status(404).json({ error: 'Place not found' })
-    }
+    const poi = await repo.findByIdOrThrow(request.params.poiId)
     if (!checkOwner(request, poi) && !(await isAnExperienceCollaborator(request, poi))) {
       return response.status(401).json(
         { error: 'You do not have permission to delete this place' })
     }
-    await poi.remove()
+    await repo.remove(poi._id)
     return response.json({ success: true })
   } catch (e) {
+    if (e instanceof EntityNotFoundError) {
+      return response.status(404).json({ error: 'Place not found' })
+    }
     return response.status(500).json({ code: 500, error: e })
   }
 }
@@ -114,14 +109,11 @@ function loadRealMediaPaths(poi: PointOfInterestDocument): void {
 
 export async function isAnExperienceCollaborator(
   request: Request,
-  poi: PointOfInterestModel,
+  poi: PointOfInterestDocument,
 ): Promise<boolean> {
   console.log('Checking collaborator')
   const experienceRepo = new ExperienceRepo()
-  const exp = await experienceRepo.getModelById(poi.experienceId)
-  if (!exp) {
-    throw new Error('Experience not found')
-  }
+  const exp = await experienceRepo.findByIdOrThrow(poi.experienceId)
   if (!exp.collaborators) {
     return false
   }

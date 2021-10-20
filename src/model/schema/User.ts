@@ -1,10 +1,7 @@
-import * as mongoose from 'mongoose'
+import { Schema, model } from 'mongoose'
 import { UserData } from '@common/user'
 
-type UserModel = UserData & mongoose.Document
-
-// tslint:disable-next-line:variable-name
-export const User = mongoose.model<UserModel>('User', new mongoose.Schema({
+export const User = model<UserData>('User', new Schema({
   displayName: { type: String, required: true },
   photoURL: String,
   createdAt: Date,

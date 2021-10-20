@@ -13,6 +13,9 @@ import { createFirebaseDynamicLink } from './FirebaseDynamicLinkController'
 import { loadRealPaths } from './MediaController'
 import { addRoleToProjectMember } from './ProjectController'
 
+const repo = new ExperienceRepo()
+const projectRepo = new ProjectRepo()
+
 export async function createExperience(request: Request, response: Response) {
   const repo = new ExperienceRepo()
   const experienceData: ExperienceData = {
@@ -26,12 +29,14 @@ export async function createExperience(request: Request, response: Response) {
 
   if (experienceData.projects && experienceData.ownerId) {
     for (const p of experienceData.projects) {
-      await addRoleToProjectMember(p, experienceData.ownerId, 'creator')
+      if (p) {
+        await addRoleToProjectMember(p, experienceData.ownerId, 'creator')
+      }
     }
   }
 
   try {
-    const res = await repo.addNewExperience(experienceData)
+    const res = await repo.add(experienceData)
     return response.json(res)
   } catch (e) {
     return response.status(500).json({ code: 500, error: e })
@@ -53,11 +58,11 @@ export async function cloneExperience(request: Request, response: Response) {
     return response.status(401).json(
       { error: 'You do not have permission to clone this experience' })
   }
-  const newData = await repo.addNewExperience({ ...experience.toJSON(), name: newName, _id: undefined })
-  const places = await placeRepo.getAllByExperience(id)
+  const newData = await repo.add({ ...experience.toJSON(), name: newName, _id: undefined })
+  const places = await placeRepo.findByExperienceId(id)
   const newPlaces = []
   for (const place of places) {
-    const newPlace = await placeRepo.addNewPointOfInterest({
+    const newPlace = await placeRepo.add({
       ...place,
       _id: undefined,
       experienceId: newData._id,
@@ -67,7 +72,7 @@ export async function cloneExperience(request: Request, response: Response) {
     }
     newPlaces.push(newPlace)
   }
-  const routes = await routeRepo.getAllByExperience(id)
+  const routes = await routeRepo.findByExperienceId(id)
   const newRoutes = []
   for (const route of routes) {
     newRoutes.push(await routeRepo.add({
@@ -104,12 +109,10 @@ export async function editExperience(request: Request, response: Response) {
 }
 
 export async function getExperienceSnapshot(request: Request, response: Response) {
-  const repo = new ExperienceRepo()
-  const projectRepo = new ProjectRepo()
   try {
     const snapshot = await repo.getLatestSnapshotByExperienceId(request.params.experienceId)
     if (snapshot?.data.projects && snapshot.data.projects[0]) {
-      snapshot.projectData = await projectRepo.getById(snapshot.data.projects[0])
+      snapshot.projectData = await projectRepo.findById(snapshot.data.projects[0])
     }
 
     if (snapshot === null) {
@@ -148,7 +151,7 @@ export async function publishExperienceSnapshot(request: Request, response: Resp
     const experienceData: ExperienceData = experience.toObject()
     experienceData.pointOfInterests = []
     experienceData.routes = []
-    experienceData.pointOfInterests = await placeRepo.getAllByExperience(experience._id)
+    experienceData.pointOfInterests = await placeRepo.findByExperienceId(experience._id)
     experienceData.pointOfInterests.forEach((poi) => {
       if (poi.media) {
         poi.media = loadRealPaths(poi.media)
@@ -160,7 +163,7 @@ export async function publishExperienceSnapshot(request: Request, response: Resp
         })
       }
     })
-    experienceData.routes = await routeRepo.getAllByExperience(experience._id)
+    experienceData.routes = await routeRepo.findByExperienceId(experience._id)
 
     // todo work out if we already have a snapshot and get published at date from there?
     // why do we even need to store published at time? can just query for it if ever need
@@ -175,7 +178,7 @@ export async function publishExperienceSnapshot(request: Request, response: Resp
     if (!ownerId) {
       throw new Error('User not found')
     }
-    const user = await userRepo.get(ownerId)
+    const user = await userRepo.findById(ownerId)
     if (!user) {
       throw new Error('User not found')
     }
@@ -247,8 +250,8 @@ export async function addCollaboratorsToExperience(request: Request, response: R
       photoURL?: string,
     }[] = []
     await asyncForEach(request.body.userIds, async (userId: string) => {
-      const user = await userRepo.get(userId)
-      if (user === null) {
+      const user = await userRepo.findById(userId)
+      if (!user) {
         return response.status(403).json({ code: 403, error: `UserId '${userId}' not found` })
       }
       if (!collaborators.includes(userId)) {

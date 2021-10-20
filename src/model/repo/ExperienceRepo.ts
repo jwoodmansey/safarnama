@@ -1,27 +1,22 @@
 import { ExperienceData, ExperienceSnapshotData } from '@common/experience'
 import { ObjectID } from 'bson'
-import { ExperienceModel, ExperienceSnapshotModel } from './ExperienceModel'
-import Experience = require('../schema/Experience')
-import ExperienceSnapshot = require('../schema/ExperienceSnapshot')
+import { Experience } from '../schema/Experience'
+import { ExperienceSnapshot } from '../schema/ExperienceSnapshot'
+import { Repository } from './Repository'
 
-export class ExperienceRepo {
+export class ExperienceRepo extends Repository<typeof Experience, ExperienceData> {
 
-  public async addNewExperience(experienceData: ExperienceData): Promise<ExperienceData> {
-    console.log('EXPERIENCE REPO: Adding new experience', experienceData)
-    const e = new Experience(experienceData)
-    const dbResp = await e.save()
-    return dbResp.toObject()
+  constructor() {
+    super(Experience)
   }
 
   public async getAllByUser(userId: string): Promise<ExperienceData[]> {
-    console.log('EXPERIENCE REPO: Get all by user', userId)
-    const res = await Experience.find({
+    return this.findAll({
       $or: [
         { ownerId: userId },
         { collaborators: userId },
       ],
-    }).lean()
-    return res
+    })
   }
 
   public async getAllSnapshots(featuredOnly = false): Promise<any[]> {
@@ -64,7 +59,7 @@ export class ExperienceRepo {
     return res
   }
 
-  public async getModelById(id: string): Promise<ExperienceModel | null> {
+  public async getModelById(id: string) {
     return Experience.findById(id)
   }
 
@@ -75,8 +70,7 @@ export class ExperienceRepo {
     return latest ? latest.toObject() : null
   }
 
-  public async getLatestSnapshotModelByExperienceId(id: string):
-    Promise<ExperienceSnapshotModel | null> {
+  public async getLatestSnapshotModelByExperienceId(id: string) {
     const snapshot = await ExperienceSnapshot.find({
       'data._id': new ObjectID(id),
     }).sort({

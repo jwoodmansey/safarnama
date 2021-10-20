@@ -1,30 +1,18 @@
 import { RouteDocument } from '@common/route'
-import { RouteModel } from './RouteModel'
-import Route = require('../schema/Route')
-export class RouteRepo {
+import { Route } from '../schema/Route'
+import { Repository } from './Repository'
 
-  public async add(routeData: RouteDocument): Promise<RouteDocument> {
-    console.log('ROUTE REPO: Adding new Route', routeData)
-    const e = new Route({ ...routeData })
-    const res = await e.save()
-    return res
+export class RouteRepo extends Repository<typeof Route, RouteDocument> {
+
+  constructor() {
+    super(Route)
   }
 
-  public async getAllByUser(userId: string): Promise<RouteDocument[]> {
-    console.log('ROUTE REPO: Get all by user', userId)
-    const res = await Route.find({ ownerId: userId }).lean()
-    return res
+  public async findByUserId(ownerId: string): Promise<RouteDocument[]> {
+    return this.findAll({ ownerId })
   }
 
-  public async getAllByExperience(experienceId: string): Promise<RouteDocument[]> {
-    console.log('ROUTE REPO: Get all by experience', experienceId)
-    const res = await Route.find({ experienceId }).lean()
-    return res
-  }
-
-  public async getModel(poiId: string): Promise<RouteModel | null> {
-    console.log('ROUTE REPO: Get by id', poiId)
-    const res = await Route.findById(poiId)
-    return res
+  public async findByExperienceId(experienceId: string): Promise<RouteDocument[]> {
+    return this.findAll({ experienceId })
   }
 }

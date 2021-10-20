@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import * as fs from 'fs'
 import { environment } from '../config/env'
 import { PlaceTypeRepo } from '../model/repo/PlaceTypeRepo'
+import { EntityNotFoundError } from '../model/repo/Repository'
 import { checkOwner, selectUserId } from '../utils/auth'
 import { makeDirectoryIfNotExists } from '../utils/file'
 
@@ -56,17 +57,18 @@ export async function getAllMyPlaceTypes(request: Request, response: Response) {
 export async function deletePlaceType(request: Request, response: Response) {
   const id = request.params.id
   try {
-    const placeType = await repo.getById(request.params.id)
-    if (placeType === null) {
-      return response.status(404).json({ error: 'PlaceType not found' })
-    }
+    const placeType = await repo.findByIdOrThrow(request.params.id)
     if (!checkOwner(request, placeType)) {
       return response.status(401).json(
         { error: 'You do not have permission to delete this PlaceType' })
     }
-    await repo.delete(id)
+    await repo.remove(id)
     return response.json({ success: true })
   } catch (e) {
+    if (e instanceof EntityNotFoundError) {
+      return response.status(404).json({ error: 'PlaceType not found' })
+
+    }
     return response.status(500).json({ code: 500, error: e })
   }
 }

@@ -1,13 +1,13 @@
-import * as mongoose from 'mongoose'
-import { RouteModel } from '../repo/RouteModel'
+import { RouteDocument } from '@common/route'
+import { model, Schema } from 'mongoose'
 
-export = mongoose.model<RouteModel>('Route', new mongoose.Schema({
+export const Route = model<RouteDocument>('Route', new Schema({
   name: { type: String, required: true },
   description: {type: String, required: false},
   created_at:  { type: Date, default: Date.now },
   updated_at:  { type: Date, default: Date.now },
-  ownerId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
-  experienceId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Experience' },
+  ownerId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
+  experienceId: { type: Schema.Types.ObjectId, required: true, ref: 'Experience' },
   geo: {
     type: {
       type: String,

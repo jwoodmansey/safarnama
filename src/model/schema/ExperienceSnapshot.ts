@@ -1,8 +1,7 @@
+import { ExperienceSnapshotData } from '@common/experience'
 import * as mongoose from 'mongoose'
-import { ExperienceSnapshotModel } from '../repo/ExperienceModel'
 const AUTO_INCREMENT = require('mongoose-sequence')(mongoose)
 
-// tslint:disable-next-line:variable-name
 const ExperienceSnapshotSchema = new mongoose.Schema({
   ownerId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -50,4 +49,4 @@ ExperienceSnapshotSchema.plugin(AUTO_INCREMENT, {
   inc_field: 'metaData.version',
   reference_fields: ['data._id'],
 })
-export = mongoose.model<ExperienceSnapshotModel>('ExperienceSnapshot', ExperienceSnapshotSchema)
+export const ExperienceSnapshot = mongoose.model<ExperienceSnapshotData>('ExperienceSnapshot', ExperienceSnapshotSchema)

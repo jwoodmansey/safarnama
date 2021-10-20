@@ -13,7 +13,7 @@ export async function getAllMyProjects(request: Request, response: Response) {
 }
 
 export async function getById(request: Request, response: Response) {
-  const data: ProjectData = await repo.getById(request.params.id)
+  const data: ProjectData | undefined = await repo.findById(request.params.id)
   if (!data) {
     return response.sendStatus(404)
   }
@@ -33,7 +33,7 @@ export async function editById(request: Request, response: Response) {
 async function populateMembers(data: ProjectData): Promise<ProjectData> {
   //Populate some fields from the user into members, for now we'll only do name.
   const userRepo = new UserRepo()
-  const members = await Promise.all(data.members ? data.members.map(m => userRepo.get(m.userId).then((user) => ({
+  const members = await Promise.all(data.members ? data.members.map(m => userRepo.findById(m.userId).then((user) => ({
     ...m,
     name: user ? user.displayName : undefined,
   }))) : [])
@@ -50,7 +50,7 @@ export async function setRole(request: Request, response: Response) {
 
 export async function addRoleToProjectMember(projectId: string, userId: string, role: string) {
   // Todo this should be transactional
-  const project = await repo.getById(projectId)
+  const project = await repo.findByIdOrThrow(projectId)
   if (project.members && project.members.find(m => m.userId.toString() === userId) !== undefined) {
     return repo.edit(projectId, {
       members: project.members ? project.members.map(m => ({
@@ -68,7 +68,7 @@ export async function addRoleToProjectMember(projectId: string, userId: string, 
 export async function removeRole(request: Request, response: Response) {
   const projectId = request.params.id
   // Todo this should be transactional
-  const project = await repo.getById(projectId)
+  const project = await repo.findByIdOrThrow(projectId)
   const updated = await repo.edit(projectId, {
     members: project.members ? project.members.map(m => {
       console.log('m.userId', m.userId, JSON.stringify(m.roles), request.params.role, request.params.userId)

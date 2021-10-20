@@ -1,7 +1,12 @@
-import { User } from '../schema/User'
 import { UserData } from '@common/user'
+import { User } from '../schema/User'
+import { Repository } from './Repository'
 
-export class UserRepo {
+export class UserRepo extends Repository<typeof User, UserData> {
+
+  constructor() {
+    super(User)
+  }
 
   public createUserFromProfile(profile: any, accessToken: string, refreshToken: string): UserData {
     return {
@@ -17,19 +22,10 @@ export class UserRepo {
       _id: profile._id,
     }
   }
-
-  public async get(id: string): Promise<UserData | null> {
-    const model = await User.findById(id).lean()
-    return model !== null ? model : null
-  }
-
-  public async getByEmail(email: string): Promise<UserData | null> {
-    const model = await User.findOne({ email }).exec()
-    return model
-  }
-
-  public async getAll(): Promise<UserData[]> {
-    return User.find({}).lean()
+  
+  public async findByEmail(email: string): Promise<UserData | null> {
+    const user = await this.findAll({ email })
+    return user[0] || null
   }
 
   public async edit(
@@ -37,14 +33,6 @@ export class UserRepo {
     edit: {
       bio: string,
     }): Promise<UserData> {
-    console.log('USER REPO: Edit', id)
-    const model = await User.findById(id)
-    if (model) {
-      console.log('User found, going to edit...', model.toJSON())
-      model.set({ ...edit, updatedAt: new Date() })
-      const dbResp = await model.save()
-      return dbResp.toJSON()
-    }
-    throw new Error('Could not find user to edit it' + id)
+    return super.edit(id, edit)
   }
 }
