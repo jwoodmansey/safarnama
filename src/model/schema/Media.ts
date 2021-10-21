@@ -1,5 +1,5 @@
 import { MediaDocument } from '@common/media'
-import {model, Schema} from 'mongoose'
+import { model, Schema } from 'mongoose'
 
 export const Media = model<MediaDocument>('Media', new Schema({
   path: { type: String, required: true },
