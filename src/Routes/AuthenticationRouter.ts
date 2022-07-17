@@ -7,7 +7,8 @@ export class AuthenticationRouter {
 
   getRouter(): Router {
     this.router.get('/logout', (req, res) => {
-      req.logout({ keepSessionInfo: false }, (done: any) => {
+      // fixme types are outdated
+      (req as any).logout({ keepSessionInfo: false }, (done: any) => {
         const a = req as any;
         // this might not be needed anymore with
         // https://medium.com/passportjs/fixing-session-fixation-b2b68619c51d
