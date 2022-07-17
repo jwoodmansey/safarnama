@@ -71,7 +71,7 @@ export function configureAuthentication() {
           if (!user) {
             const newUser = userRepo.createUserFromProfile(profile, accessToken, refreshToken);
             console.log('New user, going to create entry in mongo...', newUser);
-            new User(newUser).save(undefined, (saveError: any, savedUser: any) => {
+            new User(newUser).save(undefined, (_: any, savedUser: any) => {
               done(undefined, savedUser);
             });
           } else {
