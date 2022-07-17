@@ -2,16 +2,36 @@ import axios from 'axios'
 import { environment } from '../config/env'
 const key = environment.firebase.webAPIKey
 
+export type DynamicLinkInfo = {
+  domainUriPrefix?: string;
+  androidInfo?: {
+    androidPackageName: string
+  },
+  iosInfo?: {
+    iosBundleId?: string,
+    iosFallbackLink?: string,
+    iosCustomScheme?: string,
+    iosIpadFallbackLink?: string,
+    iosIpadBundleId?: string,
+    iosAppStoreId?: string
+  }
+}
+
 // See https://firebase.google.com/docs/dynamic-links/rest?authuser=0
-export async function createFirebaseDynamicLink(link: string): Promise<string> {
+export async function createFirebaseDynamicLink(link: string, info?: DynamicLinkInfo): Promise<string> {
   console.log('Creating deeplink for url ' + link)
+
+  const dynamicLinkInfo: DynamicLinkInfo = {
+    ...environment.firebase.dynamicLinkInfo,
+    androidInfo: info && info.androidInfo ? info.androidInfo : environment.firebase.dynamicLinkInfo.androidInfo,
+    iosInfo: info && info.iosInfo ? info.iosInfo : environment.firebase.dynamicLinkInfo.iosInfo,
+    link,
+  }
+
   const resp = await axios.post(
     `https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=${key}`,
     {
-      dynamicLinkInfo: {
-        ...environment.firebase.dynamicLinkInfo,
-        link,
-      },
+      dynamicLinkInfo,
       suffix: {
         option: 'SHORT', // or change to 'UNGUESSABLE'
       },

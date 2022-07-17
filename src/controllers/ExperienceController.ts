@@ -9,7 +9,7 @@ import { ProjectRepo } from '../model/repo/ProjectRepo'
 import { RouteRepo } from '../model/repo/RouteRepo'
 import { UserRepo } from '../model/repo/UserRepo'
 import { checkOwner } from '../utils/auth'
-import { createFirebaseDynamicLink } from './FirebaseDynamicLinkController'
+import { createFirebaseDynamicLink, DynamicLinkInfo } from './FirebaseDynamicLinkController'
 import { loadRealPaths } from './MediaController'
 import { addRoleToProjectMember } from './ProjectController'
 
@@ -169,8 +169,23 @@ export async function publishExperienceSnapshot(request: Request, response: Resp
     // why do we even need to store published at time? can just query for it if ever need
 
     // Ask firebase for a short url which will become a deeplink
+    const projectId = experience.projects ? experience.projects[0] : undefined
+    let dynamicLinkInfo: DynamicLinkInfo | undefined = undefined
+    if (projectId) {
+      const project = await projectRepo.findById(projectId)
+      dynamicLinkInfo = {
+        androidInfo: project?.android?.package ? {
+          androidPackageName: project?.android?.package,
+        } : undefined,  
+        iosInfo: project?.iOS ? {
+          iosAppStoreId: project?.iOS?.appStoreId,
+          iosBundleId: project?.iOS?.bundleId
+        } : undefined
+      }
+    }
     const shortLink = await createFirebaseDynamicLink(
       `https://safarnama.lancs.ac.uk/download/${experience._id}`,
+      dynamicLinkInfo
     )
 
     const userRepo = new UserRepo()
