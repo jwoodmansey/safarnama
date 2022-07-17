@@ -1,4 +1,4 @@
-import { MediaDocument } from './media'
+import { MediaDocument } from './media';
 
 export type PointOfInterestDocument = {
   _id: any,
@@ -11,9 +11,9 @@ export type PointOfInterestDocument = {
   experienceId: string,
   type: PlaceType,
   media: MediaDocument[],
-}
+};
 
-type TriggerZoneType = 'circle' | 'polygon'
+type TriggerZoneType = 'circle' | 'polygon';
 
 export type TriggerZone = {
   type: TriggerZoneType,
@@ -21,7 +21,7 @@ export type TriggerZone = {
   lng: number,
   colour: string,
   radius: number, // Radius in metres, on the earths surface
-}
+};
 
 export type PlaceType = {
   name: string,
@@ -29,4 +29,4 @@ export type PlaceType = {
   matIcon?: string,
   _id: any,
   ownerId: string,
-}
+};
