@@ -25,7 +25,7 @@ export async function createFirebaseDynamicLink(link: string, info?: DynamicLink
   const dynamicLinkInfo: DynamicLinkInfo = {
     ...environment.firebase.dynamicLinkInfo,
     androidInfo: info && info.androidInfo ? info.androidInfo : environment.firebase.dynamicLinkInfo.androidInfo,
-    iosInfo: info && info.iosInfo ? info.iosInfo : 'iosInfo' in environment.firebase.dynamicLinkInfo ? environment.firebase.dynamicLinkInfo.iosInfo : undefined,
+    iosInfo: info && info.iosInfo ? info.iosInfo : undefined,
     link,
   }
 
