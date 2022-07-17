@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import * as fs from 'fs';
 import { environment } from '../config/env';
 import { PlaceTypeRepo } from '../model/repo/PlaceTypeRepo';
-import { EntityNotFoundError } from '../model/repo/Repository';
+import EntityNotFoundError from '../model/repo/EntityNotFound';
 import { checkOwner, selectUserId } from '../utils/auth';
 import { makeDirectoryIfNotExists } from '../utils/file';
 
