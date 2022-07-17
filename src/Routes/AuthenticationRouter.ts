@@ -1,23 +1,21 @@
-﻿import { Router } from 'express'
-import * as passport from 'passport'
-import { environment } from '../config/env'
+﻿import { Router } from 'express';
+import * as passport from 'passport';
+import { environment } from '../config/env';
 
 export class AuthenticationRouter {
-
-  private router: Router = Router()
+  private router: Router = Router();
 
   getRouter(): Router {
-
     this.router.get('/logout', (req, res) => {
-      req.logout()
-      const a = req as any
+      req.logout();
+      const a = req as any;
       a.session.destroy((_err: any) => {
-        console.error(_err)
-        req.user = undefined
-        res.clearCookie('connect.sid')
-        res.redirect('/')
-      })
-    })
+        console.error(_err);
+        req.user = undefined;
+        res.clearCookie('connect.sid');
+        res.redirect('/');
+      });
+    });
 
     // GET /auth/google
     //   Use passport.authenticate() as route middleware to authenticate the
@@ -28,7 +26,8 @@ export class AuthenticationRouter {
       '/google',
       passport.authenticate('google', {
         scope: ['openid', 'profile', 'email'],
-      }))
+      }),
+    );
 
     // GET /auth/google/callback
     //   Use passport.authenticate() as route middleware to authenticate the
@@ -42,21 +41,24 @@ export class AuthenticationRouter {
       '/google/callback',
       passport.authenticate('google', { failureRedirect: '/login' }),
       (_req, res) => {
-        res.redirect(environment.baseUrl)
-      })
+        res.redirect(environment.baseUrl);
+      },
+    );
 
     this.router.get(
       '/facebook',
-      passport.authenticate('facebook'))
+      passport.authenticate('facebook'),
+    );
 
     this.router.get(
       '/facebook/callback',
       passport.authenticate('facebook', { failureRedirect: '/login' }),
       (_req, res) => {
-          // redirect back to angular app, which will now let the user in
-        res.redirect(environment.baseUrl)
-      })
+        // redirect back to angular app, which will now let the user in
+        res.redirect(environment.baseUrl);
+      },
+    );
 
-    return this.router
+    return this.router;
   }
 }

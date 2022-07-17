@@ -1,13 +1,12 @@
-import { ExperienceData, ExperienceSnapshotData } from '@common/experience'
-import { ObjectID } from 'bson'
-import { Experience } from '../schema/Experience'
-import { ExperienceSnapshot } from '../schema/ExperienceSnapshot'
-import { Repository } from './Repository'
+import { ExperienceData, ExperienceSnapshotData } from '@common/experience';
+import { ObjectID } from 'bson';
+import { Experience } from '../schema/Experience';
+import { ExperienceSnapshot } from '../schema/ExperienceSnapshot';
+import { Repository } from './Repository';
 
 export class ExperienceRepo extends Repository<typeof Experience, ExperienceData> {
-
   constructor() {
-    super(Experience)
+    super(Experience);
   }
 
   public async getAllByUser(userId: string): Promise<ExperienceData[]> {
@@ -16,7 +15,7 @@ export class ExperienceRepo extends Repository<typeof Experience, ExperienceData
         { ownerId: userId },
         { collaborators: userId },
       ],
-    })
+    });
   }
 
   public async getAllSnapshots(featuredOnly = false): Promise<any[]> {
@@ -42,32 +41,32 @@ export class ExperienceRepo extends Repository<typeof Experience, ExperienceData
             $first: '$metaData',
           },
           projects: {
-            $first: '$data.projects'
-          }
+            $first: '$data.projects',
+          },
         },
       },
-    ]
+    ];
     if (featuredOnly) {
       query.push({
         $match: {
           'metaData.featured': true,
         },
-      })
+      });
     }
 
-    const res = await ExperienceSnapshot.aggregate(query).exec()
-    return res
+    const res = await ExperienceSnapshot.aggregate(query).exec();
+    return res;
   }
 
   public async getModelById(id: string) {
-    return Experience.findById(id)
+    return Experience.findById(id);
   }
 
   public async getLatestSnapshotByExperienceId(id: string):
-    Promise<ExperienceSnapshotData | null> {
-    console.log('EXPERIENCE REPO: getLatestSnapshotByExperienceId', id)
-    const latest = await this.getLatestSnapshotModelByExperienceId(id)
-    return latest ? latest.toObject() : null
+  Promise<ExperienceSnapshotData | null> {
+    console.log('EXPERIENCE REPO: getLatestSnapshotByExperienceId', id);
+    const latest = await this.getLatestSnapshotModelByExperienceId(id);
+    return latest ? latest.toObject() : null;
   }
 
   public async getLatestSnapshotModelByExperienceId(id: string) {
@@ -75,21 +74,20 @@ export class ExperienceRepo extends Repository<typeof Experience, ExperienceData
       'data._id': new ObjectID(id),
     }).sort({
       'metaData.version': 'desc',
-    }).limit(1)
+    }).limit(1);
     if (snapshot !== null && snapshot.length > 0) {
-      return snapshot[0]
+      return snapshot[0];
     }
-    return null
+    return null;
   }
 
   public async deleteAllSanpshotsByExperienceId(id: string): Promise<void> {
-    await ExperienceSnapshot.deleteMany({ 'data._id': new ObjectID(id) }).exec()
+    await ExperienceSnapshot.deleteMany({ 'data._id': new ObjectID(id) }).exec();
   }
 
   public async saveSnapshot(experienceSnapshot: ExperienceSnapshotData):
-    Promise<ExperienceSnapshotData> {
-
-    const snapshot = await ExperienceSnapshot.create(experienceSnapshot)
-    return snapshot.toObject()
+  Promise<ExperienceSnapshotData> {
+    const snapshot = await ExperienceSnapshot.create(experienceSnapshot);
+    return snapshot.toObject();
   }
 }

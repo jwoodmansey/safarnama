@@ -1,11 +1,10 @@
-import { UserData } from '@common/user'
-import { User } from '../schema/User'
-import { Repository } from './Repository'
+import { UserData } from '@common/user';
+import { User } from '../schema/User';
+import { Repository } from './Repository';
 
 export class UserRepo extends Repository<typeof User, UserData> {
-
   constructor() {
-    super(User)
+    super(User);
   }
 
   public createUserFromProfile(profile: any, accessToken: string, refreshToken: string): UserData {
@@ -20,19 +19,20 @@ export class UserRepo extends Repository<typeof User, UserData> {
         refreshToken,
       },
       _id: profile._id,
-    }
+    };
   }
-  
+
   public async findByEmail(email: string): Promise<UserData | null> {
-    const user = await this.findAll({ email })
-    return user[0] || null
+    const user = await this.findAll({ email });
+    return user[0] || null;
   }
 
   public async edit(
     id: string,
     edit: {
       bio: string,
-    }): Promise<UserData> {
-    return super.edit(id, edit)
+    },
+  ): Promise<UserData> {
+    return super.edit(id, edit);
   }
 }

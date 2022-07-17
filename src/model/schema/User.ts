@@ -1,5 +1,5 @@
-import { Schema, model } from 'mongoose'
-import { UserData } from '@common/user'
+import { Schema, model } from 'mongoose';
+import { UserData } from '@common/user';
 
 export const User = model<UserData>('User', new Schema({
   displayName: { type: String, required: true },
@@ -17,4 +17,4 @@ export const User = model<UserData>('User', new Schema({
     accessToken: { type: String },
     refreshToken: { type: String },
   },
-}))
+}));

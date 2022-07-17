@@ -1,5 +1,5 @@
-import { MediaDocument } from '@common/media'
-import { model, Schema } from 'mongoose'
+import { MediaDocument } from '@common/media';
+import { model, Schema } from 'mongoose';
 
 export const Media = model<MediaDocument>('Media', new Schema({
   path: { type: String, required: true },
@@ -18,13 +18,13 @@ export const Media = model<MediaDocument>('Media', new Schema({
   externalLinks: [{
     name: {
       type: String,
-      required: true
+      required: true,
     },
     url: {
       type: String,
-      required: true
-    }, 
-  }]
+      required: true,
+    },
+  }],
   // geo: {
   //   type: {
   //     type: String,
@@ -36,4 +36,4 @@ export const Media = model<MediaDocument>('Media', new Schema({
   //     required: true,
   //   },
   // },
-}))
+}));

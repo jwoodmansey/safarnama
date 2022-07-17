@@ -1,5 +1,5 @@
-import { PointOfInterestDocument } from '@common/point-of-interest'
-import { model, Schema } from 'mongoose'
+import { PointOfInterestDocument } from '@common/point-of-interest';
+import { model, Schema } from 'mongoose';
 
 export const PointOfInterest = model<PointOfInterestDocument>('PointOfInterest', new Schema({
   name: { type: String, required: true },
@@ -44,4 +44,4 @@ export const PointOfInterest = model<PointOfInterestDocument>('PointOfInterest',
     lng: Number,
     radius: Number,
   },
-}))
+}));

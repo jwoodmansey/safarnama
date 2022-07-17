@@ -1,11 +1,11 @@
-import { RouteDocument } from '@common/route'
-import { model, Schema } from 'mongoose'
+import { RouteDocument } from '@common/route';
+import { model, Schema } from 'mongoose';
 
 export const Route = model<RouteDocument>('Route', new Schema({
   name: { type: String, required: true },
-  description: {type: String, required: false},
-  created_at:  { type: Date, default: Date.now },
-  updated_at:  { type: Date, default: Date.now },
+  description: { type: String, required: false },
+  created_at: { type: Date, default: Date.now },
+  updated_at: { type: Date, default: Date.now },
   ownerId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
   experienceId: { type: Schema.Types.ObjectId, required: true, ref: 'Experience' },
   geo: {
@@ -24,4 +24,4 @@ export const Route = model<RouteDocument>('Route', new Schema({
     type: String,
     enum: ['None', 'Ascending', 'Descending'],
   },
-}))
+}));

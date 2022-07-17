@@ -1,5 +1,5 @@
-import { Router } from 'express'
-import { createRoute, editRoute, deleteRoute } from '../controllers/RouteController'
+import { Router } from 'express';
+import { createRoute, editRoute, deleteRoute } from '../controllers/RouteController';
 
 /**
  * import { check, validationResult } from 'express-validator/check'
@@ -22,13 +22,12 @@ import { createRoute, editRoute, deleteRoute } from '../controllers/RouteControl
  */
 
 export class RouteRouter {
-
-  private router: Router = Router()
+  private router: Router = Router();
 
   getRouter(): Router {
-    this.router.post('', createRoute)
-    this.router.put('/:routeId', editRoute)
-    this.router.delete('/:routeId', deleteRoute)
-    return this.router
+    this.router.post('', createRoute);
+    this.router.put('/:routeId', editRoute);
+    this.router.delete('/:routeId', deleteRoute);
+    return this.router;
   }
 }

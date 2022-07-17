@@ -1,13 +1,13 @@
-import * as passport from 'passport'
-import { environment } from '../config/env'
-import { UserRepo } from '../model/repo/UserRepo'
-import { User } from '../model/schema/User'
+import * as passport from 'passport';
+import { environment } from '../config/env';
+import { UserRepo } from '../model/repo/UserRepo';
+import { User } from '../model/schema/User';
 
 export function configureAuthentication() {
   // tslint:disable-next-line:variable-name
-  const FacebookStrategy = require('passport-facebook').Strategy
+  const FacebookStrategy = require('passport-facebook').Strategy;
   // tslint:disable-next-line:variable-name
-  const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
+  const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
   // Configure the Facebook strategy for use by Passport.
   //
@@ -32,25 +32,27 @@ export function configureAuthentication() {
         { facebookId: profile.id },
         (err: any, user: any) => {
           if (err) {
-            console.log('findOne error', err)
-            done(err, undefined)
+            console.log('findOne error', err);
+            done(err, undefined);
           }
-          const userRepo = new UserRepo()
+          const userRepo = new UserRepo();
           if (!user) {
-            const newUser = userRepo.createUserFromProfile(profile, accessToken, refreshToken)
-            console.log('New user, going to create entry in mongo...', profile)
-            new User(newUser).save(undefined, (err: any, _user: any) => {
-              if (err) {
-                console.log('newUser', err)
-                done(err, undefined)
+            const newUser = userRepo.createUserFromProfile(profile, accessToken, refreshToken);
+            console.log('New user, going to create entry in mongo...', profile);
+            new User(newUser).save(undefined, (saveError: any) => {
+              if (saveError) {
+                console.log('newUser', saveError);
+                done(saveError, undefined);
               }
-              done(undefined, newUser)
-            })
+              done(undefined, newUser);
+            });
           } else {
-            done(undefined, user)
+            done(undefined, user);
           }
-        })
-    }))
+        },
+      );
+    },
+  ));
 
   passport.use(new GoogleStrategy(
     {
@@ -64,21 +66,22 @@ export function configureAuthentication() {
       User.findOne(
         { googleId: profile.id },
         (_err: any, user: any) => {
-          console.log('Google User.findOne', profile)
-          const userRepo = new UserRepo()
+          console.log('Google User.findOne', profile);
+          const userRepo = new UserRepo();
           if (!user) {
-            const newUser = userRepo.createUserFromProfile(profile, accessToken, refreshToken)
-            console.log('New user, going to create entry in mongo...', newUser)
-            new User(newUser).save(undefined, (_err: any, user: any) => {
-              done(undefined, user)
-            })
+            const newUser = userRepo.createUserFromProfile(profile, accessToken, refreshToken);
+            console.log('New user, going to create entry in mongo...', newUser);
+            new User(newUser).save(undefined, (saveError: any, savedUser: any) => {
+              done(undefined, savedUser);
+            });
           } else {
-            console.log('Existing user will return', user)
-            done(undefined, user)
+            console.log('Existing user will return', user);
+            done(undefined, user);
           }
-        })
+        },
+      );
     },
-  ))
+  ));
 
   // Configure Passport authenticated session persistence.
   //
@@ -90,10 +93,10 @@ export function configureAuthentication() {
   // example does not have a database, the complete Facebook profile is serialized
   // and deserialized.
   passport.serializeUser((user, cb) => {
-    cb(null, user)
-  })
+    cb(null, user);
+  });
 
   passport.deserializeUser((obj, cb) => {
-    cb(null, obj as any)
-  })
+    cb(null, obj as any);
+  });
 }

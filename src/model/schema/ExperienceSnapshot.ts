@@ -1,6 +1,7 @@
-import { ExperienceSnapshotData } from '@common/experience'
-import * as mongoose from 'mongoose'
-const AUTO_INCREMENT = require('mongoose-sequence')(mongoose)
+import { ExperienceSnapshotData } from '@common/experience';
+import * as mongoose from 'mongoose';
+
+const AUTO_INCREMENT = require('mongoose-sequence')(mongoose);
 
 const ExperienceSnapshotSchema = new mongoose.Schema({
   ownerId: {
@@ -42,11 +43,11 @@ const ExperienceSnapshotSchema = new mongoose.Schema({
     },
   },
   data: {}, // This should probably use the experience schema for querying
-})
+});
 
 ExperienceSnapshotSchema.plugin(AUTO_INCREMENT, {
   id: 'snapshot_version',
   inc_field: 'metaData.version',
   reference_fields: ['data._id'],
-})
-export const ExperienceSnapshot = mongoose.model<ExperienceSnapshotData>('ExperienceSnapshot', ExperienceSnapshotSchema)
+});
+export const ExperienceSnapshot = mongoose.model<ExperienceSnapshotData>('ExperienceSnapshot', ExperienceSnapshotSchema);

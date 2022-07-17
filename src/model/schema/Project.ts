@@ -1,5 +1,5 @@
-import { ProjectData } from '@common/project'
-import { model, Schema } from 'mongoose'
+import { ProjectData } from '@common/project';
+import { model, Schema } from 'mongoose';
 
 export const Project = model<ProjectData>('Project', new Schema({
   name: { type: String, required: true },
@@ -10,6 +10,6 @@ export const Project = model<ProjectData>('Project', new Schema({
     bundleId: { type: String },
   },
   android: {
-    package: { type: String }
+    package: { type: String },
   },
-}))
+}));
