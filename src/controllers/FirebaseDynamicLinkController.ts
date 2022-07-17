@@ -14,7 +14,8 @@ export type DynamicLinkInfo = {
     iosIpadFallbackLink?: string,
     iosIpadBundleId?: string,
     iosAppStoreId?: string
-  }
+  },
+  link?: string
 }
 
 // See https://firebase.google.com/docs/dynamic-links/rest?authuser=0
@@ -24,7 +25,7 @@ export async function createFirebaseDynamicLink(link: string, info?: DynamicLink
   const dynamicLinkInfo: DynamicLinkInfo = {
     ...environment.firebase.dynamicLinkInfo,
     androidInfo: info && info.androidInfo ? info.androidInfo : environment.firebase.dynamicLinkInfo.androidInfo,
-    iosInfo: info && info.iosInfo ? info.iosInfo : environment.firebase.dynamicLinkInfo.iosInfo,
+    iosInfo: info && info.iosInfo ? info.iosInfo : 'iosInfo' in environment.firebase.dynamicLinkInfo ? environment.firebase.dynamicLinkInfo.iosInfo : undefined,
     link,
   }
 
