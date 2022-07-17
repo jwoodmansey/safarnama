@@ -7,13 +7,16 @@ export class AuthenticationRouter {
 
   getRouter(): Router {
     this.router.get('/logout', (req, res) => {
-      req.logout();
-      const a = req as any;
-      a.session.destroy((_err: any) => {
-        console.error(_err);
-        req.user = undefined;
-        res.clearCookie('connect.sid');
-        res.redirect('/');
+      req.logout({ keepSessionInfo: false }, () => {
+        const a = req as any;
+        // this might not be needed anymore with
+        // https://medium.com/passportjs/fixing-session-fixation-b2b68619c51d
+        a.session.destroy((_err: any) => {
+          console.error(_err);
+          req.user = undefined;
+          res.clearCookie('connect.sid');
+          res.redirect('/');
+        });
       });
     });
 
