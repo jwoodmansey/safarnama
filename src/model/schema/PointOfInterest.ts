@@ -7,7 +7,7 @@ export const PointOfInterest = model<PointOfInterestDocument>('PointOfInterest',
   createdAt: Date,
   updatedAt: Date,
   ownerId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
-  experienceId: { type: Schema.Types.ObjectId, required: true, ref: 'Experience' },
+  experienceId: { type: Schema.Types.ObjectId, required: true },
   media: [{ type: Schema.Types.ObjectId, ref: 'Media' }],
   location: {
     type: {

@@ -3,12 +3,13 @@ import { MediaDocument } from './media';
 export type PointOfInterestDocument = {
   _id: any,
   name: string,
+  description?: string
   location: GeoJSON.Point,
   triggerZone: TriggerZone,
   createdAt?: Date,
   updatedAt?: Date,
   ownerId?: string,
-  experienceId: string,
+  experienceId?: string,
   type: PlaceType,
   media: MediaDocument[],
 };
@@ -28,5 +29,7 @@ export type PlaceType = {
   imageIconURL?: string,
   matIcon?: string,
   _id: any,
-  ownerId: string,
+  ownerId?: string,
+  created_at?: string,
+  updated_at?: string
 };

@@ -1,4 +1,4 @@
-export type Direction = 'None' | 'Ascending' | 'Descending'
+export type Direction = 'None' | 'Ascending' | 'Descending';
 
 export type RouteDocument = {
   _id: any,
@@ -6,9 +6,9 @@ export type RouteDocument = {
   geo: GeoJSON.LineString,
   direction: Direction,
   colour: string,
-  createdAt?: Date,
-  updatedAt?: Date,
+  created_at?: Date,
+  updated_at?: Date,
   ownerId?: string,
-  experienceId: string,
-  description?: string
-}
+  experienceId?: string,
+  description?: string,
+};

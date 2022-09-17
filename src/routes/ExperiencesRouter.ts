@@ -1,10 +1,12 @@
 import { Router } from 'express';
-import { ensureAuthenticated } from 'connect-ensure-authenticated';
+
 import {
   getAllMyExperienceData,
   getAllFeaturedExperiences,
 } from '../controllers/ExperiencesController';
-// @ts-ignore
+
+const { ensureAuthenticated } = require('connect-ensure-authenticated');
+
 export class ExperiencesRouter {
   private router: Router = Router();
 

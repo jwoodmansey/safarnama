@@ -21,6 +21,9 @@ export async function createPlaceType(request: Request, response: Response) {
   };
   try {
     const res = await repo.add(type);
+    if (!type.ownerId || !res.ownerId) {
+      throw new Error(`Missing ownerId for type ${res._id}`);
+    }
     const filePath = getPathForIcon(type.ownerId, res._id);
     makeDirectoryIfNotExists(environment.api.iconDir);
     makeDirectoryIfNotExists(`${environment.api.iconDir}/${res.ownerId}`);
@@ -34,7 +37,7 @@ export async function createPlaceType(request: Request, response: Response) {
         console.log('File created from base64 icon');
         return response.json({
           ...res,
-          imageIconURL: `${environment.api.publicUrl}/storage/${getPathForIcon(res.ownerId, res._id)}`,
+          imageIconURL: `${environment.api.publicUrl}/storage/${getPathForIcon(res.ownerId!, res._id)}`,
         });
       });
       return undefined;
@@ -49,7 +52,7 @@ export async function getAllMyPlaceTypes(request: Request, response: Response) {
   const data: PlaceType[] = await repo.getAllByUser(selectUserId(request));
   return response.json(data.map((p) => ({
     ...p,
-    imageIconURL: p.imageIconURL ? `${environment.api.publicUrl}/storage/${getPathForIcon(p.ownerId, p._id)}` : undefined,
+    imageIconURL: p.imageIconURL && p.ownerId ? `${environment.api.publicUrl}/storage/${getPathForIcon(p.ownerId, p._id)}` : undefined,
   })));
 }
 

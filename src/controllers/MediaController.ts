@@ -45,7 +45,7 @@ function getPathForMediaThumb(ownerId: string, mediaId: string): string {
 // the rest of the path must be generated each time
 // this allows the server to run in any set up without modding the data
 export function loadRealPaths(media: MediaDocument[]): MediaDocument[] {
-  return media.map((mediaItem) => (mediaItem ? {
+  return media.map((mediaItem) => (mediaItem && mediaItem.ownerId ? {
     ...mediaItem,
     path: `${environment.api.publicUrl}/storage/${getPathForMedia(mediaItem.ownerId, mediaItem._id, mediaItem.path)}`,
     thumbPath:

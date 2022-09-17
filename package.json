@@ -8,7 +8,8 @@
     "forever": "forever start --minUptime 1000 --spinSleepTime 1000 -v -c ts-node src/App.ts",
     "pretest": "tsc test/*.ts --module commonjs --sourcemap --target es6",
     "test": "nyc mocha",
-    "posttest": "nyc report --reporter=json && codecov -f coverage/*.json"
+    "posttest": "nyc report --reporter=json && codecov -f coverage/*.json",
+    "tsc": "tsc --skipLibCheck"
   },
   "private": true,
   "author": "Jack Woodmansey",
@@ -27,11 +28,11 @@
     "mongoose": "^6.0.7",
     "mongoose-sequence": "^5.3.1",
     "morgan": "^1.10.0",
-    "passport": "^0.6.0",
+    "passport": "^0.5.0",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth": "^2.0.0",
     "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^7.1.2",
+    "passport-local-mongoose": "^6.0.1",
     "ts-node": "^8.3.0"
   },
   "devDependencies": {
@@ -39,14 +40,16 @@
     "@types/body-parser": "1.19.1",
     "@types/chai": "^4.2.22",
     "@types/cors": "^2.8.12",
-    "@types/express": "^4.17.3",
-    "@types/express-fileupload": "^1.2.2",
+    "@types/express-fileupload": "^1.4.1",
+    "@types/express": "4.17.14",
+    "@types/express-serve-static-core": "4.17.31",
+    "@types/serve-static": "1.15.0",
     "@types/geojson": "^7946.0.8",
     "@types/jasmine": "^3.9.1",
     "@types/jsonwebtoken": "^8.5.5",
     "@types/mocha": "^9.0.0",
     "@types/mongoose": "^5.11.97",
-    "@types/passport": "^1.0.9",
+    "@types/passport": "^1.0.11",
     "@types/passport-google-oauth": "^1.0.42",
     "@types/passport-local": "^1.0.34",
     "@types/passport-local-mongoose": "^6.1.1",
@@ -64,5 +67,8 @@
     "supertest": "^6.1.6",
     "tsconfig-paths": "3.11.0",
     "typescript": "^4.4.0"
+  },
+  "resolutions": {
+    "@types/serve-static": "1.13.9"
   }
 }

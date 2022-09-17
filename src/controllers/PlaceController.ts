@@ -80,9 +80,11 @@ export async function editPlace(request: Request, response: Response) {
           media.associatedExperiences = [];
         }
         if (!media.associatedExperiences.find((thisId) => thisId === id)) {
-          media.associatedExperiences.push(poi.experienceId);
-          console.log('Associating experiences with media', media.associatedExperiences);
-          await mediaRepo.edit(id, { associatedExperiences: media.associatedExperiences });
+          if (poi.experienceId) {
+            media.associatedExperiences.push(poi.experienceId);
+            console.log('Associating experiences with media', media.associatedExperiences);
+            await mediaRepo.edit(id, { associatedExperiences: media.associatedExperiences });
+          }
         }
       }
     });

@@ -7,10 +7,10 @@ export type MediaDocument = {
   created_at?: Date,
   updated_at?: Date,
   size: number,
-  ownerId: string,
+  ownerId?: string,
   name?: string,
   description?: string,
   acknowledgements?: string,
   associatedExperiences?: string[],
-  externalLinks?: {name: string, url: string}[],
-}
+  externalLinks?: { name: string, url: string }[],
+};

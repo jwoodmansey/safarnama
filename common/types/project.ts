@@ -2,7 +2,7 @@ export type Member = {
   userId: string,
   roles: string[]
   name?: string,
-}
+};
 
 export type ProjectData = {
   _id: any,
@@ -18,4 +18,4 @@ export type ProjectData = {
   android?: {
     package: string
   },
-}
+};

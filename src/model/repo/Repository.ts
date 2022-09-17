@@ -37,7 +37,7 @@ export class Repository<T extends mongoose.Model<D>, D> {
     return results.map((r) => r.toObject()) as D[];
   }
 
-  async findByIdOrThrow(id: string): Promise<D> {
+  async findByIdOrThrow(id?: string): Promise<D> {
     const entity = await this.model.findById(id);
     if (!entity) {
       throw new EntityNotFoundError(`Entity was not found ${id}`);
@@ -45,7 +45,7 @@ export class Repository<T extends mongoose.Model<D>, D> {
     return entity.toObject() as D;
   }
 
-  async findById(id: string): Promise<D | undefined> {
+  async findById(id?: string): Promise<D | undefined> {
     const entity = await this.model.findById(id);
     if (!entity) {
       return undefined;

@@ -1,12 +1,12 @@
-import * as GeoJSON from 'geojson'
-import { PointOfInterestDocument } from './point-of-interest'
-import { ProjectData } from './project'
-import { RouteDocument } from './route'
+import * as GeoJSON from 'geojson';
+import { PointOfInterestDocument } from './point-of-interest';
+import { ProjectData } from './project';
+import { RouteDocument } from './route';
 
 export type ExperienceResponseData = {
   forUserId: string,
   data: ExperienceData[],
-}
+};
 
 export type ExperienceData = {
   _id: any,
@@ -20,12 +20,12 @@ export type ExperienceData = {
   routes?: RouteDocument[],
   collaborators?: string[],
   projects?: string[]
-}
+};
 
 export type GeoData = GeoJSON.FeatureCollection & {
   type: 'FeatureCollection'
   features: [],
-}
+};
 
 export type MetaData = {
   size: number,
@@ -35,7 +35,7 @@ export type MetaData = {
   ownerPublicProfile: PublicProfile,
   featured?: boolean,
   tags?: string[]
-}
+};
 
 export type PublicProfile = {
   id: string,
@@ -43,7 +43,7 @@ export type PublicProfile = {
   displayName: string,
   roles?: string[],
   bio?: string,
-}
+};
 
 export type ExperienceSnapshotData = {
   metaData: MetaData,
@@ -51,7 +51,7 @@ export type ExperienceSnapshotData = {
   _id: any,
   ownerId: string,
   projectData?: ProjectData
-}
+};
 
 // export type ExperienceSnapshotInnerData = ExperienceData & {
 //   pointOfInterests: ?,
