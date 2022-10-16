@@ -1,6 +1,7 @@
 import { Member, ProjectData } from '@common/project';
 import { UserData } from '@common/user';
 import { NextFunction, Request, Response } from 'express';
+import { ObjectId } from 'mongoose';
 import { ExperienceRepo } from '../model/repo/ExperienceRepo';
 import { ProjectRepo } from '../model/repo/ProjectRepo';
 import { UserRepo } from '../model/repo/UserRepo';
@@ -63,7 +64,9 @@ export async function getAllPublishedExperiences(request: Request, response: Res
         console.log(request.query.projectId, JSON.stringify(snap.data.projects));
       }
       return snap.projects
-       && snap.projects.find((p: any) => p.toString() === request.query.projectId) !== undefined;
+       && snap.projects.find(
+         (p: ObjectId) => p && p.toString() === request.query.projectId,
+       ) !== undefined;
     }));
   }
   return response.json(res);
