@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Translate Experience</h1>
+<p>Some text explaining</p>
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <div mat-dialog-content>
+    <mat-form-field>
+      <input formControlName="name" matInput placeholder="Name your new experience">
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button enabled class="mat-primary" [disabled]="!form.valid" type="submit">Save</button>
+  </div>
+</form>

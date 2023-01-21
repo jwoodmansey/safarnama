@@ -25,6 +25,7 @@ import { CollaboratorsComponent } from '@components/collaborators/collaborators.
 import { RouteViewAllComponent } from '@components/route/route-view-all/route-view-all.component';
 import { ProjectViewAllComponent } from '@components/project/project-view-all/project-view-all.component';
 import { CloneExperienceDialogComponent } from '@components/experience/clone-experience-dialog/clone-experience-dialog.component';
+import { TranslateExperienceDialogComponent } from '@components/experience/translate-experience/translate-experience-dialog.component';
 
 @Component({
   selector: 'app-main-menu',
@@ -130,6 +131,12 @@ export class MainMenuComponent implements OnInit {
   openClone(): void {
     this.dialog.open(CloneExperienceDialogComponent, {
       width: '400px',
+    })
+  }
+
+  openTranslate(): void {
+    this.dialog.open(TranslateExperienceDialogComponent, {
+      width: '800px',
     })
   }
 }
