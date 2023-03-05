@@ -34,7 +34,7 @@ app.use(require('cookie-parser')());
 
 const date = new Date();
 app.use(require('express-session')({
-  cookie: { expires: new Date(date.setMonth(date.getMonth() + 1)) },
+  cookie: { maxAge: new Date(date.setMonth(date.getMonth() + 1)) },
   secret: environment.auth.passport.sessionSecret,
   saveUninitialized: false,
   resave: false,
