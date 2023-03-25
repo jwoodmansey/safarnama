@@ -12,9 +12,10 @@ import { RouteRepo } from '../model/repo/RouteRepo';
 import { UserRepo } from '../model/repo/UserRepo';
 import { checkOwner } from '../utils/auth';
 import { createFirebaseDynamicLink, DynamicLinkInfo } from './FirebaseDynamicLinkController';
-import { getExtension, getPathForMedia, loadRealPaths } from './MediaController';
+import { getPathForMedia, loadRealPaths } from './MediaController';
 import { addRoleToProjectMember } from './ProjectController';
 import { makeDirectoryIfNotExists } from '../utils/file';
+// import { getPathForIcon } from './PlaceTypeController';
 
 const repo = new ExperienceRepo();
 const projectRepo = new ProjectRepo();
@@ -377,8 +378,8 @@ export async function exportExperienceData(request: Request, response: Response)
     const { experienceId } = request.params;
     const experience = await repo.getModelById(experienceId);
     const snapshot = await repo.getLatestSnapshotByExperienceId(experienceId);
-    if (snapshot === null) {
-      return response.status(404).json({ error: 'Experience snapshot not found' });
+    if (experience === null) {
+      return response.status(404).json({ error: 'Experience not found' });
     }
 
     if (snapshot?.data.projects && snapshot.data.projects[0]) {
@@ -396,22 +397,44 @@ export async function exportExperienceData(request: Request, response: Response)
       zlib: { level: 9 }, // Sets the compression level.
     });
 
-    snapshot.data.pointOfInterests?.forEach((place) => {
-      place.media.forEach((media) => {
-        const ext = getExtension({ name: media.path } as any);
-        const mediaPath = getPathForMedia(
-          media.ownerId!,
-          media._id.toString(),
-          ext,
-        );
-        archive.file(
-          mediaPath,
-          { name: `media/${media._id.toString()}.${ext}` },
-        );
-      });
+    const experienceData: ExperienceData = experience.toObject();
+    experienceData.pointOfInterests = [];
+    experienceData.routes = await new RouteRepo().findByExperienceId(experience._id);
+    experienceData.pointOfInterests = await new PointOfInterestRepo()
+      .findByExperienceId(experience._id);
+
+    const placeTypes: Record<string, string> = {};
+    experienceData.pointOfInterests.forEach((poi) => {
+      if (poi.media) {
+        poi.media.forEach((media) => {
+          const mediaPath = getPathForMedia(
+            media.ownerId!,
+            media._id.toString(),
+            media.path,
+          );
+          archive.file(
+            mediaPath,
+            { name: `media/${media._id.toString()}.${media.path}` },
+          );
+        });
+        if (poi.type.imageIconURL) {
+          const path = poi.type.imageIconURL.split('/');
+          const id = path[path.length - 1];
+          placeTypes[id] = path.slice(path.length - 3).join('/');
+        }
+      }
     });
-    archive.append(JSON.stringify(snapshot, null, 4), { name: 'snapshot.json' });
-    archive.append(JSON.stringify(experience, null, 4), { name: 'experience.json' });
+    Object.keys(placeTypes).forEach((id) => {
+      archive.file(
+        placeTypes[id],
+        { name: `icons/${id}` },
+      );
+    });
+
+    if (snapshot) {
+      archive.append(JSON.stringify(snapshot, null, 4), { name: 'snapshot.json' });
+    }
+    archive.append(JSON.stringify(experienceData, null, 4), { name: 'experience.json' });
     archive.pipe(output);
     archive.finalize();
 
