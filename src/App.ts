@@ -32,7 +32,7 @@ const app = express();
 app.use(require('morgan')('combined'));
 app.use(require('cookie-parser')());
 
-const date = new Date(0);
+const date = new Date();
 app.use(require('express-session')({
   cookie: { expires: new Date(date.setMonth(date.getMonth() + 12)) },
   secret: environment.auth.passport.sessionSecret,
