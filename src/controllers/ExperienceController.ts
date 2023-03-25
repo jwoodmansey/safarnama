@@ -3,6 +3,8 @@ import { MediaDocument } from '@common/media';
 import { PointOfInterestDocument } from '@common/point-of-interest';
 import { UserData } from '@common/user';
 import { Request, Response } from 'express';
+import archiver = require('archiver');
+import * as fs from 'fs';
 import { ExperienceRepo } from '../model/repo/ExperienceRepo';
 import { PointOfInterestRepo } from '../model/repo/PointOfInterestRepo';
 import { ProjectRepo } from '../model/repo/ProjectRepo';
@@ -10,8 +12,9 @@ import { RouteRepo } from '../model/repo/RouteRepo';
 import { UserRepo } from '../model/repo/UserRepo';
 import { checkOwner } from '../utils/auth';
 import { createFirebaseDynamicLink, DynamicLinkInfo } from './FirebaseDynamicLinkController';
-import { loadRealPaths } from './MediaController';
+import { getExtension, getPathForMedia, loadRealPaths } from './MediaController';
 import { addRoleToProjectMember } from './ProjectController';
+import { makeDirectoryIfNotExists } from '../utils/file';
 
 const repo = new ExperienceRepo();
 const projectRepo = new ProjectRepo();
@@ -367,4 +370,54 @@ export async function getCollaboratorsForExperience(request: Request, response: 
   const populated = await experience.populate('collaborators');
   const collabs: UserData[] = (populated.collaborators as any);
   return response.json(userDataToPublicProfile(collabs));
+}
+
+export async function exportExperienceData(request: Request, response: Response) {
+  try {
+    const { experienceId } = request.params;
+    const experience = await repo.getModelById(experienceId);
+    const snapshot = await repo.getLatestSnapshotByExperienceId(experienceId);
+    if (snapshot === null) {
+      return response.status(404).json({ error: 'Experience snapshot not found' });
+    }
+
+    if (snapshot?.data.projects && snapshot.data.projects[0]) {
+      snapshot.projectData = await projectRepo.findById(snapshot.data.projects[0]);
+    }
+    const outputFile = `exports/${experienceId}.zip`;
+    await makeDirectoryIfNotExists('exports');
+    const output = fs.createWriteStream(outputFile);
+    output.on('finish', () => {
+      console.log('completely done!');
+      response.download(outputFile);
+    });
+
+    const archive = archiver('zip', {
+      zlib: { level: 9 }, // Sets the compression level.
+    });
+
+    snapshot.data.pointOfInterests?.forEach((place) => {
+      place.media.forEach((media) => {
+        const ext = getExtension({ name: media.path } as any);
+        const mediaPath = getPathForMedia(
+          media.ownerId!,
+          media._id.toString(),
+          ext,
+        );
+        archive.file(
+          mediaPath,
+          { name: `media/${media._id.toString()}.${ext}` },
+        );
+      });
+    });
+    archive.append(JSON.stringify(snapshot, null, 4), { name: 'snapshot.json' });
+    archive.append(JSON.stringify(experience, null, 4), { name: 'experience.json' });
+    archive.pipe(output);
+    archive.finalize();
+
+    return undefined;
+  } catch (e) {
+    console.log(e);
+    return response.status(500).json({ code: 500, error: e });
+  }
 }
