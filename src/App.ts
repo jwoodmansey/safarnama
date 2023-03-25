@@ -6,6 +6,7 @@ import * as http from 'http';
 import * as https from 'https';
 import * as passport from 'passport';
 import cors = require('cors');
+import session = require('express-session');
 import { environment } from './config/env';
 import { configureAuthentication } from './express/configureAuthentication';
 import { configureDatabase } from './express/configureDatabase';
@@ -32,9 +33,10 @@ const app = express();
 app.use(require('morgan')('combined'));
 app.use(require('cookie-parser')());
 
-const date = new Date();
-app.use(require('express-session')({
-  cookie: { expires: new Date(date.setMonth(date.getMonth() + 12)) },
+const date = new Date(0);
+const maxAge = new Date(date.setMonth(date.getMonth() + 1)).getTime();
+app.use(session({
+  cookie: { maxAge },
   secret: environment.auth.passport.sessionSecret,
   saveUninitialized: false,
   resave: false,
