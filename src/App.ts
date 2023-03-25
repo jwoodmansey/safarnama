@@ -6,6 +6,7 @@ import * as http from 'http';
 import * as https from 'https';
 import * as passport from 'passport';
 import cors = require('cors');
+import session = require('express-session');
 import { environment } from './config/env';
 import { configureAuthentication } from './express/configureAuthentication';
 import { configureDatabase } from './express/configureDatabase';
@@ -25,20 +26,20 @@ const { ensureAuthenticated } = require('connect-ensure-authenticated');
 configureDatabase();
 configureAuthentication();
 
-const app: express.Application = express();
+const app = express();
 // Configuration
 // Use application-level middleware for common functionality, including
 // logging, parsing, and session handling.
 app.use(require('morgan')('combined'));
 app.use(require('cookie-parser')());
 
-const date = new Date();
-app.use(require('express-session')({
-  cookie: { expires: new Date(date.setMonth(date.getMonth() + 1)) },
+const date = new Date(0);
+app.use(session({
+  cookie: { maxAge: new Date(date.setMonth(date.getMonth() + 1)).getUTCMilliseconds() },
   secret: environment.auth.passport.sessionSecret,
   saveUninitialized: false,
   resave: false,
-}));
+}) as express.RequestHandler);
 
 // Initialize Passport and restore authentication state, if any, from the
 // session.
@@ -57,7 +58,7 @@ app.use(fileUpload({
   tempFileDir: '/tmp/',
   safeFileNames: true,
   preserveExtension: true,
-}) as any);
+}) as express.RequestHandler);
 
 app.use('/api/storage/media', express.static('media') as any);
 app.use('/api/storage/icon', express.static('icon') as any);
