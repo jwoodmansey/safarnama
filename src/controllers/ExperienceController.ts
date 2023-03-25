@@ -180,9 +180,11 @@ export async function publishExperienceSnapshot(request: Request, response: Resp
     const prevSnapshot = await repo.getLatestSnapshotByExperienceId(experience._id);
     let version = 1;
     let featured = false;
+    let tags: string[] | undefined;
     if (prevSnapshot) {
       version = prevSnapshot.metaData.version + 1;
       featured = prevSnapshot.metaData.featured ? prevSnapshot.metaData.featured : false;
+      tags = prevSnapshot.metaData.tags;
     }
 
     if (!checkOwner(request, experience)) {
@@ -254,6 +256,7 @@ export async function publishExperienceSnapshot(request: Request, response: Resp
         version,
         shortLink,
         featured,
+        tags,
         ownerPublicProfile,
         created_at: new Date(),
         size: getTotalSizeForPlaces(experienceData.pointOfInterests),
