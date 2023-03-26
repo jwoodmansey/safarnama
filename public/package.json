@@ -37,6 +37,7 @@
     "filepond-plugin-file-validate-size": "^2.2.4",
     "filepond-plugin-file-validate-type": "^1.2.6",
     "filepond-plugin-image-preview": "^4.6.6",
+    "js-file-downloader": "^1.1.24",
     "markerwithlabel": "^2.0.2",
     "material-community-components": "^10.0.0",
     "medium-editor": "^5.23.3",

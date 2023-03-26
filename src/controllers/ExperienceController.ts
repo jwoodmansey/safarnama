@@ -389,7 +389,6 @@ export async function exportExperienceData(request: Request, response: Response)
     await makeDirectoryIfNotExists('exports');
     const output = fs.createWriteStream(outputFile);
     output.on('finish', () => {
-      console.log('completely done!');
       response.download(outputFile);
     });
 
