@@ -71,7 +71,7 @@ export class ExperienceRouter {
      */
     this.router.get('/:experienceId/snapshot', getExperienceSnapshot);
 
-    this.router.get('/:experienceId/export', exportExperienceData);
+    this.router.get('/:experienceId/export', ensureAuthenticated(), exportExperienceData);
 
     return this.router;
   }

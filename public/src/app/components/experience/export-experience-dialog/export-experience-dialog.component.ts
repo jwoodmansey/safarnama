@@ -9,6 +9,8 @@ import { ExperienceService } from '@services/experience.service';
 })
 export class ExportExperienceDialogComponent implements OnInit {
 
+  public isExporting = false
+
   constructor(
     public dialogRef: MatDialogRef<ExportExperienceDialogComponent>,
     public experienceService: ExperienceService
@@ -17,12 +19,17 @@ export class ExportExperienceDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  export(): void {
-    this.experienceService.exportExperience(
-      this.experienceService.getSelectedExperienceId(),
-    ).subscribe(() => {
-      
-    })
+  async export(): Promise<void> {
+    if (this.isExporting) return
+
+    this.isExporting = true
+    try {
+      await this.experienceService.exportExperience(
+        this.experienceService.getSelectedExperienceId(),
+      )
+    } finally {
+      this.isExporting = false
+    }
   }
 
   cancel(): void {
