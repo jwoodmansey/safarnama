@@ -3,15 +3,19 @@ import { MediaDocument } from '@common/media';
 import { PointOfInterestDocument } from '@common/point-of-interest';
 import { UserData } from '@common/user';
 import { Request, Response } from 'express';
+import archiver = require('archiver');
+import * as fs from 'fs';
 import { ExperienceRepo } from '../model/repo/ExperienceRepo';
 import { PointOfInterestRepo } from '../model/repo/PointOfInterestRepo';
 import { ProjectRepo } from '../model/repo/ProjectRepo';
 import { RouteRepo } from '../model/repo/RouteRepo';
 import { UserRepo } from '../model/repo/UserRepo';
-import { checkOwner } from '../utils/auth';
+import { checkOwner, isACollaborator } from '../utils/auth';
 import { createFirebaseDynamicLink, DynamicLinkInfo } from './FirebaseDynamicLinkController';
-import { loadRealPaths } from './MediaController';
+import { getPathForMedia, loadRealPaths } from './MediaController';
 import { addRoleToProjectMember } from './ProjectController';
+import { makeDirectoryIfNotExists } from '../utils/file';
+// import { getPathForIcon } from './PlaceTypeController';
 
 const repo = new ExperienceRepo();
 const projectRepo = new ProjectRepo();
@@ -367,4 +371,84 @@ export async function getCollaboratorsForExperience(request: Request, response: 
   const populated = await experience.populate('collaborators');
   const collabs: UserData[] = (populated.collaborators as any);
   return response.json(userDataToPublicProfile(collabs));
+}
+
+export async function exportExperienceData(request: Request, response: Response) {
+  try {
+    const { experienceId } = request.params;
+    const experience = await repo.getModelById(experienceId);
+    const snapshot = await repo.getLatestSnapshotByExperienceId(experienceId);
+    if (experience === null) {
+      return response.status(404).json({ error: 'Experience not found' });
+    }
+    if (!checkOwner(request, experience) && !isACollaborator(request, experience)) {
+      return response.status(401).json(
+        { error: 'You do not have permission to export this experience' },
+      );
+    }
+
+    if (snapshot?.data.projects && snapshot.data.projects[0]) {
+      snapshot.projectData = await projectRepo.findById(snapshot.data.projects[0]);
+    }
+    const outputFile = `exports/${experienceId}.zip`;
+    await makeDirectoryIfNotExists('exports');
+    const output = fs.createWriteStream(outputFile);
+    output.on('finish', () => {
+      response.download(outputFile, () => {
+        fs.unlink(outputFile, () => {
+          console.log(`${outputFile} sent and deleted`);
+        });
+      });
+    });
+
+    const archive = archiver('zip', {
+      zlib: { level: 9 }, // Sets the compression level.
+    });
+
+    const experienceData: ExperienceData = experience.toObject();
+    experienceData.pointOfInterests = [];
+    experienceData.routes = await new RouteRepo().findByExperienceId(experience._id);
+    experienceData.pointOfInterests = await new PointOfInterestRepo()
+      .findByExperienceId(experience._id);
+
+    const placeTypes: Record<string, string> = {};
+    experienceData.pointOfInterests.forEach((poi) => {
+      if (poi.media) {
+        poi.media.forEach((media) => {
+          const mediaPath = getPathForMedia(
+            media.ownerId!,
+            media._id.toString(),
+            media.path,
+          );
+          archive.file(
+            mediaPath,
+            { name: `media/${media._id.toString()}.${media.path}` },
+          );
+        });
+        if (poi.type.imageIconURL) {
+          const path = poi.type.imageIconURL.split('/');
+          const id = path[path.length - 1];
+          placeTypes[id] = path.slice(path.length - 3).join('/');
+        }
+      }
+    });
+    Object.keys(placeTypes).forEach((id) => {
+      archive.file(
+        placeTypes[id],
+        { name: `icons/${id}` },
+      );
+    });
+
+    if (snapshot) {
+      archive.append(JSON.stringify(snapshot, null, 4), { name: 'snapshot.json' });
+    }
+    archive.append(JSON.stringify(experienceData, null, 4), { name: 'experience.json' });
+    archive.pipe(output);
+    archive.finalize();
+
+    return undefined;
+  } catch (e) {
+    console.log(e);
+    return response.status(500).json({ code: 500, error: e });
+  }
 }

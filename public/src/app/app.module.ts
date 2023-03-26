@@ -76,6 +76,7 @@ import { ProjectViewUserComponent } from './components/project/project-view-user
 import { ProjectViewDetailsComponent } from './components/project/project-view-details/project-view-details.component';
 import { ProjectViewPublishedExperienceComponent } from './components/project/project-view-published-experience/project-view-published-experience.component';
 import { CloneExperienceDialogComponent } from './components/experience/clone-experience-dialog/clone-experience-dialog.component';
+import { ExportExperienceDialogComponent } from './components/experience/export-experience-dialog/export-experience-dialog.component';
 
 
 registerLocaleData(enGB)
@@ -123,6 +124,7 @@ registerPlugin(FilePondPluginFileValidateSize);
     ProjectViewDetailsComponent,
     ProjectViewPublishedExperienceComponent,
     CloneExperienceDialogComponent,
+    ExportExperienceDialogComponent,
   ],
   imports: [
     BrowserModule,

@@ -10,6 +10,7 @@ import {
   getCollaboratorsForExperience,
   removeCollaboratorFromExperience,
   cloneExperience,
+  exportExperienceData,
 } from '../controllers/ExperienceController';
 
 export class ExperienceRouter {
@@ -69,6 +70,8 @@ export class ExperienceRouter {
      * Gets the last published experience snapshot
      */
     this.router.get('/:experienceId/snapshot', getExperienceSnapshot);
+
+    this.router.get('/:experienceId/export', ensureAuthenticated(), exportExperienceData);
 
     return this.router;
   }

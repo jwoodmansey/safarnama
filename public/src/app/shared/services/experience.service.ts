@@ -2,10 +2,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { ExperienceData, ExperienceSnapshotData } from '@common/experience'
 import { BehaviorSubject, Observable } from 'rxjs'
+import { tap } from 'rxjs/operators'
 import { environment } from '../../../environments/environment'
 import { PoiService } from './poi.service'
-import { tap } from 'rxjs/operators'
 import { RouteService } from './route.service'
+import jsFileDownloader from 'js-file-downloader';
 
 @Injectable({
   providedIn: 'root',
@@ -72,6 +73,10 @@ export class ExperienceService {
         'Content-Type': 'application/json',
       }),
     })
+  }
+
+  exportExperience(id: string): Promise<void> {
+    return new jsFileDownloader({ url:`${this.EXPERIENCE_URL}/${id}/export` })
   }
 
   editExperience(id: string, name: string, description?: string): Observable<ExperienceData> {

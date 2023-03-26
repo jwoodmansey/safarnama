@@ -17,7 +17,7 @@ function createMediaPathIfNotExists(ownerId: string): void {
   makeDirectoryIfNotExists(`${MEDIA_DIRECTORY}/${ownerId}`);
 }
 
-function getExtension(file: UploadedFileExtended): string {
+export function getExtension(file: UploadedFileExtended): string {
   // There seems to be a bug with filepond which is making .html/jpeg
   // files come out as .tml/.peg, 4 letter extensions arent parsed right?
   let ext = file.name.split('.').pop();
@@ -33,7 +33,7 @@ function getExtension(file: UploadedFileExtended): string {
   return ext;
 }
 
-function getPathForMedia(ownerId: string, mediaId: string, ext: string): string {
+export function getPathForMedia(ownerId: string, mediaId: string, ext: string): string {
   return `${MEDIA_DIRECTORY}/${ownerId}/${mediaId}.${ext}`;
 }
 

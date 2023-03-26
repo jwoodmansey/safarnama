@@ -5,6 +5,10 @@ interface Entity {
   ownerId?: string
 }
 
+interface EntityWithCollaborators {
+  collaborators?: string[]
+}
+
 export function checkOwner(request: Request, entity: Entity): boolean {
   const thisUser = (request.user as UserData)?._id;
   if (!entity.ownerId) {
@@ -25,4 +29,11 @@ export function selectUserId(request: Request): string {
     throw new Error('User not found');
   }
   return user._id!;
+}
+
+export function isACollaborator(request: Request, entity: EntityWithCollaborators): boolean {
+  if (!entity.collaborators) {
+    return false;
+  }
+  return entity.collaborators.includes(selectUserId(request));
 }

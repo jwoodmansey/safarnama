@@ -21,7 +21,6 @@ export async function isAnExperienceCollaborator(
   request: Request,
   poi: PointOfInterestDocument,
 ): Promise<boolean> {
-  console.log('Checking collaborator');
   const experienceRepo = new ExperienceRepo();
   const exp = await experienceRepo.findByIdOrThrow(poi.experienceId);
   if (!exp.collaborators) {
