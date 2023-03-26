@@ -381,6 +381,11 @@ export async function exportExperienceData(request: Request, response: Response)
     if (experience === null) {
       return response.status(404).json({ error: 'Experience not found' });
     }
+    if (!checkOwner(request, experience)) {
+      return response.status(401).json(
+        { error: 'You do not have permission to export this experience' },
+      );
+    }
 
     if (snapshot?.data.projects && snapshot.data.projects[0]) {
       snapshot.projectData = await projectRepo.findById(snapshot.data.projects[0]);
