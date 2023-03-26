@@ -10,7 +10,7 @@ import { PointOfInterestRepo } from '../model/repo/PointOfInterestRepo';
 import { ProjectRepo } from '../model/repo/ProjectRepo';
 import { RouteRepo } from '../model/repo/RouteRepo';
 import { UserRepo } from '../model/repo/UserRepo';
-import { checkOwner } from '../utils/auth';
+import { checkOwner, isACollaborator } from '../utils/auth';
 import { createFirebaseDynamicLink, DynamicLinkInfo } from './FirebaseDynamicLinkController';
 import { getPathForMedia, loadRealPaths } from './MediaController';
 import { addRoleToProjectMember } from './ProjectController';
@@ -381,7 +381,7 @@ export async function exportExperienceData(request: Request, response: Response)
     if (experience === null) {
       return response.status(404).json({ error: 'Experience not found' });
     }
-    if (!checkOwner(request, experience)) {
+    if (!checkOwner(request, experience) && !isACollaborator(request, experience)) {
       return response.status(401).json(
         { error: 'You do not have permission to export this experience' },
       );
@@ -394,7 +394,11 @@ export async function exportExperienceData(request: Request, response: Response)
     await makeDirectoryIfNotExists('exports');
     const output = fs.createWriteStream(outputFile);
     output.on('finish', () => {
-      response.download(outputFile);
+      response.download(outputFile, () => {
+        fs.unlink(outputFile, () => {
+          console.log(`${outputFile} sent and deleted`);
+        });
+      });
     });
 
     const archive = archiver('zip', {
