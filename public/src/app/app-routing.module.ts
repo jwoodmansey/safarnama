@@ -1,14 +1,14 @@
-import { NgModule } from '@angular/core'
-import { RouterModule, Routes } from '@angular/router'
-import { IndexComponent } from '@pages/index/index.component'
-import { PoiCreateComponent } from '@components/poi/poi-create/poi-create.component'
-import { MainMenuComponent } from '@components/main-menu/main-menu.component'
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { IndexComponent } from '@pages/index/index.component';
+import { PoiCreateComponent } from '@components/poi/poi-create/poi-create.component';
+import { MainMenuComponent } from '@components/main-menu/main-menu.component';
 import { ExperienceEditComponent } from
-  '@pages/experience/experience-edit/experience-edit.component'
-import { RouteCreateComponent } from '@pages/routes/route-create/route-create.component'
-import { UserEditComponent } from './user/user-edit/user-edit.component'
-import { PrivacyComponent } from '@pages/privacy/privacy.component'
-import { PrivacyAppComponent } from '@pages/privacy-app/privacy-app.component'
+  '@pages/experience/experience-edit/experience-edit.component';
+import { RouteCreateComponent } from '@pages/routes/route-create/route-create.component';
+import { PrivacyComponent } from '@pages/privacy/privacy.component';
+import { PrivacyAppComponent } from '@pages/privacy-app/privacy-app.component';
+import { UserEditComponent } from './user/user-edit/user-edit.component';
 
 const routes: Routes = [
   {
@@ -51,17 +51,21 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'download', loadChildren: () => import('./download/download.module').then(m => m.DownloadModule),
+    path: 'download', loadChildren: () => import('./download/download.module').then((m) => m.DownloadModule),
   },
   {
     path: 'privacy/app',
     component: PrivacyAppComponent,
   },
   {
+    path: 'weavers-of-wonder/privacy/app',
+    component: PrivacyAppComponent,
+  },
+  {
     path: 'privacy',
     component: PrivacyComponent,
   },
-]
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
