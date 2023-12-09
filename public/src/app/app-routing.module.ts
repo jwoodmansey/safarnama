@@ -8,6 +8,7 @@ import { ExperienceEditComponent } from
 import { RouteCreateComponent } from '@pages/routes/route-create/route-create.component';
 import { PrivacyComponent } from '@pages/privacy/privacy.component';
 import { PrivacyAppComponent } from '@pages/privacy-app/privacy-app.component';
+import { WeaversOfWonderPrivacyAppComponent } from '@pages/privacy-app-weavers-of-wonder/privacy-app.component';
 import { UserEditComponent } from './user/user-edit/user-edit.component';
 
 const routes: Routes = [
@@ -59,7 +60,7 @@ const routes: Routes = [
   },
   {
     path: 'weavers-of-wonder/privacy/app',
-    component: PrivacyAppComponent,
+    component: WeaversOfWonderPrivacyAppComponent,
   },
   {
     path: 'privacy',
