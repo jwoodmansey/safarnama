@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PrivacyAppComponent } from './privacy-app.component';
+import { WeaversOfWonderPrivacyAppComponent } from './privacy-app.component';
 
-describe('PrivacyAppComponent', () => {
-  let component: PrivacyAppComponent;
-  let fixture: ComponentFixture<PrivacyAppComponent>;
+describe('WeaversOfWonderPrivacyAppComponent', () => {
+  let component: WeaversOfWonderPrivacyAppComponent;
+  let fixture: ComponentFixture<WeaversOfWonderPrivacyAppComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PrivacyAppComponent ]
+      declarations: [ WeaversOfWonderPrivacyAppComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PrivacyAppComponent);
+    fixture = TestBed.createComponent(WeaversOfWonderPrivacyAppComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
