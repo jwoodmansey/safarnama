@@ -9,6 +9,7 @@ import { RouteCreateComponent } from '@pages/routes/route-create/route-create.co
 import { UserEditComponent } from './user/user-edit/user-edit.component'
 import { PrivacyComponent } from '@pages/privacy/privacy.component'
 import { PrivacyAppComponent } from '@pages/privacy-app/privacy-app.component'
+import { SupportAppComponent } from '@pages/support-app/support-app.component'
 
 const routes: Routes = [
   {
@@ -60,6 +61,10 @@ const routes: Routes = [
   {
     path: 'privacy',
     component: PrivacyComponent,
+  },
+  {
+    path: 'support',
+    component: SupportAppComponent,
   },
 ]
 
