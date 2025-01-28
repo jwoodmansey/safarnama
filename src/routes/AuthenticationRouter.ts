@@ -1,30 +1,49 @@
-﻿import { Router } from 'express';
+﻿/* eslint-disable consistent-return */
+import {
+  NextFunction,
+  Request,
+  Response,
+  Router,
+} from 'express';
 import * as passport from 'passport';
+
 import { environment } from '../config/env';
 
 export class AuthenticationRouter {
   private router: Router = Router();
 
   getRouter(): Router {
-    this.router.get('/logout', (req, res) => {
-      req.logout({ keepSessionInfo: false }, () => {
-        const a = req as any;
-        // this might not be needed anymore with
-        // https://medium.com/passportjs/fixing-session-fixation-b2b68619c51d
-        a.session.destroy((_err: any) => {
-          console.error(_err);
-          req.user = undefined;
-          res.clearCookie('connect.sid');
-          res.redirect('/');
-        });
-      });
-    });
+    // Error handling middleware
+    const asyncHandler = (fn: Function) => (req: Request, res: Response, next: NextFunction) => {
+      Promise.resolve(fn(req, res, next)).catch(next);
+    };
 
-    // GET /auth/google
-    //   Use passport.authenticate() as route middleware to authenticate the
-    //   request.  The first step in Google authentication will involve
-    //   redirecting the user to google.com.  After authorization, Google
-    //   will redirect the user back to this application at /auth/google/callback
+    // Logout Route
+    this.router.get(
+      '/logout',
+      asyncHandler(async (req: Request, res: Response) => {
+        // req.logout({ keepSessionInfo: false }, (err: Error) => {
+        // if (err) return res.status(500).json({ message: 'Logout failed' });
+
+        const sessionReq = req as any;
+        sessionReq.session.destroy((destroyErr: Error) => {
+          if (destroyErr) {
+            console.error(destroyErr);
+            return res
+              .status(500)
+              .json({ message: 'Session destruction failed' });
+          }
+
+          // After successfully destroying the session, clear cookies and respond
+          res.clearCookie('connect.sid');
+          return res.status(200).json({ message: 'Successfully logged out' });
+        });
+        // return res.status(200).json({ message: 'Logged out but no session to destroy' });
+        // });
+      }),
+    );
+
+    // Google Auth Route
     this.router.get(
       '/google',
       passport.authenticate('google', {
@@ -32,34 +51,34 @@ export class AuthenticationRouter {
       }),
     );
 
-    // GET /auth/google/callback
-    //   Use passport.authenticate() as route middleware to authenticate the
-    //   request.  If authentication fails, the user will be redirected back to the
-    //   login page.  Otherwise, the primary route function function will be called,
-    //   which, in this example, will redirect the user to the home page.
-
-    // const sslConfig: any = (environment as any).ssl
-
+    // Google Callback Route with error handling
     this.router.get(
       '/google/callback',
-      passport.authenticate('google', { failureRedirect: '/login' }),
-      (_req, res) => {
+      passport.authenticate('google', { failureRedirect: '/' }),
+      asyncHandler((_req: Request, res: Response) => {
+        console.log('Google callback successful');
         res.redirect(environment.baseUrl);
-      },
+      }),
     );
 
-    this.router.get(
-      '/facebook',
-      passport.authenticate('facebook'),
-    );
+    this.router.get('/check-session', (req, res) => {
+      if (req.isAuthenticated()) {
+        return res.json({ isAuthenticated: true });
+      }
+      return res.json({ isAuthenticated: false });
+    });
 
+    // Facebook Auth Route
+    this.router.get('/facebook', passport.authenticate('facebook'));
+
+    // Facebook Callback Route with error handling
     this.router.get(
       '/facebook/callback',
       passport.authenticate('facebook', { failureRedirect: '/login' }),
-      (_req, res) => {
-        // redirect back to angular app, which will now let the user in
+      asyncHandler((_req: Request, res: Response) => {
+        console.log('Facebook callback successful');
         res.redirect(environment.baseUrl);
-      },
+      }),
     );
 
     return this.router;

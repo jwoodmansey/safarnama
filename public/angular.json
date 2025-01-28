@@ -69,7 +69,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "safarnama:build"
+            "browserTarget": "safarnama:build",
+            "proxyConfig": "proxy.config.json"
           },
           "configurations": {
             "production": {
@@ -143,5 +144,8 @@
       }
     }
   },
-  "defaultProject": "safarnama"
+  "defaultProject": "safarnama",
+  "cli": {
+    "analytics": "3d3bfd98-fb23-4e4c-b3ca-50b2bd335746"
+  }
 }

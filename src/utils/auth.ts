@@ -1,5 +1,5 @@
-import { UserData } from '@common/user';
 import { Request } from 'express';
+import { UserData } from '@common/user';
 
 interface Entity {
   ownerId?: string

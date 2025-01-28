@@ -1,8 +1,15 @@
+import {
+  Request,
+  Response,
+} from 'express';
+
 import { RouteDocument } from '@common/route';
-import { Request, Response } from 'express';
 import EntityNotFoundError from '../model/repo/EntityNotFound';
 import { RouteRepo } from '../model/repo/RouteRepo';
-import { checkOwner, selectUserId } from '../utils/auth';
+import {
+  checkOwner,
+  selectUserId,
+} from '../utils/auth';
 
 const repo = new RouteRepo();
 
@@ -52,6 +59,16 @@ export async function deleteRoute(request: Request, response: Response) {
     if (e instanceof EntityNotFoundError) {
       return response.status(404).json({ error: 'Route not found' });
     }
+    return response.status(500).json({ code: 500, error: e });
+  }
+}
+
+export async function getAllRoutes(request: Request, response: Response) {
+  try {
+    const userId = selectUserId(request);
+    const routes = await repo.findByUserId(userId);
+    return response.json(routes);
+  } catch (e) {
     return response.status(500).json({ code: 500, error: e });
   }
 }

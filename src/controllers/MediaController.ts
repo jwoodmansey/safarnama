@@ -1,13 +1,21 @@
-import { ExperienceData } from '@common/experience';
-import { MediaDocument } from '@common/media';
-import { Request, Response } from 'express';
+import {
+  Request,
+  Response,
+} from 'express';
 // @ts-ignore
 import * as filepreview from 'filepreview';
+
+import { ExperienceData } from '@common/experience';
+import { MediaDocument } from '@common/media';
+
 import { environment } from '../config/env';
-import { MediaRepo } from '../model/repo/MediaRepo';
 import EntityNotFoundError from '../model/repo/EntityNotFound';
+import { MediaRepo } from '../model/repo/MediaRepo';
 import UploadedFileExtended from '../types/UploadedFileExtended';
-import { checkOwner, selectUserId } from '../utils/auth';
+import {
+  checkOwner,
+  selectUserId,
+} from '../utils/auth';
 import { makeDirectoryIfNotExists } from '../utils/file';
 
 const MEDIA_DIRECTORY = environment.api.mediaDir;
@@ -79,6 +87,7 @@ export async function processUpload(request: Request, response: Response) {
       // const arr = filesOrFile
       // todo multi upload support
     } else {
+      const description = request.body.description || '';
       const repo = new MediaRepo();
       const file: UploadedFileExtended = filesOrFile as UploadedFileExtended;
       const ext = getExtension(file);
@@ -91,6 +100,7 @@ export async function processUpload(request: Request, response: Response) {
         mimetype: file.mimetype,
         md5: file.md5 as string,
         _id: undefined,
+        description,
         associatedExperiences: typeof request.query.expId === 'string' ? [request.query.expId] : undefined,
       });
       console.log('New media added to database', mediaDoc._id);
@@ -149,6 +159,13 @@ export async function editMedia(request: Request, response: Response) {
           return response.status(500).send('File not found');
         }
         return response.json({});
+      });
+      await repo.edit(id, {
+        ...request.body,
+        path: ext,
+        thumbPath: ext,
+        mimetype: file.mimetype,
+        md5: file.md5 as string,
       });
     } else {
       const resp = await repo.edit(id, { ...request.body });
