@@ -1,12 +1,21 @@
+import {
+  Request,
+  Response,
+} from 'express';
+
 import { MediaDocument } from '@common/media';
 import { PointOfInterestDocument } from '@common/point-of-interest';
-import { Request, Response } from 'express';
-import { loadRealPaths } from './MediaController';
+
+import { environment } from '../config/env';
+import EntityNotFoundError from '../model/repo/EntityNotFound';
 import { ExperienceRepo } from '../model/repo/ExperienceRepo';
 import { MediaRepo } from '../model/repo/MediaRepo';
 import { PointOfInterestRepo } from '../model/repo/PointOfInterestRepo';
-import { checkOwner, selectUserId } from '../utils/auth';
-import EntityNotFoundError from '../model/repo/EntityNotFound';
+import {
+  checkOwner,
+  selectUserId,
+} from '../utils/auth';
+import { loadRealPaths } from './MediaController';
 
 const repo = new PointOfInterestRepo();
 const expRepo = new ExperienceRepo();
@@ -27,6 +36,33 @@ export async function isAnExperienceCollaborator(
     return false;
   }
   return exp.collaborators.includes(selectUserId(request));
+}
+
+function getPathForIcon(ownerId: string, mediaId: string): string {
+  return `${environment.api.iconDir}/${ownerId}/${mediaId}.png`;
+}
+
+export async function getPlaces(request: Request, response: Response) {
+  try {
+    const userId = selectUserId(request);
+
+    const places = await repo.findAllByUser(userId);
+
+    const placesData = places.map((place) => ({
+      id: place._id,
+      type: place.type,
+      name: place.name,
+      mediaItems: place.media ? loadRealPaths(place.media) : [],
+      imageIconURL: place.ownerId
+        ? `${environment.api.publicUrl}/storage/${getPathForIcon(place.ownerId, place._id)}`
+        : undefined,
+      triggerZone: place.triggerZone,
+    }));
+
+    return response.json(placesData);
+  } catch (e) {
+    return response.status(500).json({ code: 500, error: e });
+  }
 }
 
 export async function createPlace(request: Request, response: Response) {

@@ -2,6 +2,8 @@ import * as mongoose from 'mongoose';
 import { environment } from '../config/env';
 
 export function configureDatabase() {
+  mongoose.set('strictQuery', false);
+
   mongoose.connect(
     // tslint:disable-next-line:max-line-length
     environment.db.mongoUri,

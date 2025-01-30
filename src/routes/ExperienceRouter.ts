@@ -1,16 +1,18 @@
-import { Router } from 'express';
 // @ts-ignore
 import { ensureAuthenticated } from 'connect-ensure-authenticated';
+import { Router } from 'express';
+
 import {
-  createExperience,
-  editExperience, getExperienceSnapshot,
-  publishExperienceSnapshot,
-  unpublishExperience,
   addCollaboratorsToExperience,
-  getCollaboratorsForExperience,
-  removeCollaboratorFromExperience,
   cloneExperience,
+  createExperience,
+  editExperience,
   exportExperienceData,
+  getCollaboratorsForExperience,
+  getExperienceSnapshot,
+  publishExperienceSnapshot,
+  removeCollaboratorFromExperience,
+  unpublishExperience,
 } from '../controllers/ExperienceController';
 
 export class ExperienceRouter {
