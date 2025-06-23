@@ -56,6 +56,7 @@ app.use(
 // Serve static files
 app.use(express.static('public/dist/safarnama') as any);
 app.use('/api/storage/media', express.static(path.join(__dirname, '../media')));
+app.use('/api/storage/icon', express.static(path.join(__dirname, '../icon')));
 // Use the router defined in routes.ts
 app.use(router); // This will register all the routes
 
